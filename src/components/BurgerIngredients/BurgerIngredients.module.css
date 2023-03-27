@@ -1,0 +1,28 @@
+.ingredients {
+  width: 50%;
+}
+
+.ingredint_list {
+  display: flex;
+  flex-wrap: wrap;  
+  column-gap: 24px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
+}
+
+.tab_child {
+  align-self: stretch;
+}
+
+.ingredient_wrapper {
+  max-height: 912px;
+  overflow-y: auto;
+}
+
+.ingredint_type {
+
+}
