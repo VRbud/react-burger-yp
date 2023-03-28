@@ -1,5 +1,6 @@
 import React from "react";
 import Ingredient from "./Ingredient/Ingredient";
+import IngredientCat from "./IngredientCat/IngredientCat";
 import styles from "./BurgerIngredients.module.css";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -22,7 +23,6 @@ function BurgerIngredients({ data }) {
     });
     return saucesArray;
   }
-  getSauces();
 
   function getFillings() {
     let FillArray = [];
@@ -47,37 +47,22 @@ function BurgerIngredients({ data }) {
         </Tab>
       </div>
 
-      <div className={`${styles.ingredient_wrapper}`}>
-        <div className={styles.ingredient_container}>
-          <h3 className="text text_type_main-medium">Булки</h3>
-          <div className={`${styles.ingredint_type} pt-6 pb-10 pl-4 pr-4`}>
-            <ul className={`list_reset ${styles.ingredint_list}`}>
-              {getBuns().map((bun) => (
-                <Ingredient key={bun._id} ingredientData={bun} />
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div className={styles.ingredient_container}>
-          <h3 className="text text_type_main-medium">Соусы</h3>
-          <div className={`${styles.ingredint_type} pt-6 pb-10 pl-4 pr-4`}>
-            <ul className={`list_reset ${styles.ingredint_list}`}>
-              {getSauces().map((sauce) => (
-                <Ingredient key={sauce._id} ingredientData={sauce} />
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div className={styles.ingredient_container}>
-          <h3 className="text text_type_main-medium">Начинки</h3>
-          <div className={`${styles.ingredint_type} pt-6 pb-10 pl-4 pr-4`}>
-            <ul className={`list_reset ${styles.ingredint_list}`}>
-              {getFillings().map((filling) => (
-                <Ingredient key={filling._id} ingredientData={filling} />
-              ))}
-            </ul>
-          </div>
-        </div>
+      <div className={`${styles.ingredient_wrapper} custom-scroll`}>
+        <IngredientCat title="Булки">
+          {getBuns().map((bun) => (
+            <Ingredient key={bun._id} ingredientData={bun} />
+          ))}
+        </IngredientCat>
+        <IngredientCat title="Соусы">
+          {getSauces().map((sauce) => (
+            <Ingredient key={sauce._id} ingredientData={sauce} />
+          ))}
+        </IngredientCat>
+        <IngredientCat title="Начинки">
+          {getFillings().map((filling) => (
+            <Ingredient key={filling._id} ingredientData={filling} />
+          ))}
+        </IngredientCat>
       </div>
     </div>
   );

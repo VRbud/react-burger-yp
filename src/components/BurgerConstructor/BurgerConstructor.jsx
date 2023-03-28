@@ -9,13 +9,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function BurgerConstructor({ data }) {
-  let sum = 0;
-  function total() {
-    data.forEach((element) => {
-      sum += element.price;
-    });
-  }
-  total();
+  let sum = data.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.price,
+    0
+  );
 
   return (
     <div className={`${styles.burger_constructor} pt-25`}>
@@ -24,13 +21,13 @@ function BurgerConstructor({ data }) {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
+            text={data[0].name}
+            price={data[0].price}
             thumbnail={data[0].image}
             extraClass="top"
           />
         </div>
-        <div className={styles.center}>
+        <div className={`${styles.center} custom-scroll`}>
           {data.map((ingredient) => (
             <div className={styles.fillings}>
               <DragIcon type="primary" />
@@ -47,8 +44,8 @@ function BurgerConstructor({ data }) {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
+            text={data[data.length - 1].name}
+            price={data[data.length - 1].price}
             thumbnail={data[data.length - 1].image}
             extraClass="bottom"
           />

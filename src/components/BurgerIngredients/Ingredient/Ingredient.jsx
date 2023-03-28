@@ -12,7 +12,7 @@ function Ingredient({ ingredientData }) {
       <img
         src={ingredientData.image}
         className={`${styles.image} pr-4 pl-4`}
-        alt=""
+        alt={ingredientData.name}
       />
       <div className={`${styles.ingredient_bottom} pt-1 pb-1`}>
         <p className="text text_type_main-medium pr-2">
