@@ -13,6 +13,13 @@ body {
   list-style: none;
 }
 
+.btn_reset {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;;

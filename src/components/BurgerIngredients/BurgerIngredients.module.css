@@ -13,7 +13,6 @@
 }
 
 .ingredient_wrapper {
-  position: relative;
   max-height: 912px;
   overflow-y: auto;
 }

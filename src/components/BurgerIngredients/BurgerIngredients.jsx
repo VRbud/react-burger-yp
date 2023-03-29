@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Ingredient from "./Ingredient/Ingredient";
 import IngredientCat from "./IngredientCat/IngredientCat";
 import styles from "./BurgerIngredients.module.css";
-
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function BurgerIngredients({ data }) {
-  const [current, setCurrent] = React.useState("one");
+import { burgerIngredientsTypes } from "../../Types/types";
+
+BurgerIngredients.propTypes = burgerIngredientsTypes;
+
+function BurgerIngredients({ ingredientsData }) {
+  const [current, setCurrent] = useState("one");
 
   function getBuns() {
     let bunsArray = [];
-    data.map((bun) => {
+    ingredientsData.map((bun) => {
       if (bun.type === "bun") bunsArray.push(bun);
     });
     return bunsArray;
@@ -18,7 +21,7 @@ function BurgerIngredients({ data }) {
 
   function getSauces() {
     let saucesArray = [];
-    data.map((sauce) => {
+    ingredientsData.map((sauce) => {
       if (sauce.type === "sauce") saucesArray.push(sauce);
     });
     return saucesArray;
@@ -26,7 +29,7 @@ function BurgerIngredients({ data }) {
 
   function getFillings() {
     let FillArray = [];
-    data.map((filling) => {
+    ingredientsData.map((filling) => {
       if (filling.type === "main") FillArray.push(filling);
     });
     return FillArray;
