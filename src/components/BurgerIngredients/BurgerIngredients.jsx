@@ -9,6 +9,7 @@ import { burgerIngredientsTypes } from "../../Types/types";
 BurgerIngredients.propTypes = burgerIngredientsTypes;
 
 function BurgerIngredients({ ingredientsData }) {
+  console.log(ingredientsData);
   const [current, setCurrent] = useState("one");
 
   function getBuns() {

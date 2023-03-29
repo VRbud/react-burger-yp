@@ -24,7 +24,7 @@ const ingredientCatTypes = PropTypes.shape({
 
 const ingredientDetailsTypes = PropTypes.shape(burgerIngredientTypes)
 
-const burgerIngredientsTypes = PropTypes.shape(burgerIngredientTypes)
+const burgerIngredientsTypes = PropTypes.arrayOf(burgerIngredientTypes)
 
 const modalTypes = PropTypes.shape({
   children: PropTypes.element,

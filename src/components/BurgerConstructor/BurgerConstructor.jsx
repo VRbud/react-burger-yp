@@ -13,6 +13,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 BurgerConstructor.propTypes = burgerConstructorTypes;
+console.log(burgerConstructorTypes);
 
 function BurgerConstructor({ ingredientsData }) {
   let sum = ingredientsData.reduce(
