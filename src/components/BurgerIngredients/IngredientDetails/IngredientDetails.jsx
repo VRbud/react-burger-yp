@@ -4,7 +4,9 @@ import styles from "./IngredientDetails.module.css";
 
 import { ingredientDetailsTypes } from "../../../Types/types";
 
-IngredientDetails.propTypes = ingredientDetailsTypes;
+IngredientDetails.propTypes = {
+  ingredientDetailsTypes,
+};
 
 function IngredientDetails({ ingredientData }) {
   return (

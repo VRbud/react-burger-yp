@@ -10,7 +10,9 @@ import Modal from "../../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { burgerIngredientTypes } from "../../../Types/types";
 
-Ingredient.propTypes = burgerIngredientTypes;
+Ingredient.propTypes = {
+  ingredientData: burgerIngredientTypes,
+};
 
 function Ingredient({ ingredientData }) {
   const [modal, setModal] = useState(false);

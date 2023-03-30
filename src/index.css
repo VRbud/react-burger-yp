@@ -35,3 +35,14 @@ a {
   column-gap: 40px;
   padding: 0 340px;
 }
+
+.burger_container.error {
+  justify-content: center;
+}
+
+
+.error {
+  color: red;
+}
+
+

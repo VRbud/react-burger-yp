@@ -6,10 +6,11 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { burgerIngredientsTypes } from "../../Types/types";
 
-BurgerIngredients.propTypes = burgerIngredientsTypes;
+BurgerIngredients.propTypes = {
+  ingredientsData: burgerIngredientsTypes,
+};
 
 function BurgerIngredients({ ingredientsData }) {
-  console.log(ingredientsData);
   const [current, setCurrent] = useState("one");
 
   function getBuns() {
