@@ -9,7 +9,11 @@ function OrderDetails() {
         034536
       </h2>
       <span className={`${styles.order_text} mb-15`}>идентификатор заказа</span>
-      <img className={`${styles.order_img} mb-15`} src={img} alt="" />
+      <img
+        className={`${styles.order_img} mb-15`}
+        src={img}
+        alt="заказ принят в работу"
+      />
       <span className={`${styles.order_status} mb-2`}>
         Ваш заказ начали готовить
       </span>

@@ -45,4 +45,15 @@ a {
   color: red;
 }
 
+@media (max-width: 1440px) {
+  .container {
+    max-width: 1440px;
+    padding: 0 100px;
+  }
+
+  .burger_container {
+    padding: 0 100px;
+  }
+}
+
 

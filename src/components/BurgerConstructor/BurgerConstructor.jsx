@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { createPortal } from "react-dom";
+import React, { useState, useMemo } from "react";
 import styles from "./BurgerConstructor.module.css";
-import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
 import { burgerConstructorTypes } from "../../Types/types";
@@ -17,12 +15,16 @@ BurgerConstructor.propTypes = {
 };
 
 function BurgerConstructor({ ingredientsData }) {
-  let sum = ingredientsData.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.price,
-    0
-  );
-
   const [modal, setModal] = useState(false);
+
+  let sum = useMemo(
+    () =>
+      ingredientsData.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.price,
+        0
+      ),
+    [ingredientsData]
+  );
 
   function closeModal() {
     setModal(false);
@@ -84,15 +86,11 @@ function BurgerConstructor({ ingredientsData }) {
           </Button>
         </div>
       </div>
-      {modal &&
-        createPortal(
-          <ModalOverlay onClose={closeModal}>
-            <Modal onClose={closeModal}>
-              <OrderDetails />
-            </Modal>
-          </ModalOverlay>,
-          document.body
-        )}
+      {modal && (
+        <Modal onClose={closeModal}>
+          <OrderDetails />
+        </Modal>
+      )}
     </>
   );
 }

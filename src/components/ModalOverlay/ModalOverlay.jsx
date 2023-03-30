@@ -6,12 +6,8 @@ ModalOverlay.propTypes = {
   modalTypes,
 };
 
-function ModalOverlay({ onClose, children }) {
-  return (
-    <div onClick={onClose} className={styles.modal_overlay}>
-      {children}
-    </div>
-  );
+function ModalOverlay({ onClose }) {
+  return <div onClick={onClose} className={styles.modal_overlay}></div>;
 }
 
 export default ModalOverlay;

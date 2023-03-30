@@ -4,7 +4,6 @@
 
 .tabs {
   display: flex;
-  flex-wrap: wrap;
   align-content: stretch;
 }
 
@@ -15,4 +14,11 @@
 .ingredient_wrapper {
   max-height: 912px;
   overflow-y: auto;
+}
+
+
+@media (max-width: 1440px) {
+  .ingredient_wrapper {
+    max-height: 800px;
+  }
 }

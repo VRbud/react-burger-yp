@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { createPortal } from "react-dom";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import ModalOverlay from "../../ModalOverlay/ModalOverlay";
 import styles from "./ingredient.module.css";
 import Modal from "../../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
@@ -44,15 +42,11 @@ function Ingredient({ ingredientData }) {
           {ingredientData.name}
         </span>
       </li>
-      {modal &&
-        createPortal(
-          <ModalOverlay onClose={closeModal}>
-            <Modal onClose={closeModal}>
-              <IngredientDetails ingredientData={ingredientData} />
-            </Modal>
-          </ModalOverlay>,
-          document.body
-        )}
+      {modal && (
+        <Modal onClose={closeModal} ingredientData={ingredientData}>
+          <IngredientDetails ingredientData={ingredientData} />
+        </Modal>
+      )}
     </>
   );
 }

@@ -28,19 +28,25 @@ function IngredientDetails({ ingredientData }) {
             className={`${styles.list_item} text text_type_main-default text_color_inactive`}
           >
             <span>Калории,ккал</span>
-            <span>{ingredientData.calories}</span>
+            <span className="text text_type_digits-default text_color_inactive">
+              {ingredientData.calories}
+            </span>
           </li>
           <li
             className={`${styles.list_item} text text_type_main-default text_color_inactive`}
           >
             <span>Белки, г</span>
-            <span>{ingredientData.proteins}</span>
+            <span className="text text_type_digits-default text_color_inactive">
+              {ingredientData.proteins}
+            </span>
           </li>
           <li
             className={`${styles.list_item} text text_type_main-default text_color_inactive`}
           >
             <span>Жиры, г</span>
-            <span>{ingredientData.fat}</span>
+            <span className="text text_type_digits-default text_color_inactive">
+              {ingredientData.fat}
+            </span>
           </li>
           <li
             className={`${styles.list_item} text text_type_main-default text_color_inactive`}

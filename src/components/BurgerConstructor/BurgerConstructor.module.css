@@ -42,3 +42,10 @@
   column-gap: 13.5px;
   max-width: 536px;
 }
+
+@media (max-width: 1440px) {
+    .center {
+    display: flex;
+    max-height: 740px;
+  }
+}
