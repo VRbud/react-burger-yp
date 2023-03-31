@@ -1,0 +1,27 @@
+.ingredient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  max-width: 272px;
+  cursor: pointer;
+}
+
+.counter {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.ingredient_bottom {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.image {
+  width: 100%;
+}

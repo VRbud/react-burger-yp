@@ -1,0 +1,51 @@
+.burger_constructor {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 50%;
+}
+
+.burger_constructor_top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.burger_constructor_bottom {
+  display: flex;
+  align-self: flex-end;
+  gap: 40px;
+}
+
+.burger_constructor_total {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.end {
+  max-width: 500px;
+}
+
+.center {
+  display: flex;
+  max-height: 740px;
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 16px;
+
+}
+
+.fillings {
+  display: flex;
+  align-items: center;
+  column-gap: 13.5px;
+  max-width: 536px;
+}
+
+@media (max-width: 1440px) {
+    .center {
+    display: flex;
+    max-height: 740px;
+  }
+}
