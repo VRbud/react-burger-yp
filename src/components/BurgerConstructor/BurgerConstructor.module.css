@@ -29,11 +29,10 @@
 
 .center {
   display: flex;
-  max-height: 740px;
+  max-height: 53vh;
   overflow-y: auto;
   flex-direction: column;
   gap: 16px;
-
 }
 
 .fillings {
@@ -41,11 +40,4 @@
   align-items: center;
   column-gap: 13.5px;
   max-width: 536px;
-}
-
-@media (max-width: 1440px) {
-    .center {
-    display: flex;
-    max-height: 740px;
-  }
 }

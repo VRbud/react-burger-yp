@@ -15,6 +15,14 @@ const burgerIngredientTypes = PropTypes.shape({
   _id: PropTypes.string,
 })
 
+const orderDetailsTypes = PropTypes.shape({
+  name: PropTypes.string,
+  order: PropTypes.shape({
+    number: PropTypes.number,
+  }),
+  success: PropTypes.bool,
+})
+
 const burgerConstructorTypes = PropTypes.arrayOf(burgerIngredientTypes)
 
 const ingredientCatTypes = PropTypes.shape({
@@ -28,9 +36,10 @@ const burgerIngredientsTypes = PropTypes.arrayOf(burgerIngredientTypes)
 
 const modalTypes = PropTypes.shape({
   children: PropTypes.element,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
+  extraClass: PropTypes.string,
 })
 
 
 
-export { burgerIngredientTypes, burgerConstructorTypes, ingredientCatTypes, ingredientDetailsTypes, burgerIngredientsTypes, modalTypes }
+export { burgerIngredientTypes, burgerConstructorTypes, ingredientCatTypes, ingredientDetailsTypes, burgerIngredientsTypes, modalTypes, orderDetailsTypes }

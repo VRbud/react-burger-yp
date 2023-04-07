@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import styles from "./modal.module.css";
@@ -11,7 +10,7 @@ Modal.propTypes = {
 };
 const ESCAPE_KEY_CODE = 27;
 
-function Modal({ onClose, children }) {
+function Modal({ onClose, children, extraClass }) {
   function clickHandler(e) {
     e.stopPropagation();
   }
@@ -24,15 +23,18 @@ function Modal({ onClose, children }) {
     };
     window.addEventListener("keydown", close);
     return () => window.removeEventListener("keydown", close);
-  }, []);
+  }, [onClose]);
 
   return createPortal(
     <>
       <div
-        className={`${styles.modal} pt-10 pr-10 pl-10 pb-15`}
+        className={`${styles.modal} ${extraClass} pt-10 pr-10 pl-10 pb-15`}
         onClick={clickHandler}
       >
-        <button className={`${styles.close_btn}  btn_reset`} onClick={onClose}>
+        <button
+          className={`${styles.close_btn}  btn_reset`}
+          onClick={onClose}
+        >
           <CloseIcon type="primay" />
         </button>
         {children}

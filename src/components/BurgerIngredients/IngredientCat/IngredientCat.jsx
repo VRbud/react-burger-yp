@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./IngredientCat.module.css";
 import { ingredientCatTypes } from "../../../Types/types";
 
