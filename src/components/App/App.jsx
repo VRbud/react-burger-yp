@@ -1,7 +1,6 @@
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import IngredientsProvider from "../../services/ingredientsContext";
 
 function App() {
   return (
@@ -9,10 +8,8 @@ function App() {
       <AppHeader />
       <main>
         <section className="pb-10 burger_container">
-          <IngredientsProvider>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </IngredientsProvider>
+          <BurgerIngredients />
+          <BurgerConstructor />
         </section>
       </main>
     </>

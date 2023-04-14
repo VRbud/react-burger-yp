@@ -24,7 +24,7 @@
 }
 
 .end {
-  max-width: 500px;
+  align-self: flex-end;
 }
 
 .center {
@@ -38,6 +38,7 @@
 .fillings {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   column-gap: 13.5px;
-  max-width: 536px;
+
 }

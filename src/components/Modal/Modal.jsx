@@ -41,7 +41,7 @@ function Modal({ onClose, children, extraClass }) {
       </div>
       <ModalOverlay onClose={onClose} />
     </>,
-    document.body
+    document.getElementById("modals")
   );
 }
 
