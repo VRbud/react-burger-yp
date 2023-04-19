@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import {
   CurrencyIcon,
   Counter,
@@ -9,9 +9,10 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { burgerIngredientTypes } from "../../../Types/types";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  ADD_TO_CART,
-  ADD_BUN_TO_CART,
+  SET_MODAL_ING,
+  DEL_MODAL_ING,
 } from "../../../services/actions/ingredients";
+import { useDrag } from "react-dnd";
 
 Ingredient.propTypes = {
   ingredientData: burgerIngredientTypes,
@@ -24,12 +25,23 @@ function Ingredient({ ingredientData }) {
 
   const dispatch = useDispatch();
 
-  function closeModal() {
-    setModal(false);
-  }
-
+  const id = ingredientData._id;
   let count = 0;
 
+  const [{ opacity }, ingRef] = useDrag({
+    type: "ingredient",
+    item: { id },
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
+
+  function closeModal() {
+    setModal(false);
+    dispatch({
+      type: DEL_MODAL_ING,
+    });
+  }
   for (let ing of cart) {
     if (ing._id === ingredientData._id) count++;
   }
@@ -37,17 +49,10 @@ function Ingredient({ ingredientData }) {
 
   function openModal() {
     setModal(true);
-    if (ingredientData.type === "bun") {
-      dispatch({
-        type: ADD_BUN_TO_CART,
-        payload: ingredientData,
-      });
-    } else {
-      dispatch({
-        type: ADD_TO_CART,
-        payload: ingredientData,
-      });
-    }
+    dispatch({
+      type: SET_MODAL_ING,
+      payload: ingredientData,
+    });
   }
 
   return (
@@ -55,6 +60,8 @@ function Ingredient({ ingredientData }) {
       <li
         onClick={() => openModal()}
         className={styles.ingredient}
+        ref={ingRef}
+        style={{ opacity }}
       >
         <Counter
           className={styles.counter}
@@ -77,7 +84,7 @@ function Ingredient({ ingredientData }) {
       </li>
       {modal && (
         <Modal onClose={closeModal}>
-          <IngredientDetails ingredientData={ingredientData} />
+          <IngredientDetails />
         </Modal>
       )}
     </>

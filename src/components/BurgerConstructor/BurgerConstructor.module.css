@@ -35,10 +35,8 @@
   gap: 16px;
 }
 
-.fillings {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  column-gap: 13.5px;
 
+
+.isHover {
+  border: 1px solid white;
 }
