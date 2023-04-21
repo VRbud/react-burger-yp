@@ -5,9 +5,6 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { modalTypes } from "../../Types/types";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 
-Modal.propTypes = {
-  modalTypes,
-};
 const ESCAPE_KEY_CODE = 27;
 
 function Modal({ onClose, children, extraClass }) {
