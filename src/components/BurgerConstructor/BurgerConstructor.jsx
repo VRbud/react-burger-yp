@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
@@ -8,27 +8,29 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+
 import {
   ADD_BUN_TO_CART,
   ADD_TO_CART,
-  DEL_MODAL_ING,
   SORT_CART,
-  sendOrderData,
-} from "../../services/actions/ingredients";
+} from "../../services/actions/constructor";
+
+import { DELETE_ORDER_DATA, sendOrderData } from "../../services/actions/order";
+
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import SortedConstructorElement from "./SortedConstructorElement/SortedConstructorElement";
-
+import Placeholder from "./PlaceHolder/Placeholder";
 
 function BurgerConstructor() {
-  const { cart, bun, ingredients } = useSelector((state) => state.ingredients);
+  const { ingredients } = useSelector((state) => state.ingredients);
+  const { cart, bun } = useSelector((state) => state.cart);
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     collect: (monitor) => ({
-
       handlerid: monitor.getHandlerId(),
     }),
     drop(item) {
@@ -42,51 +44,54 @@ function BurgerConstructor() {
       } else {
         dispatch({
           type: ADD_TO_CART,
-          payload: ingredients.find((ing) => ing._id === item.id),
+          payload: [...cart, ingredients.find((ing) => ing._id === item.id)],
         });
       }
     },
   });
 
-  const moveIngredient = (dragIndex, hoverIndex) => {    
+  const moveIngredient = (dragIndex, hoverIndex) => {
     dispatch({
       type: SORT_CART,
       dragIndex,
-      hoverIndex
+      hoverIndex,
     });
   };
 
-  let sum =
-    cart.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.price,
-      0
-    ) +
-    bun.price * 2;
+  let sum = useMemo(
+    () =>
+      cart !== null &&
+      bun !== null &&
+      cart.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.price,
+        0
+      ) +
+        bun.price * 2,
+    [cart, bun]
+  );
 
   function closeModal() {
     setModal(false);
     dispatch({
-      type: DEL_MODAL_ING,
+      type: DELETE_ORDER_DATA,
     });
   }
 
   function submitHandler(event) {
     event.preventDefault();
     const totalCart = {
-      ingredients: [...cart, bun, bun].map((ing) => ing._id),
+      ingredients: [bun, ...cart, bun].map((ing) => ing._id),
     };
     dispatch(sendOrderData(totalCart));
     setModal(true);
   }
+
   return (
     <>
-      <div
-        ref={dropTarget}
-        className={`${styles.burger_constructor} pt-25`}
-      >
+      <div ref={dropTarget} className={`${styles.burger_constructor} pt-25`}>
         <div className={styles.burger_constructor_top}>
-          <div className={`${styles.end} pl-8 pr-4`}>
-            {bun && (
+          <div className={`${bun !== null ? styles.end : ""} pl-8 pr-4`}>
+            {bun !== null && bun.name ? (
               <ConstructorElement
                 type="top"
                 isLocked={true}
@@ -94,10 +99,16 @@ function BurgerConstructor() {
                 price={bun.price}
                 thumbnail={bun.image}
               />
+            ) : (
+              <Placeholder isHover />
             )}
           </div>
-          <div className={`${styles.center} pr-1 custom-scroll`}>
-            {cart.length > 0 &&
+          <div
+            className={`${
+              bun !== null ? styles.end : styles.placeholder
+            } pr-1 custom-scroll`}
+          >
+            {cart !== null && cart.length > 0 ? (
               cart.map((ingredient, index) => (
                 <SortedConstructorElement
                   key={uuidv4()}
@@ -106,10 +117,13 @@ function BurgerConstructor() {
                   id={ingredient._id}
                   moveIngredient={moveIngredient}
                 />
-              ))}
+              ))
+            ) : (
+              <Placeholder />
+            )}
           </div>
-          <div className={`${styles.end} pl-8 pr-4`}>
-            {bun && (
+          <div className={`${bun !== null ? styles.end : ""} pl-8 pr-4`}>
+            {bun !== null && bun.name ? (
               <ConstructorElement
                 type="bottom"
                 isLocked={true}
@@ -117,6 +131,8 @@ function BurgerConstructor() {
                 price={bun.price}
                 thumbnail={bun.image}
               />
+            ) : (
+              <Placeholder />
             )}
           </div>
         </div>
@@ -130,6 +146,7 @@ function BurgerConstructor() {
               htmlType="submit"
               type="primary"
               size="large"
+              disabled={bun !== null && bun.name ? false : true}
             >
               Оформить заказ
             </Button>

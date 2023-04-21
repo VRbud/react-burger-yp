@@ -31,6 +31,12 @@
   display: flex;
   max-height: 53vh;
   overflow-y: auto;
+  overflow-x: hidden;
   flex-direction: column;
   gap: 16px;
+}
+
+.placeholder {
+  width: 556px;
+  padding-left: 32px;
 }

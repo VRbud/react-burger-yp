@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   CurrencyIcon,
   Counter,
@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   SET_MODAL_ING,
   DEL_MODAL_ING,
-} from "../../../services/actions/ingredients";
+} from "../../../services/actions/modal";
 import { useDrag } from "react-dnd";
 
 Ingredient.propTypes = {
@@ -21,12 +21,20 @@ Ingredient.propTypes = {
 function Ingredient({ ingredientData }) {
   const [modal, setModal] = useState(false);
 
-  const { cart, bun } = useSelector((state) => state.ingredients);
+  const { cart, bun } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
 
   const id = ingredientData._id;
-  let count = 0;
+  let count = useMemo(() => {
+    if (cart === null) return
+    let counter = 0
+    for (let ing of cart) {
+        if (ing._id === ingredientData._id) return counter++;
+        if (bun.type === "bun" && bun._id === ingredientData._id) return  2
+
+  }
+  }, [bun, cart, ingredientData._id])
 
   const [{ opacity }, ingRef] = useDrag({
     type: "ingredient",
@@ -42,10 +50,6 @@ function Ingredient({ ingredientData }) {
       type: DEL_MODAL_ING,
     });
   }
-  for (let ing of cart) {
-    if (ing._id === ingredientData._id) count++;
-  }
-  if (bun.type === "bun" && bun._id === ingredientData._id) count = 2;
 
   function openModal() {
     setModal(true);

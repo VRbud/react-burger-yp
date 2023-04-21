@@ -19,16 +19,18 @@ function BurgerIngredients() {
 
   useEffect(() => {
     dispatch(getIngredients());
-  }, [dispatch]);
+  }, []);
 
   const [current, setCurrent] = useState("buns");
   const bunsRef = useRef("buns")
   const saucesRef = useRef("sauces");
   const fillingsRef = useRef("fillings");
 
-
-  const { bunsArray, saucesArray, FillArray } = useMemo(
-    () => getIngredientType(ingredients),
+  const { bunsArray = [], saucesArray = [], FillArray = [] } = useMemo(
+    () => {
+      if (ingredients === null) return {}
+      return getIngredientType(ingredients)
+    },
     [ingredients]
   );
 
@@ -36,16 +38,19 @@ function BurgerIngredients() {
     let bunsArray = [];
     let saucesArray = [];
     let FillArray = [];
-    array.map((ingredient) => {
-      if (ingredient.type === "bun") {
-        bunsArray.push(ingredient);
-      } else if (ingredient.type === "sauce") {
-        saucesArray.push(ingredient);
-      } else if (ingredient.type === "main") {
-        FillArray.push(ingredient);
-      }
-    });
-    return { bunsArray, saucesArray, FillArray };
+    if (array !== null) {
+      array.map((ingredient) => {
+        if (ingredient.type === "bun") {
+          bunsArray.push(ingredient);
+        } else if (ingredient.type === "sauce") {
+          saucesArray.push(ingredient);
+        } else if (ingredient.type === "main") {
+          FillArray.push(ingredient);
+        }
+      });
+      return { bunsArray, saucesArray, FillArray };
+    }
+    
   }
 
   const clickHadler = (elem) => {

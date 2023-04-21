@@ -8,7 +8,7 @@ IngredientDetails.propTypes = {
 };
 
 function IngredientDetails() {
-  const { currentIngredient } = useSelector((state) => state.ingredients);
+  const { currentIngredient } = useSelector((state) => state.modal);
   return (
     <>
       <h2 className={`${styles.title} text text_type_main-large mt-5`}>

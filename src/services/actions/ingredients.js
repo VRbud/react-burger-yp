@@ -21,18 +21,22 @@ export const getIngredients = () => {
     dispatch({
       type: REQUEST_INGREDIENTS
     })
-    requestToServ('ingredients').then(res => {
-      if (res) {
-        dispatch({
-          type: REQUEST_INGREDIENTS_SUCCESS,
-          ingredients: res.data
-        });
-      } else {
-        dispatch({
-          type: REQUEST_INGREDIENTS_FAILED
-        });
-      }
-    });
+    try {
+      requestToServ('ingredients').then(res => {
+        if (res) {
+          dispatch({
+            type: REQUEST_INGREDIENTS_SUCCESS,
+            ingredients: res.data
+          });
+        } else {
+          dispatch({
+            type: REQUEST_INGREDIENTS_FAILED
+          });
+        }
+      });
+    } catch (err) {
+      throw new Error(`Ошибка в получении сведений об ингредиентах ${err.message}`)
+    }
   }
 }
 
@@ -41,25 +45,29 @@ export const sendOrderData = (data) => {
     dispatch({
       type: SET_ORDER_DATA
     })
-    requestToServ('orders', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-type': 'application/json',
-      },
-    }).then(res => {
-      if (res) {
-        dispatch({
-          type: SET_ORDER_DATA_SUCCESS,
-          orderData: res,
-        });
-      } else {
-        dispatch({
-          type: SET_ORDER_DATA_FAILED
-        });
-      }
-
-    });
+    try {
+      requestToServ('orders', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }).then(res => {
+        if (res) {
+          dispatch({
+            type: SET_ORDER_DATA_SUCCESS,
+            orderData: res,
+          });
+        } else {
+          dispatch({
+            type: SET_ORDER_DATA_FAILED
+          });
+        }
+  
+      });
+    } catch (err){
+      throw new Error(`Ошибка в получении сведений о заказе ${err.message}`)
+    }
 
   }
 }
