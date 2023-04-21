@@ -1,13 +1,8 @@
 import styles from "./OrderDetails.module.css";
 import img from "../../../images/order_accpeted/accepted.png";
 import Spinner from "../../../ui/Spinner";
-import { orderDetailsTypes } from "../../../Types/types";
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
 
-OrderDetails.propTypes = {
-  orderData: orderDetailsTypes,
-};
 
 function OrderDetails() {
   const { orderData } = useSelector((state) => state.ingredients);

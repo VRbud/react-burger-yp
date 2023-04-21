@@ -34,9 +34,3 @@
   flex-direction: column;
   gap: 16px;
 }
-
-
-
-.isHover {
-  border: 1px solid white;
-}

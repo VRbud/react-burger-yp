@@ -5,6 +5,15 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
+import { burgerIngredientsTypes } from "../../../Types/types";
+import PropTypes from 'prop-types';
+
+SortedConstructorElement.propTypes = {
+  ingredient: burgerIngredientsTypes,
+  index: PropTypes.number, 
+  id: PropTypes.number,
+  moveIngredient: PropTypes.func
+};
 
 function SortedConstructorElement({ ingredient, index, id, moveIngredient }) {
   const ingRef = useRef(null);

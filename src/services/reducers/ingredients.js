@@ -61,7 +61,7 @@ export const ingredientsReducer = (state = initialState, action) => {
     case SORT_CART: {
       return {
         ...state,
-        cart: action.cart
+        cart: [...state.cart.toSpliced(action.dragIndex, 1).toSpliced(action.hoverIndex, 0, state.cart[action.dragIndex])]
       }
     }
     case SET_MODAL_ING: {

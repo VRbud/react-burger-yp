@@ -1,10 +1,8 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
-import { burgerConstructorTypes } from "../../Types/types";
-import update from "immutability-helper";
 import {
   ConstructorElement,
   Button,
@@ -14,14 +12,13 @@ import {
   ADD_BUN_TO_CART,
   ADD_TO_CART,
   DEL_MODAL_ING,
-  SET_MODAL_ING,
   SORT_CART,
   sendOrderData,
 } from "../../services/actions/ingredients";
-
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import SortedConstructorElement from "./SortedConstructorElement/SortedConstructorElement";
+
 
 function BurgerConstructor() {
   const { cart, bun, ingredients } = useSelector((state) => state.ingredients);
@@ -31,7 +28,7 @@ function BurgerConstructor() {
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     collect: (monitor) => ({
-      isHover: monitor.isOver(),
+
       handlerid: monitor.getHandlerId(),
     }),
     drop(item) {
@@ -51,19 +48,12 @@ function BurgerConstructor() {
     },
   });
 
-  const moveIngredient = (dragIndex, hoverIndex) => {
-    let help = update(cart, {
-      $splice: [
-        [dragIndex, 1],
-        [hoverIndex, 0, cart[dragIndex]],
-      ],
-    });
+  const moveIngredient = (dragIndex, hoverIndex) => {    
     dispatch({
       type: SORT_CART,
-      cart: help,
+      dragIndex,
+      hoverIndex
     });
-
-    console.log(cart, help);
   };
 
   let sum =
@@ -86,17 +76,13 @@ function BurgerConstructor() {
       ingredients: [...cart, bun, bun].map((ing) => ing._id),
     };
     dispatch(sendOrderData(totalCart));
-
     setModal(true);
   }
-
   return (
     <>
       <div
         ref={dropTarget}
-        className={`${styles.burger_constructor} pt-25 ${
-          isHover ? styles.isHover : ""
-        }`}
+        className={`${styles.burger_constructor} pt-25`}
       >
         <div className={styles.burger_constructor_top}>
           <div className={`${styles.end} pl-8 pr-4`}>
@@ -144,7 +130,6 @@ function BurgerConstructor() {
               htmlType="submit"
               type="primary"
               size="large"
-              // disabled={orderData ? true : false}
             >
               Оформить заказ
             </Button>

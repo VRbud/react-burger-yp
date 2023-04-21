@@ -25,6 +25,7 @@ const orderDetailsTypes = PropTypes.shape({
 
 const burgerConstructorTypes = PropTypes.arrayOf(burgerIngredientTypes)
 
+
 const ingredientCatTypes = PropTypes.shape({
   title: PropTypes.string,
   children: PropTypes.element,

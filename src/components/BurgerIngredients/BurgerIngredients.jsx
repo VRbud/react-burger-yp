@@ -3,21 +3,18 @@ import Ingredient from "./Ingredient/Ingredient";
 import IngredientCat from "./IngredientCat/IngredientCat";
 import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-
-import { burgerIngredientsTypes } from "../../Types/types";
 import { useSelector, useDispatch } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import Spinner from "../../ui/Spinner";
 
-BurgerIngredients.propTypes = {
-  ingredientsData: burgerIngredientsTypes,
-};
+import { InView } from 'react-intersection-observer';
+
+
 
 function BurgerIngredients() {
-  const { ingredients, ingredientsRequest, ingredientsfailed } = useSelector(
+  const { ingredients, ingredientsRequest } = useSelector(
     (state) => state.ingredients
   );
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,9 +22,10 @@ function BurgerIngredients() {
   }, [dispatch]);
 
   const [current, setCurrent] = useState("buns");
-  const bunsRef = useRef("buns");
+  const bunsRef = useRef("buns")
   const saucesRef = useRef("sauces");
   const fillingsRef = useRef("fillings");
+
 
   const { bunsArray, saucesArray, FillArray } = useMemo(
     () => getIngredientType(ingredients),
@@ -70,6 +68,10 @@ function BurgerIngredients() {
     setCurrent(elem);
   };
 
+  
+
+
+
   return ingredientsRequest ? (
     <Spinner />
   ) : (
@@ -100,6 +102,7 @@ function BurgerIngredients() {
       </div>
 
       <div className={`${styles.ingredient_wrapper} custom-scroll`}>
+        <InView onChange={(inView) => inView && setCurrent('buns') }>
         <IngredientCat
           thisRef={bunsRef}
           title="Булки"
@@ -111,6 +114,8 @@ function BurgerIngredients() {
             />
           ))}
         </IngredientCat>
+        </InView>
+        <InView onChange={(inView) => inView && setCurrent('sauces')}>
         <IngredientCat
           thisRef={saucesRef}
           title="Соусы"
@@ -122,6 +127,8 @@ function BurgerIngredients() {
             />
           ))}
         </IngredientCat>
+        </InView>
+        <InView onChange={(inView) => inView && setCurrent('fillings')}>
         <IngredientCat
           thisRef={fillingsRef}
           title="Начинки"
@@ -133,6 +140,7 @@ function BurgerIngredients() {
             />
           ))}
         </IngredientCat>
+        </InView>
       </div>
     </div>
   );
