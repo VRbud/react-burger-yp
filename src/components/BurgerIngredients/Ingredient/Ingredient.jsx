@@ -27,13 +27,14 @@ function Ingredient({ ingredientData }) {
 
   const id = ingredientData._id;
   let count = useMemo(() => {
-    if (cart === null) return
+    if (cart === null || bun === null) return
+    if (bun.type === "bun" && bun._id === ingredientData._id) return  2
     let counter = 0
-    for (let ing of cart) {
-        if (ing._id === ingredientData._id) return counter++;
-        if (bun.type === "bun" && bun._id === ingredientData._id) return  2
+    cart.forEach((ing) => {
+      ing._id === ingredientData._id && counter++
+    });
+    return counter
 
-  }
   }, [bun, cart, ingredientData._id])
 
   const [{ opacity }, ingRef] = useDrag({

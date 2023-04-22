@@ -44,7 +44,7 @@ function BurgerConstructor() {
       } else {
         dispatch({
           type: ADD_TO_CART,
-          payload: [...cart, ingredients.find((ing) => ing._id === item.id)],
+          payload:  ingredients.find((ing) => ing._id === item.id),
         });
       }
     },
@@ -105,7 +105,7 @@ function BurgerConstructor() {
           </div>
           <div
             className={`${
-              bun !== null ? styles.end : styles.placeholder
+              bun !== null ? styles.center : styles.placeholder
             } pr-1 custom-scroll`}
           >
             {cart !== null && cart.length > 0 ? (

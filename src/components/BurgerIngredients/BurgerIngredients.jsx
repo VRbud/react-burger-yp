@@ -7,9 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import Spinner from "../../ui/Spinner";
 
-import { InView } from 'react-intersection-observer';
-
-
+import { InView } from "react-intersection-observer";
 
 function BurgerIngredients() {
   const { ingredients, ingredientsRequest } = useSelector(
@@ -22,17 +20,18 @@ function BurgerIngredients() {
   }, []);
 
   const [current, setCurrent] = useState("buns");
-  const bunsRef = useRef("buns")
+  const bunsRef = useRef("buns");
   const saucesRef = useRef("sauces");
   const fillingsRef = useRef("fillings");
 
-  const { bunsArray = [], saucesArray = [], FillArray = [] } = useMemo(
-    () => {
-      if (ingredients === null) return {}
-      return getIngredientType(ingredients)
-    },
-    [ingredients]
-  );
+  const {
+    bunsArray = [],
+    saucesArray = [],
+    FillArray = [],
+  } = useMemo(() => {
+    if (ingredients === null) return {};
+    return getIngredientType(ingredients);
+  }, [ingredients]);
 
   function getIngredientType(array) {
     let bunsArray = [];
@@ -50,7 +49,6 @@ function BurgerIngredients() {
       });
       return { bunsArray, saucesArray, FillArray };
     }
-    
   }
 
   const clickHadler = (elem) => {
@@ -73,28 +71,16 @@ function BurgerIngredients() {
     setCurrent(elem);
   };
 
-  
-
-
-
   return ingredientsRequest ? (
     <Spinner />
   ) : (
     <div className={`pt-10 mb-5 ${styles.ingredients}`}>
       <h2 className="text text_type_main-large mb-5">Соберите Бургер</h2>
       <div className={`${styles.tabs} mb-10`}>
-        <Tab
-          value="buns"
-          active={current === "buns"}
-          onClick={clickHadler}
-        >
+        <Tab value="buns" active={current === "buns"} onClick={clickHadler}>
           Булки
         </Tab>
-        <Tab
-          value="sauces"
-          active={current === "sauces"}
-          onClick={clickHadler}
-        >
+        <Tab value="sauces" active={current === "sauces"} onClick={clickHadler}>
           Соусы
         </Tab>
         <Tab
@@ -107,44 +93,26 @@ function BurgerIngredients() {
       </div>
 
       <div className={`${styles.ingredient_wrapper} custom-scroll`}>
-        <InView onChange={(inView) => inView && setCurrent('buns') }>
-        <IngredientCat
-          thisRef={bunsRef}
-          title="Булки"
-        >
-          {bunsArray.map((bun) => (
-            <Ingredient
-              key={bun._id}
-              ingredientData={bun}
-            />
-          ))}
-        </IngredientCat>
+        <InView onChange={(inView) => inView && setCurrent("buns")}>
+          <IngredientCat thisRef={bunsRef} title="Булки">
+            {bunsArray.map((bun) => (
+              <Ingredient key={bun._id} ingredientData={bun} />
+            ))}
+          </IngredientCat>
         </InView>
-        <InView onChange={(inView) => inView && setCurrent('sauces')}>
-        <IngredientCat
-          thisRef={saucesRef}
-          title="Соусы"
-        >
-          {saucesArray.map((sauce) => (
-            <Ingredient
-              key={sauce._id}
-              ingredientData={sauce}
-            />
-          ))}
-        </IngredientCat>
+        <InView onChange={(inView) => inView && setCurrent("sauces")}>
+          <IngredientCat thisRef={saucesRef} title="Соусы">
+            {saucesArray.map((sauce) => (
+              <Ingredient key={sauce._id} ingredientData={sauce} />
+            ))}
+          </IngredientCat>
         </InView>
-        <InView onChange={(inView) => inView && setCurrent('fillings')}>
-        <IngredientCat
-          thisRef={fillingsRef}
-          title="Начинки"
-        >
-          {FillArray.map((filling) => (
-            <Ingredient
-              key={filling._id}
-              ingredientData={filling}
-            />
-          ))}
-        </IngredientCat>
+        <InView onChange={(inView) => inView && setCurrent("fillings")}>
+          <IngredientCat thisRef={fillingsRef} title="Начинки">
+            {FillArray.map((filling) => (
+              <Ingredient key={filling._id} ingredientData={filling} />
+            ))}
+          </IngredientCat>
         </InView>
       </div>
     </div>
