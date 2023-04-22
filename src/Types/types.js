@@ -34,18 +34,11 @@ const ingredientDetailsTypes = PropTypes.shape(burgerIngredientTypes);
 
 const burgerIngredientsTypes = PropTypes.arrayOf(burgerIngredientTypes);
 
-const modalTypes = PropTypes.shape({
-  children: PropTypes.element,
-  onClose: PropTypes.func,
-  extraClass: PropTypes.string,
-});
-
 export {
   burgerIngredientTypes,
   burgerConstructorTypes,
   ingredientCatTypes,
   ingredientDetailsTypes,
   burgerIngredientsTypes,
-  modalTypes,
   orderDetailsTypes,
 };

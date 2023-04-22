@@ -2,10 +2,16 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { modalTypes } from "../../Types/types";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import PropTypes from "prop-types";
 
 const ESCAPE_KEY_CODE = 27;
+
+Modal.propType = {
+  children: PropTypes.element,
+  onClose: PropTypes.func,
+  extraClass: PropTypes.string,
+};
 
 function Modal({ onClose, children, extraClass }) {
   function clickHandler(e) {
