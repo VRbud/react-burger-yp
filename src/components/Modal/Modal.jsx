@@ -28,10 +28,7 @@ function Modal({ onClose, children, extraClass }) {
         className={`${styles.modal} ${extraClass} pt-10 pr-10 pl-10 pb-15`}
         onClick={clickHandler}
       >
-        <button
-          className={`${styles.close_btn}  btn_reset`}
-          onClick={onClose}
-        >
+        <button className={`${styles.close_btn}  btn_reset`} onClick={onClose}>
           <CloseIcon type="primay" />
         </button>
         {children}

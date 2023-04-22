@@ -1,18 +1,18 @@
 .placeholder {
-    background-color: #2f2f37;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100px;
-    border-radius: 50px;
-    border: dashed 2px #51515e;
+  background-color: #2f2f37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+  border-radius: 50px;
+  border: dashed 2px #51515e;
 }
 
 .placeholder:nth-child(2) {
-    width: 90%;
+  width: 90%;
 }
 
 .hover {
-    border-color: #4C4CFF;
+  border-color: #4c4cff;
 }

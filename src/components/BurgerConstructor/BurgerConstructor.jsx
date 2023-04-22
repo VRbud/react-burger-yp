@@ -44,7 +44,7 @@ function BurgerConstructor() {
       } else {
         dispatch({
           type: ADD_TO_CART,
-          payload:  ingredients.find((ing) => ing._id === item.id),
+          payload: ingredients.find((ing) => ing._id === item.id),
         });
       }
     },

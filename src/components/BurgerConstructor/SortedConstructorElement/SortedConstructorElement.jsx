@@ -6,13 +6,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
 import { burgerIngredientTypes } from "../../../Types/types";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 SortedConstructorElement.propTypes = {
   ingredient: burgerIngredientTypes,
-  index: PropTypes.number, 
+  index: PropTypes.number,
   id: PropTypes.string,
-  moveIngredient: PropTypes.func
+  moveIngredient: PropTypes.func,
 };
 
 function SortedConstructorElement({ ingredient, index, id, moveIngredient }) {
@@ -78,10 +78,7 @@ function SortedConstructorElement({ ingredient, index, id, moveIngredient }) {
 
   return (
     <>
-      <div
-        className={styles.fillings}
-        ref={ingRef}
-      >
+      <div className={styles.fillings} ref={ingRef}>
         <DragIcon type="primary" />
         <ConstructorElement
           text={ingredient.name}

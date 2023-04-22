@@ -26,7 +26,9 @@ function AppHeader() {
             </li>
           </ul>
         </nav>
-        <a href="#"><Logo /></a>
+        <a href="#">
+          <Logo />
+        </a>
         <label
           className={`${styles.btn_wrapper} pr-4 text text_type_main-default`}
         >

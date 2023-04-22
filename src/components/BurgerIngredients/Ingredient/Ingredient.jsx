@@ -8,10 +8,7 @@ import Modal from "../../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { burgerIngredientTypes } from "../../../Types/types";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  SET_MODAL_ING,
-  DEL_MODAL_ING,
-} from "../../../services/actions/modal";
+import { SET_MODAL_ING, DEL_MODAL_ING } from "../../../services/actions/modal";
 import { useDrag } from "react-dnd";
 
 Ingredient.propTypes = {
@@ -27,15 +24,14 @@ function Ingredient({ ingredientData }) {
 
   const id = ingredientData._id;
   let count = useMemo(() => {
-    if (cart === null || bun === null) return
-    if (bun.type === "bun" && bun._id === ingredientData._id) return  2
-    let counter = 0
+    if (cart === null || bun === null) return;
+    if (bun.type === "bun" && bun._id === ingredientData._id) return 2;
+    let counter = 0;
     cart.forEach((ing) => {
-      ing._id === ingredientData._id && counter++
+      ing._id === ingredientData._id && counter++;
     });
-    return counter
-
-  }, [bun, cart, ingredientData._id])
+    return counter;
+  }, [bun, cart, ingredientData._id]);
 
   const [{ opacity }, ingRef] = useDrag({
     type: "ingredient",
@@ -68,10 +64,7 @@ function Ingredient({ ingredientData }) {
         ref={ingRef}
         style={{ opacity }}
       >
-        <Counter
-          className={styles.counter}
-          count={count}
-        />
+        <Counter className={styles.counter} count={count} />
         <img
           src={ingredientData.image}
           className={`${styles.image} pr-4 pl-4`}

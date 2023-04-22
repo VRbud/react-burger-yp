@@ -10,5 +10,5 @@ export const store = configureStore({
     cart: constructorReducer,
     modal: modalReducer,
     order: orderReducer,
-  }
-})
+  },
+});

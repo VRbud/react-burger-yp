@@ -61,7 +61,8 @@
   animation-delay: -1.6s;
 }
 @keyframes lds_grid {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

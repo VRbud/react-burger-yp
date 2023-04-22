@@ -1,5 +1,5 @@
 .ingredint_list {
   display: flex;
-  flex-wrap: wrap;  
+  flex-wrap: wrap;
   column-gap: 24px;
 }
