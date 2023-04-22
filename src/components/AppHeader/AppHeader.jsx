@@ -14,18 +14,20 @@ function AppHeader() {
           <ul className={`${styles.header_list} list_reset`}>
             <li className={`p-4 pl-5 pr-5 mr-2 ${styles.header_list_item}`}>
               <BurgerIcon type="primary" />
+              {/* eslint-disable-next-line */}
               <a href="#" className="pl-2 text text_type_main-default">
                 Конструктор
               </a>
             </li>
             <li className={`p-4 pl-5 pr-5 ${styles.header_list_item}`}>
               <ListIcon type="primary" />
-              <a href="#" className="pl-2 text text_type_main-default">
+              <span className="pl-2 text text_type_main-default">
                 Лента заказов
-              </a>
+              </span>
             </li>
           </ul>
         </nav>
+        {/* eslint-disable-next-line */}
         <a href="#">
           <Logo />
         </a>

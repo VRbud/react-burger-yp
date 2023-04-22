@@ -17,7 +17,7 @@ function BurgerIngredients() {
 
   useEffect(() => {
     dispatch(getIngredients());
-  }, []);
+  }, [dispatch]);
 
   const [current, setCurrent] = useState("buns");
   const bunsRef = useRef("buns");
@@ -38,7 +38,9 @@ function BurgerIngredients() {
     let saucesArray = [];
     let FillArray = [];
     if (array !== null) {
+      // eslint-disable-next-line
       array.map((ingredient) => {
+        // сортирует массив по категориям
         if (ingredient.type === "bun") {
           bunsArray.push(ingredient);
         } else if (ingredient.type === "sauce") {

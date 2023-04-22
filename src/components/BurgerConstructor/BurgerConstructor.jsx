@@ -27,8 +27,10 @@ function BurgerConstructor() {
   const { cart, bun } = useSelector((state) => state.cart);
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
-
+  /* eslint-disable */
+  // без определеиния isHover не работает хук
   const [{ isHover }, dropTarget] = useDrop({
+    /* eslint-enable */
     accept: "ingredient",
     collect: (monitor) => ({
       handlerid: monitor.getHandlerId(),
