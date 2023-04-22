@@ -15,14 +15,6 @@ const burgerIngredientTypes = PropTypes.shape({
   _id: PropTypes.string,
 });
 
-const orderDetailsTypes = PropTypes.shape({
-  name: PropTypes.string,
-  order: PropTypes.shape({
-    number: PropTypes.number,
-  }),
-  success: PropTypes.bool,
-});
-
 const burgerConstructorTypes = PropTypes.arrayOf(burgerIngredientTypes);
 
 const ingredientCatTypes = PropTypes.shape({
@@ -40,5 +32,4 @@ export {
   ingredientCatTypes,
   ingredientDetailsTypes,
   burgerIngredientsTypes,
-  orderDetailsTypes,
 };
