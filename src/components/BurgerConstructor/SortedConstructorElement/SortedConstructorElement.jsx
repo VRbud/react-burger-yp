@@ -83,7 +83,7 @@ function SortedConstructorElement({
           text={ingredient.name}
           price={ingredient.price}
           thumbnail={ingredient.image}
-          handleClose={() => handleDelete(index)}
+          handleClose={() => handleDelete(ingredient._id, index)}
         />
       </div>
     </>

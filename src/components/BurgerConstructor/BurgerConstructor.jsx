@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
+import { v4 as uuidv4 } from "uuid";
 import OrderDetails from "./OrderDetails/OrderDetails";
 import {
   ConstructorElement,
@@ -79,11 +80,13 @@ function BurgerConstructor() {
     });
   }
 
-  const handleDelete = (index) => {
-    dispatch({
-      type: DELETE_FROM_CART,
-      ing: index,
-    });
+  const handleDelete = (id, index) => {
+    if (id === cart[index]._id) {
+      dispatch({
+        type: DELETE_FROM_CART,
+        ing: index,
+      });
+    }
   };
 
   function submitHandler(event) {
@@ -120,7 +123,7 @@ function BurgerConstructor() {
             {cart.length > 0 ? (
               cart.map((ingredient, index) => (
                 <SortedConstructorElement
-                  key={ingredient._id}
+                  key={uuidv4()}
                   ingredient={ingredient}
                   index={index}
                   id={ingredient._id}
