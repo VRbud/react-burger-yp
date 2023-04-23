@@ -12,6 +12,7 @@ import {
   ADD_BUN_TO_CART,
   ADD_TO_CART,
   SORT_CART,
+  DELETE_FROM_CART,
 } from "../../services/actions/constructor";
 
 import { DELETE_ORDER_DATA, sendOrderData } from "../../services/actions/order";
@@ -78,6 +79,13 @@ function BurgerConstructor() {
     });
   }
 
+  const handleDelete = (index) => {
+    dispatch({
+      type: DELETE_FROM_CART,
+      ing: index,
+    });
+  };
+
   function submitHandler(event) {
     event.preventDefault();
     const totalCart = {
@@ -117,6 +125,7 @@ function BurgerConstructor() {
                   index={index}
                   id={ingredient._id}
                   moveIngredient={moveIngredient}
+                  handleDelete={handleDelete}
                 />
               ))
             ) : (

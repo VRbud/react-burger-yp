@@ -37,7 +37,7 @@ export const constructorReducer = (state = initialState, action) => {
     case DELETE_FROM_CART: {
       return {
         ...state,
-        cart: [...state.cart.filter((ing) => ing._id !== action.ing)],
+        cart: [...state.cart.toSpliced(action.ing, 1)],
       };
     }
 
