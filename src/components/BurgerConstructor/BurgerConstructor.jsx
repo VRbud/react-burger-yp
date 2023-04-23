@@ -110,7 +110,7 @@ function BurgerConstructor() {
               bun !== null ? styles.center : styles.placeholder
             } pr-1 custom-scroll`}
           >
-            {cart !== null && cart.length > 0 ? (
+            {cart.length > 0 ? (
               cart.map((ingredient, index) => (
                 <SortedConstructorElement
                   key={ingredient._id}
