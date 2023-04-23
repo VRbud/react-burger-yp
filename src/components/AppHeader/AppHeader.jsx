@@ -21,9 +21,10 @@ function AppHeader() {
             </li>
             <li className={`p-4 pl-5 pr-5 ${styles.header_list_item}`}>
               <ListIcon type="primary" />
-              <span className="pl-2 text text_type_main-default">
+              {/* eslint-disable-next-line */}
+              <a href="#" className="pl-2 text text_type_main-default">
                 Лента заказов
-              </span>
+              </a>
             </li>
           </ul>
         </nav>

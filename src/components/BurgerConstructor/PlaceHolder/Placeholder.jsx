@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./Placeholder.module.css";
 
-function Placeholder() {
+function Placeholder({ type }) {
   return (
     <div className={`${styles.placeholder} text text_type_main-medium`}>
-      Перетащите ингредиент сюда
+      Перетащите {type === "center" ? "ингредиент" : "булку"} сюда
     </div>
   );
 }

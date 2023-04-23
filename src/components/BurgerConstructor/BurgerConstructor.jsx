@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
@@ -36,6 +35,7 @@ function BurgerConstructor() {
       handlerid: monitor.getHandlerId(),
     }),
     drop(item) {
+      console.log(item);
       if (
         ingredients.find((ing) => ing._id === item.id && ing.type === "bun")
       ) {
@@ -93,7 +93,7 @@ function BurgerConstructor() {
       <div ref={dropTarget} className={`${styles.burger_constructor} pt-25`}>
         <div className={styles.burger_constructor_top}>
           <div className={`${bun !== null ? styles.end : ""} pl-8 pr-4`}>
-            {bun !== null && bun.name ? (
+            {bun !== null ? (
               <ConstructorElement
                 type="top"
                 isLocked={true}
@@ -113,7 +113,7 @@ function BurgerConstructor() {
             {cart !== null && cart.length > 0 ? (
               cart.map((ingredient, index) => (
                 <SortedConstructorElement
-                  key={uuidv4()}
+                  key={ingredient._id}
                   ingredient={ingredient}
                   index={index}
                   id={ingredient._id}
@@ -121,11 +121,11 @@ function BurgerConstructor() {
                 />
               ))
             ) : (
-              <Placeholder />
+              <Placeholder type={"center"} />
             )}
           </div>
           <div className={`${bun !== null ? styles.end : ""} pl-8 pr-4`}>
-            {bun !== null && bun.name ? (
+            {bun !== null ? (
               <ConstructorElement
                 type="bottom"
                 isLocked={true}

@@ -95,21 +95,30 @@ function BurgerIngredients() {
       </div>
 
       <div className={`${styles.ingredient_wrapper} custom-scroll`}>
-        <InView onChange={(inView) => inView && setCurrent("buns")}>
+        <InView
+          threshold={0.5}
+          onChange={(inView) => inView && setCurrent("buns")}
+        >
           <IngredientCat thisRef={bunsRef} title="Булки">
             {bunsArray.map((bun) => (
               <Ingredient key={bun._id} ingredientData={bun} />
             ))}
           </IngredientCat>
         </InView>
-        <InView onChange={(inView) => inView && setCurrent("sauces")}>
+        <InView
+          threshold={0.5}
+          onChange={(inView) => inView && setCurrent("sauces")}
+        >
           <IngredientCat thisRef={saucesRef} title="Соусы">
             {saucesArray.map((sauce) => (
               <Ingredient key={sauce._id} ingredientData={sauce} />
             ))}
           </IngredientCat>
         </InView>
-        <InView onChange={(inView) => inView && setCurrent("fillings")}>
+        <InView
+          threshold={0.5}
+          onChange={(inView) => inView && setCurrent("fillings")}
+        >
           <IngredientCat thisRef={fillingsRef} title="Начинки">
             {FillArray.map((filling) => (
               <Ingredient key={filling._id} ingredientData={filling} />
