@@ -7,6 +7,8 @@ import {
 import { useDrag, useDrop } from "react-dnd";
 import { burgerIngredientTypes } from "../../../Types/types";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { DELETE_FROM_CART } from "../../../services/actions/constructor";
 
 SortedConstructorElement.propTypes = {
   ingredient: burgerIngredientTypes,
@@ -17,6 +19,7 @@ SortedConstructorElement.propTypes = {
 
 function SortedConstructorElement({ ingredient, index, id, moveIngredient }) {
   const ingRef = useRef(null);
+  const dispatch = useDispatch();
   /* eslint-disable */
   // без определеиния handlerId не работает хук
   const [{ handlerId }, drop] = useDrop({
@@ -67,6 +70,13 @@ function SortedConstructorElement({ ingredient, index, id, moveIngredient }) {
 
   drag(drop(ingRef));
 
+  const handleClose = () => {
+    dispatch({
+      type: DELETE_FROM_CART,
+      ing: ingredient._id,
+    });
+  };
+
   return (
     <>
       <div className={styles.fillings} ref={ingRef}>
@@ -75,6 +85,7 @@ function SortedConstructorElement({ ingredient, index, id, moveIngredient }) {
           text={ingredient.name}
           price={ingredient.price}
           thumbnail={ingredient.image}
+          handleClose={() => handleClose(ingredient._id)}
         />
       </div>
     </>

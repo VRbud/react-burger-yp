@@ -35,7 +35,6 @@ function BurgerConstructor() {
       handlerid: monitor.getHandlerId(),
     }),
     drop(item) {
-      console.log(item);
       if (
         ingredients.find((ing) => ing._id === item.id && ing.type === "bun")
       ) {

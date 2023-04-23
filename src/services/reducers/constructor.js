@@ -2,6 +2,7 @@ import {
   ADD_TO_CART,
   ADD_BUN_TO_CART,
   SORT_CART,
+  DELETE_FROM_CART,
 } from "../actions/constructor";
 
 const initialState = {
@@ -31,6 +32,12 @@ export const constructorReducer = (state = initialState, action) => {
             .toSpliced(action.dragIndex, 1)
             .toSpliced(action.hoverIndex, 0, state.cart[action.dragIndex]),
         ],
+      };
+    }
+    case DELETE_FROM_CART: {
+      return {
+        ...state,
+        cart: [...state.cart.filter((ing) => ing._id !== action.ing)],
       };
     }
 
