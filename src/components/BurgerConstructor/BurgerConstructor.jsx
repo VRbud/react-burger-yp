@@ -102,7 +102,7 @@ function BurgerConstructor() {
                 thumbnail={bun.image}
               />
             ) : (
-              <Placeholder isHover />
+              <Placeholder />
             )}
           </div>
           <div
