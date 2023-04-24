@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Logo,
   BurgerIcon,
@@ -15,19 +14,24 @@ function AppHeader() {
           <ul className={`${styles.header_list} list_reset`}>
             <li className={`p-4 pl-5 pr-5 mr-2 ${styles.header_list_item}`}>
               <BurgerIcon type="primary" />
+              {/* eslint-disable-next-line */}
               <a href="#" className="pl-2 text text_type_main-default">
                 Конструктор
               </a>
             </li>
             <li className={`p-4 pl-5 pr-5 ${styles.header_list_item}`}>
               <ListIcon type="primary" />
+              {/* eslint-disable-next-line */}
               <a href="#" className="pl-2 text text_type_main-default">
                 Лента заказов
               </a>
             </li>
           </ul>
         </nav>
-        <Logo />
+        {/* eslint-disable-next-line */}
+        <a href="#">
+          <Logo />
+        </a>
         <label
           className={`${styles.btn_wrapper} pr-4 text text_type_main-default`}
         >

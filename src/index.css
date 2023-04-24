@@ -1,10 +1,5 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .list_reset {
@@ -22,38 +17,27 @@ body {
 
 a {
   color: inherit;
-  text-decoration: none;;
+  text-decoration: none;
 }
 
 .container {
-  max-width: 1920px;
-  padding: 0 320px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 5px;
 }
 
 .burger_container {
   display: flex;
+  max-width: 1240px;
   column-gap: 40px;
-  padding: 0 340px;
+  margin: 0 auto;
+  padding: 0 5px;
 }
 
 .burger_container.error {
   justify-content: center;
 }
 
-
 .error {
   color: red;
 }
-
-@media (max-width: 1440px) {
-  .container {
-    max-width: 1440px;
-    padding: 0 100px;
-  }
-
-  .burger_container {
-    padding: 0 100px;
-  }
-}
-
-

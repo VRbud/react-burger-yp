@@ -12,13 +12,6 @@
 }
 
 .ingredient_wrapper {
-  max-height: 912px;
+  max-height: 70vh;
   overflow-y: auto;
-}
-
-
-@media (max-width: 1440px) {
-  .ingredient_wrapper {
-    max-height: 800px;
-  }
 }

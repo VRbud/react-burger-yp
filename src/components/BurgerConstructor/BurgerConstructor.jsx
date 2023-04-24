@@ -1,91 +1,172 @@
-import React, { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
+import { v4 as uuidv4 } from "uuid";
 import OrderDetails from "./OrderDetails/OrderDetails";
-import { burgerConstructorTypes } from "../../Types/types";
 import {
   ConstructorElement,
-  DragIcon,
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-BurgerConstructor.propTypes = {
-  ingredientsData: burgerConstructorTypes,
-};
+import {
+  ADD_BUN_TO_CART,
+  ADD_TO_CART,
+  SORT_CART,
+  DELETE_FROM_CART,
+} from "../../services/actions/constructor";
 
-function BurgerConstructor({ ingredientsData }) {
+import { DELETE_ORDER_DATA, sendOrderData } from "../../services/actions/order";
+
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
+import SortedConstructorElement from "./SortedConstructorElement/SortedConstructorElement";
+import Placeholder from "./PlaceHolder/Placeholder";
+
+function BurgerConstructor() {
+  const { ingredients } = useSelector((state) => state.ingredients);
+  const { cart, bun } = useSelector((state) => state.cart);
   const [modal, setModal] = useState(false);
+  const dispatch = useDispatch();
+  /* eslint-disable */
+  // без определеиния isHover не работает хук
+  const [{ isHover }, dropTarget] = useDrop({
+    /* eslint-enable */
+    accept: "ingredient",
+    collect: (monitor) => ({
+      handlerid: monitor.getHandlerId(),
+    }),
+    drop(item) {
+      if (
+        ingredients.find((ing) => ing._id === item.id && ing.type === "bun")
+      ) {
+        dispatch({
+          type: ADD_BUN_TO_CART,
+          payload: ingredients.find((ing) => ing._id === item.id),
+        });
+      } else {
+        dispatch({
+          type: ADD_TO_CART,
+          payload: ingredients.find((ing) => ing._id === item.id),
+        });
+      }
+    },
+  });
+
+  const moveIngredient = (dragIndex, hoverIndex) => {
+    dispatch({
+      type: SORT_CART,
+      dragIndex,
+      hoverIndex,
+    });
+  };
 
   let sum = useMemo(
     () =>
-      ingredientsData.reduce(
+      cart !== null &&
+      bun !== null &&
+      cart.reduce(
         (accumulator, currentValue) => accumulator + currentValue.price,
         0
-      ),
-    [ingredientsData]
+      ) +
+        bun.price * 2,
+    [cart, bun]
   );
 
   function closeModal() {
     setModal(false);
+    dispatch({
+      type: DELETE_ORDER_DATA,
+    });
   }
 
-  function openModal() {
+  const handleDelete = (id, index) => {
+    if (id === cart[index]._id) {
+      dispatch({
+        type: DELETE_FROM_CART,
+        ing: index,
+      });
+    }
+  };
+
+  function submitHandler(event) {
+    event.preventDefault();
+    const totalCart = {
+      ingredients: [bun, ...cart, bun].map((ing) => ing._id),
+    };
+    dispatch(sendOrderData(totalCart));
     setModal(true);
   }
 
   return (
     <>
-      <div className={`${styles.burger_constructor} pt-25`}>
+      <div ref={dropTarget} className={`${styles.burger_constructor} pt-25`}>
         <div className={styles.burger_constructor_top}>
-          <div className={`${styles.end} pl-8`}>
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={ingredientsData[0].name}
-              price={ingredientsData[0].price}
-              thumbnail={ingredientsData[0].image}
-              extraClass="top"
-            />
+          <div className={`${bun !== null ? styles.end : ""} pl-8 pr-4`}>
+            {bun !== null ? (
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={`${bun.name} (верх)`}
+                price={bun.price}
+                thumbnail={bun.image}
+              />
+            ) : (
+              <Placeholder />
+            )}
           </div>
-          <div className={`${styles.center} custom-scroll`}>
-            {ingredientsData.map((ingredient) => (
-              <div key={ingredient._id} className={styles.fillings}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  text={ingredient.name}
-                  price={ingredient.price}
-                  thumbnail={ingredient.image}
+          <div
+            className={`${
+              bun !== null ? styles.center : styles.placeholder
+            } pr-1 custom-scroll`}
+          >
+            {cart.length > 0 ? (
+              cart.map((ingredient, index) => (
+                <SortedConstructorElement
+                  key={uuidv4()}
+                  ingredient={ingredient}
+                  index={index}
+                  id={ingredient._id}
+                  moveIngredient={moveIngredient}
+                  handleDelete={handleDelete}
                 />
-              </div>
-            ))}
+              ))
+            ) : (
+              <Placeholder type={"center"} />
+            )}
           </div>
-          <div className={`${styles.end} pl-8`}>
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={ingredientsData[ingredientsData.length - 1].name}
-              price={ingredientsData[ingredientsData.length - 1].price}
-              thumbnail={ingredientsData[ingredientsData.length - 1].image}
-              extraClass="bottom"
-            />
+          <div className={`${bun !== null ? styles.end : ""} pl-8 pr-4`}>
+            {bun !== null ? (
+              <ConstructorElement
+                type="bottom"
+                isLocked={true}
+                text={`${bun.name} (верх)`}
+                price={bun.price}
+                thumbnail={bun.image}
+              />
+            ) : (
+              <Placeholder />
+            )}
           </div>
         </div>
         <div className={styles.burger_constructor_bottom}>
           <p className={styles.burger_constructor_total}>
-            <span className="text text_type_main-large">{sum}</span>
+            <span className="text text_type_main-large">{sum ? sum : 0}</span>
             <CurrencyIcon />
           </p>
-          <Button
-            htmlType="button"
-            type="primary"
-            size="large"
-            onClick={openModal}
-          >
-            Оформить заказ
-          </Button>
+          <form onSubmit={(event) => submitHandler(event)}>
+            <Button
+              htmlType="submit"
+              type="primary"
+              size="large"
+              disabled={bun !== null && bun.name ? false : true}
+            >
+              Оформить заказ
+            </Button>
+          </form>
         </div>
       </div>
+
       {modal && (
         <Modal onClose={closeModal}>
           <OrderDetails />

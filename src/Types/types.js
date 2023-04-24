@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const burgerIngredientTypes = PropTypes.shape({
   calories: PropTypes.number,
@@ -13,24 +13,23 @@ const burgerIngredientTypes = PropTypes.shape({
   type: PropTypes.string,
   __v: PropTypes.number,
   _id: PropTypes.string,
-})
+});
 
-const burgerConstructorTypes = PropTypes.arrayOf(burgerIngredientTypes)
+const burgerConstructorTypes = PropTypes.arrayOf(burgerIngredientTypes);
 
 const ingredientCatTypes = PropTypes.shape({
   title: PropTypes.string,
   children: PropTypes.element,
-})
+});
 
-const ingredientDetailsTypes = PropTypes.shape(burgerIngredientTypes)
+const ingredientDetailsTypes = PropTypes.shape(burgerIngredientTypes);
 
-const burgerIngredientsTypes = PropTypes.arrayOf(burgerIngredientTypes)
+const burgerIngredientsTypes = PropTypes.arrayOf(burgerIngredientTypes);
 
-const modalTypes = PropTypes.shape({
-  children: PropTypes.element,
-  onClose: PropTypes.func
-})
-
-
-
-export { burgerIngredientTypes, burgerConstructorTypes, ingredientCatTypes, ingredientDetailsTypes, burgerIngredientsTypes, modalTypes }
+export {
+  burgerIngredientTypes,
+  burgerConstructorTypes,
+  ingredientCatTypes,
+  ingredientDetailsTypes,
+  burgerIngredientsTypes,
+};

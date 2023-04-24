@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   CurrencyIcon,
   Counter,
@@ -7,6 +7,9 @@ import styles from "./ingredient.module.css";
 import Modal from "../../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { burgerIngredientTypes } from "../../../Types/types";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_MODAL_ING, DEL_MODAL_ING } from "../../../services/actions/modal";
+import { useDrag } from "react-dnd";
 
 Ingredient.propTypes = {
   ingredientData: burgerIngredientTypes,
@@ -15,18 +18,53 @@ Ingredient.propTypes = {
 function Ingredient({ ingredientData }) {
   const [modal, setModal] = useState(false);
 
+  const { cart, bun } = useSelector((state) => state.cart);
+
+  const dispatch = useDispatch();
+
+  const id = ingredientData._id;
+  let count = useMemo(() => {
+    if (cart === null || bun === null) return;
+    if (bun.type === "bun" && bun._id === ingredientData._id) return 2;
+    let counter = 0;
+    cart.forEach((ing) => {
+      ing._id === ingredientData._id && counter++;
+    });
+    return counter;
+  }, [bun, cart, ingredientData._id]);
+
+  const [{ opacity }, ingRef] = useDrag({
+    type: "ingredient",
+    item: { id },
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
+
   function closeModal() {
     setModal(false);
+    dispatch({
+      type: DEL_MODAL_ING,
+    });
   }
 
   function openModal() {
     setModal(true);
+    dispatch({
+      type: SET_MODAL_ING,
+      payload: ingredientData,
+    });
   }
 
   return (
     <>
-      <li onClick={openModal} className={styles.ingredient}>
-        <Counter className={styles.counter} />
+      <li
+        onClick={() => openModal()}
+        className={styles.ingredient}
+        ref={ingRef}
+        style={{ opacity }}
+      >
+        <Counter className={styles.counter} count={count} />
         <img
           src={ingredientData.image}
           className={`${styles.image} pr-4 pl-4`}
@@ -43,8 +81,8 @@ function Ingredient({ ingredientData }) {
         </span>
       </li>
       {modal && (
-        <Modal onClose={closeModal} ingredientData={ingredientData}>
-          <IngredientDetails ingredientData={ingredientData} />
+        <Modal onClose={closeModal}>
+          <IngredientDetails />
         </Modal>
       )}
     </>

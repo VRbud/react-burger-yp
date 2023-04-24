@@ -1,14 +1,14 @@
-import React from "react";
-
 import styles from "./IngredientDetails.module.css";
 
 import { ingredientDetailsTypes } from "../../../Types/types";
+import { useSelector } from "react-redux";
 
 IngredientDetails.propTypes = {
   ingredientDetailsTypes,
 };
 
-function IngredientDetails({ ingredientData }) {
+function IngredientDetails() {
+  const { currentIngredient } = useSelector((state) => state.modal);
   return (
     <>
       <h2 className={`${styles.title} text text_type_main-large mt-5`}>
@@ -17,11 +17,11 @@ function IngredientDetails({ ingredientData }) {
       <div className={`${styles.modal_content_top} ml-25 mr-25`}>
         <img
           className={`${styles.img} mb-4`}
-          src={ingredientData.image}
-          alt={ingredientData.name}
+          src={currentIngredient.image}
+          alt={currentIngredient.name}
         />
         <h3 className="text text_type_main-medium mb-8">
-          {ingredientData.name}
+          {currentIngredient.name}
         </h3>
         <ul className={`${styles.list} list_reset`}>
           <li
@@ -29,7 +29,7 @@ function IngredientDetails({ ingredientData }) {
           >
             <span>Калории,ккал</span>
             <span className="text text_type_digits-default text_color_inactive">
-              {ingredientData.calories}
+              {currentIngredient.calories}
             </span>
           </li>
           <li
@@ -37,7 +37,7 @@ function IngredientDetails({ ingredientData }) {
           >
             <span>Белки, г</span>
             <span className="text text_type_digits-default text_color_inactive">
-              {ingredientData.proteins}
+              {currentIngredient.proteins}
             </span>
           </li>
           <li
@@ -45,7 +45,7 @@ function IngredientDetails({ ingredientData }) {
           >
             <span>Жиры, г</span>
             <span className="text text_type_digits-default text_color_inactive">
-              {ingredientData.fat}
+              {currentIngredient.fat}
             </span>
           </li>
           <li
@@ -53,7 +53,7 @@ function IngredientDetails({ ingredientData }) {
           >
             <span>Углеводы, г</span>
             <span className="text text_type_digits-default text_color_inactive">
-              {ingredientData.carbohydrates}
+              {currentIngredient.carbohydrates}
             </span>
           </li>
         </ul>
