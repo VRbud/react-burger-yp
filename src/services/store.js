@@ -3,6 +3,7 @@ import { ingredientsReducer } from "./reducers/ingredients";
 import { constructorReducer } from "./reducers/constructor";
 import { modalReducer } from "./reducers/modal";
 import { orderReducer } from "./reducers/order";
+import { authReducer } from "./reducers/auth";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     cart: constructorReducer,
     modal: modalReducer,
     order: orderReducer,
+    auth: authReducer,
   },
 });

@@ -1,0 +1,9 @@
+.list_left {
+  display: flex;
+  flex-direction: column;
+}
+
+.additional_info {
+  padding-top: 80px;
+  align-self: flex-end;
+}

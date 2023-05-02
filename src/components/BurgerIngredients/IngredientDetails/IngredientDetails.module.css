@@ -5,11 +5,12 @@
 }
 
 .modal_content_top {
-  width: calc(520/720 * 100%);
+  width: calc(520 / 720 * 100%);
   text-align: center;
 }
 
 .title {
+  text-align: center;
   align-self: flex-start;
 }
 

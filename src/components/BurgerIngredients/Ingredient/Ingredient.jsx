@@ -10,6 +10,7 @@ import { burgerIngredientTypes } from "../../../Types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_MODAL_ING, DEL_MODAL_ING } from "../../../services/actions/modal";
 import { useDrag } from "react-dnd";
+import { useLocation } from "react-router-dom";
 
 Ingredient.propTypes = {
   ingredientData: burgerIngredientTypes,
@@ -20,9 +21,12 @@ function Ingredient({ ingredientData }) {
 
   const { cart, bun } = useSelector((state) => state.cart);
 
+  const url = useLocation();
+
   const dispatch = useDispatch();
 
   const id = ingredientData._id;
+
   let count = useMemo(() => {
     if (cart === null || bun === null) return;
     if (bun.type === "bun" && bun._id === ingredientData._id) return 2;
@@ -50,6 +54,7 @@ function Ingredient({ ingredientData }) {
 
   function openModal() {
     setModal(true);
+    window.location.href += `ingredients/${id}`;
     dispatch({
       type: SET_MODAL_ING,
       payload: ingredientData,
