@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import CreateBurgerPage from "../../pages/CreateBurgerPage";
 import ProfilePage from "../../pages/ProfilePage";
 import FortgotPWPage from "../../pages/FortgotPWPage";
@@ -9,12 +9,16 @@ import ResetPWPage from "../../pages/ResetPWPage";
 import AppHeader from "../AppHeader/AppHeader";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ErrorPage from "../../pages/ErrorPage";
+import Modal from "../Modal/Modal";
 
 function App() {
+  let location = useLocation();
+  let state = location.state || {};
+  state.backgroundLocation = location.state;
   return (
-    <BrowserRouter>
+    <>
       <AppHeader />
-      <Routes>
+      <Routes location={state.backgroundLocation || location}>
         <Route path="/" element={<CreateBurgerPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -27,7 +31,13 @@ function App() {
         <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
-    </BrowserRouter>
+
+      {state.backgroundLocation && (
+        <Routes>
+          <Route path="/img/:id" element={<Modal />} />
+        </Routes>
+      )}
+    </>
   );
 }
 
