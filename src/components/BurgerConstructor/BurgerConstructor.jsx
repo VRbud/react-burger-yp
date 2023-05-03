@@ -26,6 +26,7 @@ import Placeholder from "./PlaceHolder/Placeholder";
 function BurgerConstructor() {
   const { ingredients } = useSelector((state) => state.ingredients);
   const { cart, bun } = useSelector((state) => state.cart);
+  const { loginData } = useSelector((state) => state.auth);
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
   /* eslint-disable */
@@ -159,7 +160,7 @@ function BurgerConstructor() {
               htmlType="submit"
               type="primary"
               size="large"
-              disabled={bun !== null && bun.name ? false : true}
+              disabled={bun !== null && bun.name && loginData ? false : true}
             >
               Оформить заказ
             </Button>
