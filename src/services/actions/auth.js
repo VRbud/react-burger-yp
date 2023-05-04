@@ -16,6 +16,10 @@ export const REQUEST_LOGIN = "REQUEST_LOGIN";
 export const REQUEST_LOGIN_SUCCESS = "REQUEST_LOGIN_SUCCESS";
 export const REQUEST_LOGIN_FAILED = "REQUEST_LOGIN_FAILED";
 
+export const CHANGE_USER = "CHANGE_USER";
+export const CHANGE_USER_SUCCESS = "CHANGE_USER_SUCCESS";
+export const CHANGE_USER_FAILED = "CHANGE_USER_FAILED";
+
 export const CHECK_LOGIN = "CHECK_LOGIN";
 export const CHECK_LOGIN_SUCCESS = "CHECK_LOGIN_SUCCESS";
 export const CHECK_LOGIN_FAILED = "CHECK_LOGIN_FAILED";
@@ -23,6 +27,9 @@ export const CHECK_LOGIN_FAILED = "CHECK_LOGIN_FAILED";
 export const LOGOUT = "LOGOUT";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAILED = "LOGOUT_FAILED";
+
+const token = { token: getCookie("token") };
+const refreshToken = { token: getCookie("refreshToken") };
 // Проверка существет ли юзер при попытке восстановить пароль по емейл
 export const requestUser = (data) => {
   return function (dispatch) {
@@ -66,6 +73,9 @@ export const resetPassword = (data) => {
       requestToServ("password-reset/reset", {
         method: "POST",
         body: JSON.stringify(data),
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
         headers: {
           "Content-type": "application/json",
         },
@@ -114,8 +124,8 @@ export const createUser = (data) => {
         let authToken = res.accessToken;
         let refreshToken = res.refreshToken;
         if (authToken && refreshToken) {
-          setCookie("token", authToken);
-          setCookie("refreshToken", refreshToken);
+          setCookie("token", authToken, { path: "/" });
+          setCookie("refreshToken", refreshToken, { path: "/" });
         }
       });
     } catch (err) {
@@ -169,60 +179,112 @@ export const checkLogin = () => {
     dispatch({
       type: CHECK_LOGIN,
     });
-    const token = { token: getCookie("refreshToken") };
     try {
-      requestToServ("auth/token", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(token),
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-      })
-        .then((res) => {
-          if (res.success) {
-            let authToken = res.accessToken;
-            let refreshToken = res.refreshToken;
-            if (authToken && refreshToken) {
-              setCookie("token", authToken);
-              setCookie("refreshToken", refreshToken);
-            }
-          } else {
+      if (token.token !== undefined) {
+        requestToServ("auth/user", {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token.token,
+          },
+          redirect: "follow",
+          referrerPolicy: "no-referrer",
+        }).then((res) => {
+          if (res !== undefined) {
             dispatch({
-              type: CHECK_LOGIN_FAILED,
+              type: CHECK_LOGIN_SUCCESS,
+              user: res.user,
+            });
+          } else {
+            requestToServ("auth/token", {
+              method: "POST",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "same-origin",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(refreshToken),
+              redirect: "follow",
+              referrerPolicy: "no-referrer",
+            }).then((res) => {
+              if (res.success) {
+                let authToken = res.accessToken;
+                let refreshToken = res.refreshToken;
+                if (authToken && refreshToken) {
+                  setCookie("token", authToken, { path: "/" });
+                  setCookie("refreshToken", refreshToken, { path: "/" });
+                }
+                dispatch({
+                  type: CHECK_LOGIN_SUCCESS,
+                  user: res.user,
+                });
+              } else {
+                dispatch({
+                  type: CHECK_LOGIN_FAILED,
+                });
+              }
+              return res;
             });
           }
-          return res;
+        });
+      } else if (refreshToken.token) {
+        requestToServ("auth/token", {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(refreshToken),
+          redirect: "follow",
+          referrerPolicy: "no-referrer",
         })
-        .then((data) => {
-          requestToServ("auth/user", {
-            method: "GET",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: data.accessToken,
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-          }).then((res) => {
+          .then((res) => {
             if (res.success) {
-              dispatch({
-                type: CHECK_LOGIN_SUCCESS,
-                user: res.user,
-              });
+              let authToken = res.accessToken;
+              let refreshToken = res.refreshToken;
+              if (authToken && refreshToken) {
+                setCookie("token", authToken, { path: "/" });
+                setCookie("refreshToken", refreshToken, { path: "/" });
+              }
             } else {
               dispatch({
                 type: CHECK_LOGIN_FAILED,
               });
             }
+            return res;
+          })
+          .then((data) => {
+            requestToServ("auth/user", {
+              method: "GET",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "same-origin",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: data.accessToken,
+              },
+              redirect: "follow",
+              referrerPolicy: "no-referrer",
+            }).then((res) => {
+              if (res.success) {
+                dispatch({
+                  type: CHECK_LOGIN_SUCCESS,
+                  user: res.user,
+                });
+              } else {
+                dispatch({
+                  type: CHECK_LOGIN_FAILED,
+                });
+              }
+            });
           });
-        });
+      }
     } catch (err) {
       throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
     }
@@ -266,37 +328,73 @@ export const logout = () => {
   };
 };
 
-// export const requestCurrentUser = () => {
-//   return function (dispatch) {
-//     dispatch({
-//       type: LOGOUT,
-//     });
-//     try {
-//       requestToServ("auth/user", {
-//         method: "GET",
-//         mode: "cors",
-//         cache: "no-cache",
-//         credentials: "same-origin",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: getCookie("token"),
-//         },
-//         redirect: "follow",
-//         referrerPolicy: "no-referrer",
-//       }).then((res) => {
-//         if (res.success) {
-//           dispatch({
-//             type: CHECK_LOGIN_SUCCESS,
-//             user: res.user,
-//           });
-//         } else {
-//           dispatch({
-//             type: CHECK_LOGIN_FAILED,
-//           });
-//         }
-//       });
-//     } catch (err) {
-//       throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
-//     }
-//   };
-// };
+export const changeUser = (data) => {
+  return function (dispatch) {
+    dispatch({
+      type: CHANGE_USER,
+    });
+    try {
+      requestToServ("auth/user", {
+        method: "PATCH",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: getCookie("token"),
+        },
+        body: JSON.stringify(data),
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+      }).then((res) => {
+        if (res.success === "true") {
+          dispatch({
+            type: CHANGE_USER_SUCCESS,
+            user: res.user,
+          });
+        } else if (res === undefined) {
+          requestToServ("auth/user", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(refreshToken),
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+          })
+            .then((res) => {
+              requestToServ("auth/user", {
+                method: "GET",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: res.accessToken,
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+              });
+            })
+            .then((res) => {
+              if (res.success === "true") {
+                dispatch({
+                  type: CHANGE_USER_SUCCESS,
+                  user: res.user,
+                });
+              }
+            });
+        } else {
+          dispatch({
+            type: CHANGE_USER_FAILED,
+          });
+        }
+      });
+    } catch (err) {
+      throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
+    }
+  };
+};

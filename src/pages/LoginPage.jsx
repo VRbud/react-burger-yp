@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import LoginFrom from "../components/LoginForm/LoginFrom";
-import { useNavigate } from "react-router-dom";
+
 import { useCallback, useEffect } from "react";
 import { checkLogin } from "../services/actions/auth";
 
 function LoginPage() {
   const { loginData } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const init = useCallback(async () => {
@@ -19,14 +19,6 @@ function LoginPage() {
     init();
   }, [init, dispatch]);
 
-  useEffect(() => {
-    if (loginData) {
-      navigate("/");
-    }
-    if (!loginData) {
-      navigate("/login");
-    }
-  }, [loginData, navigate]);
   return (
     <>
       <main>

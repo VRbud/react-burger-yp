@@ -74,7 +74,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         passwordRequest: false,
         passwordFailed: false,
-        passwordMsg: action.passwordMsg,
+        passwordData: action.passwordMsg,
       };
     }
     case REQUEST_PASSWORD_FAILED: {

@@ -10,6 +10,7 @@ import AppHeader from "../AppHeader/AppHeader";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ErrorPage from "../../pages/ErrorPage";
 import Modal from "../Modal/Modal";
+import OnlyUnAuthRoute from "../OnlyUnAuthRoute/OnlyUnAuthRoute";
 
 function App() {
   let location = useLocation();
@@ -20,10 +21,22 @@ function App() {
       <AppHeader />
       <Routes location={state.backgroundLocation || location}>
         <Route path="/" element={<CreateBurgerPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<FortgotPWPage />} />
-        <Route path="/reset-password" element={<ResetPWPage />} />
+        <Route
+          path="/login"
+          element={<OnlyUnAuthRoute element={<LoginPage />} />}
+        />
+        <Route
+          path="/register"
+          element={<OnlyUnAuthRoute element={<RegisterPage />} />}
+        />
+        <Route
+          path="/forgot-password"
+          element={<OnlyUnAuthRoute element={<FortgotPWPage />} />}
+        />
+        <Route
+          path="/reset-password"
+          element={<OnlyUnAuthRoute element={<ResetPWPage />} />}
+        />
         <Route
           path="/profile"
           element={<ProtectedRoute element={<ProfilePage />} />}
@@ -34,7 +47,7 @@ function App() {
 
       {state.backgroundLocation && (
         <Routes>
-          <Route path="/img/:id" element={<Modal />} />
+          <Route path="/ingredients/:id" element={<Modal />} />
         </Routes>
       )}
     </>

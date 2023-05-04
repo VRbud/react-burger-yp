@@ -22,16 +22,16 @@ function ResetForm() {
       ...msg,
       [name]: value,
     });
-    console.log(msg);
   };
 
   const handleSubmit = (e) => {
     dispatch(resetPassword(msg));
     e.preventDefault();
   };
+
   return (
     <div className={styles.container}>
-      <h1 className="text text_type_main-medium">Регистраиця</h1>
+      <h1 className="text text_type_main-medium">Новый пароль</h1>
       <form className={`${styles.form} pb-20 pt-6`} onSubmit={handleSubmit}>
         <PasswordInput
           extraClass="pb-6"

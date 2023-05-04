@@ -4,45 +4,41 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ForgotForm.module.css";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { requestUser } from "../../services/actions/auth";
 
 function ForgotForm() {
-  const [email, setEmail] = useState("");
+  const { userData } = useSelector((state) => state.auth);
+  const [emailTosend, setEmailToSend] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { state, pathname } = useLocation();
+  const { pathname } = useLocation();
   const url = window.location.href;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const msg = { email: email };
+    const msg = { email: emailTosend };
     dispatch(requestUser(msg));
-    navigate("/reset-password", {
-      state: [
-        ...state,
-        { path: pathname, url, title: "Успешный сброс пароля" },
-      ],
-    });
   };
 
+  useEffect(() => {
+    if (userData !== null) navigate("/reset-password");
+  }, [navigate, pathname, url, userData]);
+
   const handleCahnge = (e) => {
-    setEmail(e.target.value);
+    setEmailToSend(e.target.value);
   };
 
   return (
     <div className={styles.container}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-      <form
-        className={`${styles.form} pb-20 pt-6`}
-        onSubmit={(e) => handleSubmit(e)}
-      >
+      <form className={`${styles.form} pb-20 pt-6`} onSubmit={handleSubmit}>
         <EmailInput
           extraClass="pb-6"
           name={"email"}
           onChange={handleCahnge}
-          value={email}
+          value={emailTosend}
         />
         <Button
           htmlType="submit"
