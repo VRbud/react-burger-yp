@@ -95,7 +95,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         createUserRequest: false,
         createUserFailed: false,
-        createUserMsg: action.createUserMsg,
+        loginData: action.user,
       };
     }
     case REQUEST_CREATE_USER_FAILED: {
@@ -105,7 +105,6 @@ export const authReducer = (state = initialState, action) => {
         createUserFailed: true,
       };
     }
-
     case REQUEST_LOGIN: {
       return {
         ...state,
@@ -139,6 +138,7 @@ export const authReducer = (state = initialState, action) => {
         CheckLoginRequest: false,
         CheckLoginFailed: false,
         loginData: action.user,
+        userData: action.user,
       };
     }
     case CHECK_LOGIN_FAILED: {

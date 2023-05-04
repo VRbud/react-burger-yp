@@ -25,19 +25,23 @@ function App() {
         <Route path="/" element={<CreateBurgerPage />} />
         <Route
           path="/login"
-          element={<OnlyUnAuthRoute element={<LoginPage />} />}
+          element={<OnlyUnAuthRoute path="/profile" element={<LoginPage />} />}
         />
         <Route
           path="/register"
-          element={<OnlyUnAuthRoute element={<RegisterPage />} />}
+          element={<OnlyUnAuthRoute path="/" element={<RegisterPage />} />}
         />
         <Route
           path="/forgot-password"
-          element={<OnlyUnAuthRoute element={<FortgotPWPage />} />}
+          element={
+            <OnlyUnAuthRoute path="/profile" element={<FortgotPWPage />} />
+          }
         />
         <Route
           path="/reset-password"
-          element={<OnlyUnAuthRoute element={<ResetPWPage />} />}
+          element={
+            <OnlyUnAuthRoute path="/profile" element={<ResetPWPage />} />
+          }
         />
         <Route
           path="/profile"
