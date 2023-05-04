@@ -4,17 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function ResetPWPage() {
-  const { loginData } = useSelector((state) => state.auth);
+  const { loginData, userData } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   // проверка если человек зашел по прямой ссылке без посещения forgot-password отправляет его на эту страницу
   useEffect(() => {
-    if (loginData === null) {
+    if (userData === null) {
       navigate("/forgot-password");
     }
-    // if (loginData) {
-    //   navigate("/");
-    // }
-  }, [loginData, navigate]);
+    if (loginData) {
+      // если пользовтель есть, отправляет на главную страницу
+      navigate("/");
+    }
+  }, [loginData, navigate, userData]);
 
   return (
     <>

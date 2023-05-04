@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   EmailInput,
   Button,
@@ -13,8 +13,6 @@ function ForgotForm() {
   const [emailTosend, setEmailToSend] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const url = window.location.href;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,7 +22,7 @@ function ForgotForm() {
 
   useEffect(() => {
     if (userData !== null) navigate("/reset-password");
-  }, [navigate, pathname, url, userData]);
+  }, [navigate, userData]);
 
   const handleCahnge = (e) => {
     setEmailToSend(e.target.value);

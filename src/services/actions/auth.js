@@ -1,4 +1,4 @@
-import { getCookie, requestToServ, setCookie } from "../api/api";
+import { DeleteCookie, getCookie, requestToServ, setCookie } from "../api/api";
 
 export const REQUEST_USER = "REQUEST_USER";
 export const REQUEST_USER_SUCCESS = "REQUEST_USER_SUCCESS";
@@ -150,21 +150,21 @@ export const requestLogin = (data) => {
         redirect: "follow",
         referrerPolicy: "no-referrer",
       }).then((res) => {
-        if (res) {
+        if (res.success) {
           dispatch({
             type: REQUEST_LOGIN_SUCCESS,
             user: res.user,
           });
+          let authToken = res.accessToken;
+          let refreshToken = res.refreshToken;
+          if (authToken && refreshToken) {
+            setCookie("token", authToken);
+            setCookie("refreshToken", refreshToken);
+          }
         } else {
           dispatch({
             type: REQUEST_LOGIN_FAILED,
           });
-        }
-        let authToken = res.accessToken;
-        let refreshToken = res.refreshToken;
-        if (authToken && refreshToken) {
-          setCookie("token", authToken);
-          setCookie("refreshToken", refreshToken);
         }
       });
     } catch (err) {
@@ -181,6 +181,7 @@ export const checkLogin = () => {
     });
     try {
       if (token.token !== undefined) {
+        // есть токен, отправляю запрос
         requestToServ("auth/user", {
           method: "GET",
           mode: "cors",
@@ -193,12 +194,14 @@ export const checkLogin = () => {
           redirect: "follow",
           referrerPolicy: "no-referrer",
         }).then((res) => {
-          if (res !== undefined) {
+          if (res !== undefined && res.success) {
+            // проверка успешного ответа на токен, если да юзер логинится
             dispatch({
               type: CHECK_LOGIN_SUCCESS,
               user: res.user,
             });
-          } else {
+          } else if (res === undefined) {
+            // обычный токен не подошел, отправляю рефрешТокен
             requestToServ("auth/token", {
               method: "POST",
               mode: "cors",
@@ -210,28 +213,51 @@ export const checkLogin = () => {
               body: JSON.stringify(refreshToken),
               redirect: "follow",
               referrerPolicy: "no-referrer",
-            }).then((res) => {
-              if (res.success) {
-                let authToken = res.accessToken;
-                let refreshToken = res.refreshToken;
-                if (authToken && refreshToken) {
-                  setCookie("token", authToken, { path: "/" });
-                  setCookie("refreshToken", refreshToken, { path: "/" });
+            })
+              .then((res) => {
+                if (res.success) {
+                  // Обновляю токены после отправки рефрешТокена
+                  let authToken = res.accessToken;
+                  let refreshToken = res.refreshToken;
+                  if (authToken && refreshToken) {
+                    setCookie("token", authToken, { path: "/" });
+                    setCookie("refreshToken", refreshToken, { path: "/" });
+                  }
                 }
-                dispatch({
-                  type: CHECK_LOGIN_SUCCESS,
-                  user: res.user,
+                return res; // возвращаю ответ в then
+              })
+              .then((data) => {
+                requestToServ("auth/user", {
+                  // делаю запрос с обновленный токеном
+                  method: "GET",
+                  mode: "cors",
+                  cache: "no-cache",
+                  credentials: "same-origin",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: data.accessToken,
+                  },
+                  redirect: "follow",
+                  referrerPolicy: "no-referrer",
                 });
-              } else {
-                dispatch({
-                  type: CHECK_LOGIN_FAILED,
-                });
-              }
-              return res;
-            });
+              })
+              .then((res) => {
+                if (res.success) {
+                  // Успешный логин
+                  dispatch({
+                    type: CHECK_LOGIN_SUCCESS,
+                    user: res.user,
+                  });
+                } else {
+                  dispatch({
+                    type: CHECK_LOGIN_FAILED,
+                  });
+                }
+              });
           }
         });
       } else if (refreshToken.token) {
+        // если рефреш токен есть, а обычного почему-то нет, то отправляю рефреш
         requestToServ("auth/token", {
           method: "POST",
           mode: "cors",
@@ -246,6 +272,7 @@ export const checkLogin = () => {
         })
           .then((res) => {
             if (res.success) {
+              // получаю ответ с токенами и записываю их
               let authToken = res.accessToken;
               let refreshToken = res.refreshToken;
               if (authToken && refreshToken) {
@@ -257,10 +284,11 @@ export const checkLogin = () => {
                 type: CHECK_LOGIN_FAILED,
               });
             }
-            return res;
+            return res; // возвращаю ответ с токенами в then
           })
           .then((data) => {
             requestToServ("auth/user", {
+              // отправляю запрос на логин с новым токеном,
               method: "GET",
               mode: "cors",
               cache: "no-cache",
@@ -312,10 +340,13 @@ export const logout = () => {
         referrerPolicy: "no-referrer",
       }).then((res) => {
         if (res.success) {
+          // удаюа пользователя и очищаю куки
           dispatch({
             type: LOGOUT_SUCCESS,
             user: null,
           });
+          DeleteCookie("token");
+          DeleteCookie("refreshToken");
         } else {
           dispatch({
             type: CHECK_LOGIN_FAILED,
@@ -328,6 +359,7 @@ export const logout = () => {
   };
 };
 
+// отправка новых данных пользоваетля
 export const changeUser = (data) => {
   return function (dispatch) {
     dispatch({
@@ -348,11 +380,13 @@ export const changeUser = (data) => {
         referrerPolicy: "no-referrer",
       }).then((res) => {
         if (res.success === "true") {
+          // все прошло успешно обновляю данные
           dispatch({
             type: CHANGE_USER_SUCCESS,
             user: res.user,
           });
         } else if (res === undefined) {
+          // обычный токен протух, отправляю рефреш
           requestToServ("auth/user", {
             method: "POST",
             mode: "cors",
@@ -366,20 +400,29 @@ export const changeUser = (data) => {
             referrerPolicy: "no-referrer",
           })
             .then((res) => {
+              // получил рефреш, теперь отправляю с новым токеном и обновляю токены
               requestToServ("auth/user", {
-                method: "GET",
+                method: "PATCH",
                 mode: "cors",
                 cache: "no-cache",
                 credentials: "same-origin",
                 headers: {
                   "Content-Type": "application/json",
+                  Authorization: res.accessToken,
                 },
-                body: res.accessToken,
+                body: JSON.stringify(data),
                 redirect: "follow",
                 referrerPolicy: "no-referrer",
               });
+              let authToken = res.accessToken;
+              let refreshToken = res.refreshToken;
+              if (authToken && refreshToken) {
+                setCookie("token", authToken, { path: "/" });
+                setCookie("refreshToken", refreshToken, { path: "/" });
+              }
             })
             .then((res) => {
+              // все хорошо, получены новые токены и новые данные юхера отправлены
               if (res.success === "true") {
                 dispatch({
                   type: CHANGE_USER_SUCCESS,
@@ -389,6 +432,7 @@ export const changeUser = (data) => {
             });
         } else {
           dispatch({
+            // что-то пошло не так
             type: CHANGE_USER_FAILED,
           });
         }
