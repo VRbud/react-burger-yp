@@ -40,6 +40,10 @@ function ProfileDetails() {
     disptach(changeUser(msg));
   };
 
+  const disableControl = () => {
+    return msg.name === loginData.name && msg.email === loginData.email;
+  };
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
@@ -75,18 +79,11 @@ function ProfileDetails() {
           <Button
             htmlType="button"
             onClick={handleReset}
-            disabled={
-              msg.name === loginData.name || msg.email === loginData.email
-            }
+            disabled={disableControl()}
           >
             Отмена
           </Button>
-          <Button
-            htmlType="submit"
-            disabled={
-              msg.name === loginData.name || msg.email === loginData.email
-            }
-          >
+          <Button htmlType="submit" disabled={disableControl()}>
             Сохранить
           </Button>
         </div>
