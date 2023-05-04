@@ -45,7 +45,6 @@ function Ingredient({ ingredientData }) {
   });
 
   function closeModal() {
-    setModal(false);
     navigate(-1);
     dispatch({
       type: DEL_MODAL_ING,
@@ -53,7 +52,6 @@ function Ingredient({ ingredientData }) {
   }
 
   function openModal() {
-    setModal(true);
     dispatch({
       type: SET_MODAL_ING,
       payload: ingredientData,

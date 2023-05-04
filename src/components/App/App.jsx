@@ -11,15 +11,17 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ErrorPage from "../../pages/ErrorPage";
 import Modal from "../Modal/Modal";
 import OnlyUnAuthRoute from "../OnlyUnAuthRoute/OnlyUnAuthRoute";
+import IngredientDetails from "../BurgerIngredients/IngredientDetails/IngredientDetails";
 
 function App() {
   let location = useLocation();
   let state = location.state || {};
   state.backgroundLocation = location.state;
+  let backgroundLocation = state.backgroundLocation;
   return (
     <>
       <AppHeader />
-      <Routes location={state.backgroundLocation || location}>
+      <Routes location={backgroundLocation || location}>
         <Route path="/" element={<CreateBurgerPage />} />
         <Route
           path="/login"
@@ -45,9 +47,16 @@ function App() {
         <Route path="*" element={<ErrorPage />} />
       </Routes>
 
-      {state.backgroundLocation && (
+      {backgroundLocation && (
         <Routes>
-          <Route path="/ingredients/:id" element={<Modal />} />
+          <Route
+            path="/ingredients/:id"
+            element={
+              <Modal>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
         </Routes>
       )}
     </>
