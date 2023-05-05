@@ -41,7 +41,11 @@ function ProfileDetails() {
   };
 
   const disableControl = () => {
-    return msg.name === loginData.name && msg.email === loginData.email;
+    return (
+      msg.name === loginData.name &&
+      msg.email === loginData.email &&
+      msg.password === ""
+    );
   };
 
   return (

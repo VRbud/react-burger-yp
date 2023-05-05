@@ -1,4 +1,10 @@
-import { DeleteCookie, getCookie, requestToServ, setCookie } from "../api/api";
+import {
+  DeleteCookie,
+  getCookie,
+  refreshCookie,
+  requestToServ,
+  setCookie,
+} from "../api/api";
 
 export const REQUEST_USER = "REQUEST_USER";
 export const REQUEST_USER_SUCCESS = "REQUEST_USER_SUCCESS";
@@ -189,7 +195,7 @@ export const checkLogin = () => {
           credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
-            Authorization: token.token,
+            Authorization: getCookie("token"),
           },
           redirect: "follow",
           referrerPolicy: "no-referrer",
@@ -200,33 +206,17 @@ export const checkLogin = () => {
               type: CHECK_LOGIN_SUCCESS,
               user: res.user,
             });
-          } else if (res === undefined) {
+          } else {
             // обычный токен не подошел, отправляю рефрешТокен
-            requestToServ("auth/token", {
-              method: "POST",
-              mode: "cors",
-              cache: "no-cache",
-              credentials: "same-origin",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(refreshToken),
-              redirect: "follow",
-              referrerPolicy: "no-referrer",
-            })
-              .then((res) => {
-                if (res.success) {
-                  // Обновляю токены после отправки рефрешТокена
-                  let authToken = res.accessToken;
-                  let refreshToken = res.refreshToken;
-                  if (authToken && refreshToken) {
-                    setCookie("token", authToken, { path: "/" });
-                    setCookie("refreshToken", refreshToken, { path: "/" });
-                  }
+            refreshCookie(refreshToken).then((res) => {
+              if (res) {
+                // Обновляю токены после отправки рефрешТокена
+                let authToken = res.accessToken;
+                let refreshToken = res.refreshToken;
+                if (authToken && refreshToken) {
+                  setCookie("token", authToken, { path: "/" });
+                  setCookie("refreshToken", refreshToken, { path: "/" });
                 }
-                return res; // возвращаю ответ в then
-              })
-              .then((data) => {
                 requestToServ("auth/user", {
                   // делаю запрос с обновленный токеном
                   method: "GET",
@@ -235,41 +225,30 @@ export const checkLogin = () => {
                   credentials: "same-origin",
                   headers: {
                     "Content-Type": "application/json",
-                    Authorization: data.accessToken,
+                    Authorization: authToken,
                   },
                   redirect: "follow",
                   referrerPolicy: "no-referrer",
-                });
-              })
-              .then((res) => {
-                if (res.success) {
+                }).then((res) => {
                   // Успешный логин
-                  dispatch({
-                    type: CHECK_LOGIN_SUCCESS,
-                    user: res.user,
-                  });
-                } else {
-                  dispatch({
-                    type: CHECK_LOGIN_FAILED,
-                  });
-                }
-              });
+                  if (res.success) {
+                    dispatch({
+                      type: CHECK_LOGIN_SUCCESS,
+                      user: res.user,
+                    });
+                  } else {
+                    dispatch({
+                      type: CHECK_LOGIN_FAILED,
+                    });
+                  }
+                });
+              }
+            });
           }
         });
-      } else if (refreshToken.token) {
+      } else if (token.token === undefined && refreshToken.token) {
         // если рефреш токен есть, а обычного почему-то нет, то отправляю рефреш
-        requestToServ("auth/token", {
-          method: "POST",
-          mode: "cors",
-          cache: "no-cache",
-          credentials: "same-origin",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(refreshToken),
-          redirect: "follow",
-          referrerPolicy: "no-referrer",
-        })
+        refreshCookie(refreshToken)
           .then((res) => {
             if (res.success) {
               // получаю ответ с токенами и записываю их
@@ -300,7 +279,7 @@ export const checkLogin = () => {
               redirect: "follow",
               referrerPolicy: "no-referrer",
             }).then((res) => {
-              if (res.success) {
+              if (res) {
                 dispatch({
                   type: CHECK_LOGIN_SUCCESS,
                   user: res.user,
@@ -339,7 +318,7 @@ export const logout = () => {
         redirect: "follow",
         referrerPolicy: "no-referrer",
       }).then((res) => {
-        if (res.success) {
+        if (res) {
           // удаюа пользователя и очищаю куки
           dispatch({
             type: LOGOUT_SUCCESS,
@@ -379,7 +358,7 @@ export const changeUser = (data) => {
         redirect: "follow",
         referrerPolicy: "no-referrer",
       }).then((res) => {
-        if (res.success === "true") {
+        if (res) {
           // все прошло успешно обновляю данные
           dispatch({
             type: CHANGE_USER_SUCCESS,
@@ -387,20 +366,15 @@ export const changeUser = (data) => {
           });
         } else if (res === undefined) {
           // обычный токен протух, отправляю рефреш
-          requestToServ("auth/user", {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(refreshToken),
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-          })
+          refreshCookie({ token: getCookie("refreshToken") })
             .then((res) => {
               // получил рефреш, теперь отправляю с новым токеном и обновляю токены
+              let authToken = res.accessToken;
+              let refreshToken = res.refreshToken;
+              if (authToken && refreshToken) {
+                setCookie("token", authToken, { path: "/" });
+                setCookie("refreshToken", refreshToken, { path: "/" });
+              }
               requestToServ("auth/user", {
                 method: "PATCH",
                 mode: "cors",
@@ -408,22 +382,16 @@ export const changeUser = (data) => {
                 credentials: "same-origin",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: res.accessToken,
+                  Authorization: authToken,
                 },
                 body: JSON.stringify(data),
                 redirect: "follow",
                 referrerPolicy: "no-referrer",
               });
-              let authToken = res.accessToken;
-              let refreshToken = res.refreshToken;
-              if (authToken && refreshToken) {
-                setCookie("token", authToken, { path: "/" });
-                setCookie("refreshToken", refreshToken, { path: "/" });
-              }
             })
             .then((res) => {
               // все хорошо, получены новые токены и новые данные юхера отправлены
-              if (res.success === "true") {
+              if (res) {
                 dispatch({
                   type: CHANGE_USER_SUCCESS,
                   user: res.user,

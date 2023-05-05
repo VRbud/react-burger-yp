@@ -17,6 +17,9 @@ import {
   LOGOUT,
   LOGOUT_SUCCESS,
   LOGOUT_FAILED,
+  CHANGE_USER,
+  CHANGE_USER_SUCCESS,
+  CHANGE_USER_FAILED,
 } from "../actions/auth";
 
 const initialState = {
@@ -35,6 +38,9 @@ const initialState = {
   loginRequest: false,
   loginFailed: false,
   loginData: null,
+
+  changeUserRequest: false,
+  changeUserFailed: false,
 
   checkLoginRequest: false,
   checkLoginFailed: false,
@@ -138,7 +144,6 @@ export const authReducer = (state = initialState, action) => {
         CheckLoginRequest: false,
         CheckLoginFailed: false,
         loginData: action.user,
-        userData: action.user,
       };
     }
     case CHECK_LOGIN_FAILED: {
@@ -146,6 +151,27 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         CheckLoginRequest: false,
         CheckLoginFailed: true,
+      };
+    }
+    case CHANGE_USER: {
+      return {
+        ...state,
+        CheckLoginRequest: true,
+      };
+    }
+    case CHANGE_USER_SUCCESS: {
+      return {
+        ...state,
+        changeUserRequest: false,
+        changeUserFailed: false,
+        loginData: action.user,
+      };
+    }
+    case CHANGE_USER_FAILED: {
+      return {
+        ...state,
+        changeUserRequest: false,
+        changeUserFailed: true,
       };
     }
 
