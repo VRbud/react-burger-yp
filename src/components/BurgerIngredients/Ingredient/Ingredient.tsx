@@ -4,10 +4,8 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient.module.css";
-import Modal from "../../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_MODAL_ING, DEL_MODAL_ING } from "../../../services/actions/modal";
+import { SET_MODAL_ING } from "../../../services/actions/modal";
 import { useDrag } from "react-dnd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
@@ -44,13 +42,6 @@ const Ingredient: FC<IIngredientData> = ({ ingredientData }) => {
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
-
-  function closeModal() {
-    navigate(-1);
-    dispatch({
-      type: DEL_MODAL_ING,
-    });
-  }
 
   function openModal() {
     dispatch({

@@ -185,6 +185,8 @@ function BurgerConstructor() {
       </div>
 
       {modal && (
+        // disable for modal with ingredient details
+        // @ts-ignore
         <Modal onClose={closeModal}>
           <OrderDetails />
         </Modal>
