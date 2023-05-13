@@ -12,24 +12,26 @@ interface KeyboardEvent {
 
 const ESCAPE_KEY_CODE = 27;
 
-function Modal({ onClose, children, extraClass }: IModal) {
+function Modal({ children, extraClass }: IModal) {
   const { id } = useParams();
   const navigate = useNavigate();
+
   function clickHandler(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
+    id && navigate(-1);
   }
+
   const portalDiv = document.getElementById("modals")!;
 
   useEffect(() => {
     const close = (ev: KeyboardEvent) => {
       if (ev.keyCode === ESCAPE_KEY_CODE) {
         id && navigate(-1);
-        typeof onClose === "function" && onClose();
       }
     };
     window.addEventListener("keydown", close);
     return () => window.removeEventListener("keydown", close);
-  }, [onClose, navigate, id]);
+  }, [navigate, id]);
 
   return createPortal(
     <>
@@ -37,12 +39,15 @@ function Modal({ onClose, children, extraClass }: IModal) {
         className={`${styles.modal} ${extraClass} pt-10 pr-10 pl-10 pb-15`}
         onClick={clickHandler}
       >
-        <button className={`${styles.close_btn}  btn_reset`} onClick={onClose}>
+        <button
+          className={`${styles.close_btn}  btn_reset`}
+          onClick={clickHandler}
+        >
           <CloseIcon type="primary" />
         </button>
         {children}
       </div>
-      <ModalOverlay onClose={onClose} />
+      <ModalOverlay />
     </>,
     portalDiv
   );

@@ -85,11 +85,6 @@ const Ingredient: FC<IIngredientData> = ({ ingredientData }) => {
           </span>
         </li>
       </Link>
-      {modal && (
-        <Modal onClose={closeModal}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </>
   );
 };
