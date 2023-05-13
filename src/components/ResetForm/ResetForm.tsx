@@ -7,7 +7,7 @@ import {
 import styles from "./ResetForm.module.css";
 import { useDispatch } from "react-redux";
 import { resetPassword } from "../../services/actions/auth";
-import { useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 
 function ResetForm() {
   const [msg, setMsg] = useState({
@@ -15,7 +15,7 @@ function ResetForm() {
     token: "",
   });
   const dispatch = useDispatch();
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
     setMsg({
@@ -24,7 +24,9 @@ function ResetForm() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent) => {
+    //disable types for redux dispatch
+    // @ts-ignore
     dispatch(resetPassword(msg));
     e.preventDefault();
   };

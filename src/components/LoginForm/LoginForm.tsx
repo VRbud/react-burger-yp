@@ -5,7 +5,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./LoginForm.module.css";
-import { useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { requestLogin } from "../../services/actions/auth";
 
@@ -16,7 +16,7 @@ function LoginFrom() {
   });
   const dispatch = useDispatch();
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
     setMsg({
@@ -24,8 +24,10 @@ function LoginFrom() {
       [name]: value,
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    // disable types for redux dispatch
+    //@ts-ignore
     dispatch(requestLogin(msg));
   };
 
