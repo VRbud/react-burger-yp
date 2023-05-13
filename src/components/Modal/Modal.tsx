@@ -3,29 +3,28 @@ import { createPortal } from "react-dom";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
-import PropTypes from "prop-types";
 import { useNavigate, useParams } from "react-router-dom";
+import { IModal } from "../../Types/ModalTypes/types";
+
+interface KeyboardEvent {
+  keyCode: number;
+}
 
 const ESCAPE_KEY_CODE = 27;
 
-Modal.propType = {
-  children: PropTypes.element,
-  onClose: PropTypes.func,
-  extraClass: PropTypes.string,
-};
-
-function Modal({ onClose, children, extraClass }) {
+function Modal({ onClose, children, extraClass }: IModal) {
   const { id } = useParams();
   const navigate = useNavigate();
-  function clickHandler(e) {
+  function clickHandler(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
   }
+  const portalDiv = document.getElementById("modals")!;
 
   useEffect(() => {
-    const close = (e) => {
-      if (e.keyCode === ESCAPE_KEY_CODE) {
-        if (id) navigate(-1);
-        onClose();
+    const close = (ev: KeyboardEvent) => {
+      if (ev.keyCode === ESCAPE_KEY_CODE) {
+        id && navigate(-1);
+        typeof onClose === "function" && onClose();
       }
     };
     window.addEventListener("keydown", close);
@@ -39,13 +38,13 @@ function Modal({ onClose, children, extraClass }) {
         onClick={clickHandler}
       >
         <button className={`${styles.close_btn}  btn_reset`} onClick={onClose}>
-          <CloseIcon type="primay" />
+          <CloseIcon type="primary" />
         </button>
         {children}
       </div>
       <ModalOverlay onClose={onClose} />
     </>,
-    document.getElementById("modals")
+    portalDiv
   );
 }
 
