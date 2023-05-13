@@ -4,19 +4,21 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ForgotForm.module.css";
-import { useEffect, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { requestUser } from "../../services/actions/auth";
 
 function ForgotForm() {
+  // @ts-ignore
   const { userData } = useSelector((state) => state.auth);
   const [emailTosend, setEmailToSend] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     const msg = { email: emailTosend };
+    //@ts-ignore
     dispatch(requestUser(msg));
   };
 
@@ -24,7 +26,7 @@ function ForgotForm() {
     if (userData !== null) navigate("/reset-password");
   }, [navigate, userData]);
 
-  const handleCahnge = (e) => {
+  const handleCahnge = (e: ChangeEvent<HTMLInputElement>) => {
     setEmailToSend(e.target.value);
   };
 

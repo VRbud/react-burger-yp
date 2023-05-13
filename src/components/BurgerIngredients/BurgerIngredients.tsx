@@ -24,9 +24,9 @@ function BurgerIngredients() {
   }, [dispatch]);
 
   const [current, setCurrent] = useState("buns");
-  const bunsRef = useRef<HTMLElement>(null);
-  const saucesRef = useRef<HTMLElement>(null);
-  const fillingsRef = useRef<HTMLElement>(null);
+  const bunsRef = useRef<HTMLDivElement>(null);
+  const saucesRef = useRef<HTMLDivElement>(null);
+  const fillingsRef = useRef<HTMLDivElement>(null);
 
   const { bunsArray, saucesArray, FillArray } = useMemo(() => {
     // if (ingredients === null) return [];
