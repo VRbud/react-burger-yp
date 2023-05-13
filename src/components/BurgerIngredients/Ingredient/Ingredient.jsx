@@ -10,19 +10,22 @@ import { burgerIngredientTypes } from "../../../Types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_MODAL_ING, DEL_MODAL_ING } from "../../../services/actions/modal";
 import { useDrag } from "react-dnd";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 Ingredient.propTypes = {
   ingredientData: burgerIngredientTypes,
 };
 
 function Ingredient({ ingredientData }) {
+  let location = useLocation();
+  const navigate = useNavigate();
   const [modal, setModal] = useState(false);
 
   const { cart, bun } = useSelector((state) => state.cart);
-
   const dispatch = useDispatch();
 
   const id = ingredientData._id;
+
   let count = useMemo(() => {
     if (cart === null || bun === null) return;
     if (bun.type === "bun" && bun._id === ingredientData._id) return 2;
@@ -42,14 +45,13 @@ function Ingredient({ ingredientData }) {
   });
 
   function closeModal() {
-    setModal(false);
+    navigate(-1);
     dispatch({
       type: DEL_MODAL_ING,
     });
   }
 
   function openModal() {
-    setModal(true);
     dispatch({
       type: SET_MODAL_ING,
       payload: ingredientData,
@@ -58,28 +60,31 @@ function Ingredient({ ingredientData }) {
 
   return (
     <>
-      <li
-        onClick={() => openModal()}
-        className={styles.ingredient}
-        ref={ingRef}
-        style={{ opacity }}
-      >
-        <Counter className={styles.counter} count={count} />
-        <img
-          src={ingredientData.image}
-          className={`${styles.image} pr-4 pl-4`}
-          alt={ingredientData.name}
-        />
-        <div className={`${styles.ingredient_bottom} pt-1 pb-1`}>
-          <p className="text text_type_main-medium pr-2">
-            {ingredientData.price}
-          </p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <span className={`${styles.center} text text_type_main-default`}>
-          {ingredientData.name}
-        </span>
-      </li>
+      <Link to={`/ingredients/${id}`} state={{ backgroundLocation: location }}>
+        <li
+          onClick={() => openModal()}
+          className={styles.ingredient}
+          ref={ingRef}
+          style={{ opacity }}
+          state={{ backgroundLocation: location }}
+        >
+          <Counter className={styles.counter} count={count} />
+          <img
+            src={ingredientData.image}
+            className={`${styles.image} pr-4 pl-4`}
+            alt={ingredientData.name}
+          />
+          <div className={`${styles.ingredient_bottom} pt-1 pb-1`}>
+            <p className="text text_type_main-medium pr-2">
+              {ingredientData.price}
+            </p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <span className={`${styles.center} text text_type_main-default`}>
+            {ingredientData.name}
+          </span>
+        </li>
+      </Link>
       {modal && (
         <Modal onClose={closeModal}>
           <IngredientDetails />

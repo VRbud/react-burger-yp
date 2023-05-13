@@ -1,0 +1,11 @@
+.list_right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bottom_content {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-end;
+}

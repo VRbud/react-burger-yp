@@ -4,6 +4,7 @@ import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import PropTypes from "prop-types";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ESCAPE_KEY_CODE = 27;
 
@@ -14,6 +15,8 @@ Modal.propType = {
 };
 
 function Modal({ onClose, children, extraClass }) {
+  const { id } = useParams();
+  const navigate = useNavigate();
   function clickHandler(e) {
     e.stopPropagation();
   }
@@ -21,12 +24,13 @@ function Modal({ onClose, children, extraClass }) {
   useEffect(() => {
     const close = (e) => {
       if (e.keyCode === ESCAPE_KEY_CODE) {
+        if (id) navigate(-1);
         onClose();
       }
     };
     window.addEventListener("keydown", close);
     return () => window.removeEventListener("keydown", close);
-  }, [onClose]);
+  }, [onClose, navigate, id]);
 
   return createPortal(
     <>

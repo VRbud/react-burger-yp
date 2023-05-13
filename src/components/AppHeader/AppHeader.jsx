@@ -4,6 +4,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink } from "react-router-dom";
 import styles from "./appheader.module.css";
 
 function AppHeader() {
@@ -14,31 +15,51 @@ function AppHeader() {
           <ul className={`${styles.header_list} list_reset`}>
             <li className={`p-4 pl-5 pr-5 mr-2 ${styles.header_list_item}`}>
               <BurgerIcon type="primary" />
-              {/* eslint-disable-next-line */}
-              <a href="#" className="pl-2 text text_type_main-default">
+
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive
+                    ? "active pl-2 text text_type_main-default"
+                    : "pl-2 text text_type_main-default text_color_inactive"
+                }
+              >
                 Конструктор
-              </a>
+              </NavLink>
             </li>
             <li className={`p-4 pl-5 pr-5 ${styles.header_list_item}`}>
               <ListIcon type="primary" />
-              {/* eslint-disable-next-line */}
-              <a href="#" className="pl-2 text text_type_main-default">
+
+              <NavLink
+                to="/profile/orders"
+                className={({ isActive }) =>
+                  isActive
+                    ? "active pl-2 text text_type_main-default"
+                    : "pl-2 text text_type_main-default text_color_inactive"
+                }
+              >
                 Лента заказов
-              </a>
+              </NavLink>
             </li>
           </ul>
         </nav>
-        {/* eslint-disable-next-line */}
-        <a href="#">
+        <NavLink href="/">
           <Logo />
-        </a>
+        </NavLink>
         <label
           className={`${styles.btn_wrapper} pr-4 text text_type_main-default`}
         >
           <ProfileIcon type="primary" />
-          <button className={`${styles.btn} pl-2 text text_type_main-default`}>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              isActive
+                ? "active pl-2 text text_type_main-default"
+                : "pl-2 text text_type_main-default text_color_inactive"
+            }
+          >
             Личный кабинет
-          </button>
+          </NavLink>
         </label>
       </div>
     </header>

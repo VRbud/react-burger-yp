@@ -1,21 +1,68 @@
+import { Routes, Route, useLocation } from "react-router-dom";
+import CreateBurgerPage from "../../pages/CreateBurgerPage";
+import ProfilePage from "../../pages/ProfilePage";
+import FortgotPWPage from "../../pages/FortgotPWPage";
+import IngredientPage from "../../pages/IngredientPage";
+import LoginPage from "../../pages/LoginPage";
+import RegisterPage from "../../pages/RegisterPage";
+import ResetPWPage from "../../pages/ResetPWPage";
 import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import ErrorPage from "../../pages/ErrorPage";
+import Modal from "../Modal/Modal";
+import OnlyUnAuthRoute from "../OnlyUnAuthRoute/OnlyUnAuthRoute";
+import IngredientDetails from "../BurgerIngredients/IngredientDetails/IngredientDetails";
 
 function App() {
+  let location = useLocation();
+  let state = location.state || {};
+  state.backgroundLocation = location.state;
+  let backgroundLocation = state.backgroundLocation;
   return (
     <>
       <AppHeader />
-      <main>
-        <section className="pb-10 burger_container">
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </section>
-      </main>
+      <Routes location={backgroundLocation || location}>
+        <Route path="/" element={<CreateBurgerPage />} />
+        <Route
+          path="/login"
+          element={<OnlyUnAuthRoute path="/profile" element={<LoginPage />} />}
+        />
+        <Route
+          path="/register"
+          element={<OnlyUnAuthRoute path="/" element={<RegisterPage />} />}
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <OnlyUnAuthRoute path="/profile" element={<FortgotPWPage />} />
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <OnlyUnAuthRoute path="/profile" element={<ResetPWPage />} />
+          }
+        />
+        <Route
+          path="/profile"
+          element={<ProtectedRoute element={<ProfilePage />} />}
+        />
+        <Route path="/ingredients/:id" element={<IngredientPage />} />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path="/ingredients/:id"
+            element={
+              <Modal>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
     </>
   );
 }
