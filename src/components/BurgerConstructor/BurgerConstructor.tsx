@@ -22,39 +22,52 @@ import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import SortedConstructorElement from "./SortedConstructorElement/SortedConstructorElement";
 import Placeholder from "./PlaceHolder/Placeholder";
+import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
+
+export interface Item {
+  id: number;
+  text: string;
+}
 
 function BurgerConstructor() {
+  // disable types for redux store
+  //@ts-ignore
   const { ingredients } = useSelector((state) => state.ingredients);
+  //@ts-ignore
   const { cart, bun } = useSelector((state) => state.cart);
+  //@ts-ignore
   const { loginData } = useSelector((state) => state.auth);
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
-  /* eslint-disable */
   // без определеиния isHover не работает хук
+  // @ts-ignore
   const [{ isHover }, dropTarget] = useDrop({
-    /* eslint-enable */
     accept: "ingredient",
     collect: (monitor) => ({
       handlerid: monitor.getHandlerId(),
     }),
     drop(item) {
       if (
+        // toDo add types to Ingredient
+        // @ts-ignore
         ingredients.find((ing) => ing._id === item.id && ing.type === "bun")
       ) {
         dispatch({
           type: ADD_BUN_TO_CART,
+          // @ts-ignore
           payload: ingredients.find((ing) => ing._id === item.id),
         });
       } else {
         dispatch({
           type: ADD_TO_CART,
+          // @ts-ignore
           payload: ingredients.find((ing) => ing._id === item.id),
         });
       }
     },
   });
 
-  const moveIngredient = (dragIndex, hoverIndex) => {
+  const moveIngredient = (dragIndex: number, hoverIndex: number) => {
     dispatch({
       type: SORT_CART,
       dragIndex,
@@ -67,7 +80,8 @@ function BurgerConstructor() {
       cart !== null &&
       bun !== null &&
       cart.reduce(
-        (accumulator, currentValue) => accumulator + currentValue.price,
+        (accumulator: number, currentValue: IIngredient) =>
+          accumulator + currentValue.price,
         0
       ) +
         bun.price * 2,
@@ -81,7 +95,7 @@ function BurgerConstructor() {
     });
   }
 
-  const handleDelete = (id, index) => {
+  const handleDelete = (id: string, index: number) => {
     if (id === cart[index]._id) {
       dispatch({
         type: DELETE_FROM_CART,
@@ -90,11 +104,13 @@ function BurgerConstructor() {
     }
   };
 
-  function submitHandler(event) {
+  function submitHandler(event: React.SyntheticEvent) {
     event.preventDefault();
     const totalCart = {
       ingredients: [bun, ...cart, bun].map((ing) => ing._id),
     };
+    // disable types for redux dispatch
+    //@ts-ignore
     dispatch(sendOrderData(totalCart));
     setModal(true);
   }
@@ -122,14 +138,14 @@ function BurgerConstructor() {
             } pr-1 custom-scroll`}
           >
             {cart.length > 0 ? (
-              cart.map((ingredient, index) => (
+              cart.map((ingredient: IIngredient, index: number) => (
                 <SortedConstructorElement
                   key={uuidv4()}
                   ingredient={ingredient}
                   index={index}
                   id={ingredient._id}
                   moveIngredient={moveIngredient}
-                  handleDelete={handleDelete}
+                  handleDelete={() => handleDelete(ingredient._id, index)}
                 />
               ))
             ) : (
@@ -153,7 +169,7 @@ function BurgerConstructor() {
         <div className={styles.burger_constructor_bottom}>
           <p className={styles.burger_constructor_total}>
             <span className="text text_type_main-large">{sum ? sum : 0}</span>
-            <CurrencyIcon />
+            <CurrencyIcon type="primary" />
           </p>
           <form onSubmit={(event) => submitHandler(event)}>
             <Button

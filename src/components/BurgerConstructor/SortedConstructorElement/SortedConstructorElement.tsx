@@ -1,32 +1,37 @@
 import { useRef } from "react";
+import type { FC } from "react";
 import styles from "./SortedConstructorElement.module.css";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
-import { burgerIngredientTypes } from "../../../Types/types";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 
-SortedConstructorElement.propTypes = {
-  ingredient: burgerIngredientTypes,
-  index: PropTypes.number,
-  id: PropTypes.string,
-  moveIngredient: PropTypes.func,
-};
+export interface CardProps {
+  id: any;
+  index: number;
+  ingredient: IIngredient;
+  moveIngredient: (dragIndex: number, hoverIndex: number) => void;
+  handleDelete: (id: string, index: number) => void;
+}
 
-function SortedConstructorElement({
+interface DragItem {
+  index: number;
+  id: string;
+}
+
+const SortedConstructorElement: FC<CardProps> = ({
   ingredient,
   index,
   id,
   moveIngredient,
   handleDelete,
-}) {
-  const ingRef = useRef(null);
-  const dispatch = useDispatch();
+}) => {
+  const ingRef = useRef<HTMLDivElement>(null);
   /* eslint-disable */
   // без определеиния handlerId не работает хук
+  //@ts-ignore
   const [{ handlerId }, drop] = useDrop({
     /* eslint-enable */
     accept: "ingredientInCart",
@@ -35,7 +40,9 @@ function SortedConstructorElement({
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item, monitor) {
+    // toDo add types for Ingredient
+    //@ts-ignore
+    hover(item: DragItem, monitor) {
       if (!ingRef.current) {
         return;
       }
@@ -49,11 +56,20 @@ function SortedConstructorElement({
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      const hoverClientY =
+        clientOffset && clientOffset.y - hoverBoundingRect.top;
+      if (
+        hoverClientY &&
+        dragIndex < hoverIndex &&
+        hoverClientY < hoverMiddleY
+      ) {
         return;
       }
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      if (
+        hoverClientY &&
+        dragIndex > hoverIndex &&
+        hoverClientY > hoverMiddleY
+      ) {
         return;
       }
       moveIngredient(dragIndex, hoverIndex);
@@ -88,6 +104,6 @@ function SortedConstructorElement({
       </div>
     </>
   );
-}
+};
 
 export default SortedConstructorElement;

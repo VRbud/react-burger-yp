@@ -4,6 +4,8 @@ import Spinner from "../../../ui/Spinner";
 import { useSelector } from "react-redux";
 
 function OrderDetails() {
+  // disable lint for redux store
+  //@ts-ignore
   const { orderData } = useSelector((state) => state.order);
   return orderData !== null && orderData.success ? (
     <div className={`${styles.order_container} pt-15 pb-15`}>

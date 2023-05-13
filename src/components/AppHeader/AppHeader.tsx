@@ -43,7 +43,7 @@ function AppHeader() {
             </li>
           </ul>
         </nav>
-        <NavLink href="/">
+        <NavLink to="/">
           <Logo />
         </NavLink>
         <label
