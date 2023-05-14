@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { createPortal } from "react-dom";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -14,7 +14,7 @@ interface KeyboardEvent {
 
 const ESCAPE_KEY_CODE = 27;
 
-function Modal({ onClose, children, extraClass }: IModal) {
+const Modal: FC<IModal> = ({ onClose, children, extraClass }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -65,6 +65,6 @@ function Modal({ onClose, children, extraClass }: IModal) {
     </>,
     portalDiv
   );
-}
+};
 
 export default Modal;
