@@ -6,6 +6,8 @@ import { getIngredients } from "../services/actions/ingredients";
 function IngredientPage() {
   const dispatch = useDispatch();
   useEffect(() => {
+    // disable types for redux dispatch
+    //@ts-ignore
     dispatch(getIngredients());
   }, [dispatch]);
 
