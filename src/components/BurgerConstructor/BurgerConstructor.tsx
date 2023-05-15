@@ -41,6 +41,7 @@ function BurgerConstructor() {
   const dispatch = useDispatch();
   // без определеиния isHover не работает хук
   // @ts-ignore
+  // eslint-disable-next-line
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     collect: (monitor) => ({

@@ -6,7 +6,6 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import Spinner from "../../ui/Spinner";
-
 import { InView } from "react-intersection-observer";
 import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 
@@ -50,8 +49,6 @@ function BurgerIngredients() {
     }
     return { bunsArray, saucesArray, FillArray };
   }, [ingredients]);
-
-  function getIngredientType(array: IIngredient[]) {}
 
   const clickHadler = (elem: string) => {
     if (elem === "buns") {

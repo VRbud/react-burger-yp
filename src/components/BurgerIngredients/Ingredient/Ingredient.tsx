@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import {
   CurrencyIcon,
   Counter,
@@ -7,7 +7,7 @@ import styles from "./ingredient.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_MODAL_ING } from "../../../services/actions/modal";
 import { useDrag } from "react-dnd";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 
 type IIngredientData = {
@@ -16,8 +16,6 @@ type IIngredientData = {
 
 const Ingredient: FC<IIngredientData> = ({ ingredientData }) => {
   let location = useLocation();
-  const navigate = useNavigate();
-  const [modal, setModal] = useState(false);
   // disable types for redux store
   //@ts-ignore
   const { cart, bun } = useSelector((state) => state.cart);
