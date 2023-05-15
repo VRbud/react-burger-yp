@@ -38,7 +38,7 @@ export interface CustomResponse<T> extends Body {
   json(): Promise<T>;
 }
 
-const checkResponse = (res: any) => {
+const checkResponse = (res: Response) => {
   try {
     if (res.ok) {
       return res.json();

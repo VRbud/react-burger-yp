@@ -9,7 +9,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 
 export interface CardProps {
-  id: any;
+  id: string;
   index: number;
   ingredient: IIngredient;
   moveIngredient: (dragIndex: number, hoverIndex: number) => void;
