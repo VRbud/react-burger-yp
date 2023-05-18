@@ -6,7 +6,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./RegisterForm.module.css";
-import { useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createUser } from "../../services/actions/auth";
 
@@ -18,7 +18,7 @@ function RegisterForm() {
   });
   const dispatch = useDispatch();
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
     setMsg({
@@ -26,8 +26,9 @@ function RegisterForm() {
       [name]: value,
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    //@ts-ignore
     dispatch(createUser(msg));
   };
 

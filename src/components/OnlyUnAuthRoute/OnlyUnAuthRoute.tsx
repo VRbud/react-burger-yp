@@ -1,8 +1,14 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function OnlyUnAuthRoute({ element, path }) {
+interface IOnlyUnAuthRoute {
+  path: string;
+  element: JSX.Element;
+}
+
+const OnlyUnAuthRoute: FC<IOnlyUnAuthRoute> = ({ element, path }) => {
+  // @ts-ignore
   const { loginData } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   useEffect(() => {
@@ -12,6 +18,6 @@ function OnlyUnAuthRoute({ element, path }) {
   }, [loginData, navigate, path]);
 
   return element;
-}
+};
 
 export default OnlyUnAuthRoute;

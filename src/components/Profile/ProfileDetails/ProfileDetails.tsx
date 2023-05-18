@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 import {
   Button,
   EmailInput,
@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeUser } from "../../../services/actions/auth";
 
 function ProfileDetails() {
+  //disable types for redux store
+  //@ts-ignore
   const { loginData } = useSelector((state) => state.auth);
   const [msg, setMsg] = useState({
     name: loginData.name,
@@ -18,7 +20,7 @@ function ProfileDetails() {
   });
   const disptach = useDispatch();
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
     setMsg({
@@ -35,8 +37,9 @@ function ProfileDetails() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    //@ts-ignore
     disptach(changeUser(msg));
   };
 

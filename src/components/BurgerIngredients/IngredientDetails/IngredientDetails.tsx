@@ -1,14 +1,18 @@
 import { useParams } from "react-router-dom";
 import styles from "./IngredientDetails.module.css";
 import { useSelector } from "react-redux";
+import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 
 function IngredientDetails() {
   const { id } = useParams();
+  // disable types for redux store
+  //@ts-ignore
   const { ingredients } = useSelector((state) => state.ingredients);
-
+  //@ts-ignore
   const { currentIngredient } = useSelector((state) => state.modal);
 
-  const ingFromState = ingredients && ingredients.find((ing) => ing._id === id);
+  const ingFromState =
+    ingredients && ingredients.find((ing: IIngredient) => ing._id === id);
 
   if (ingFromState)
     return (

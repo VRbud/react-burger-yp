@@ -7,6 +7,8 @@ import { logout } from "../../../services/actions/auth";
 function ProfileNavigation() {
   const dispatch = useDispatch();
   const clickHandler = () => {
+    // disable types for redux dispatch
+    //@ts-ignore
     dispatch(logout());
   };
   return (

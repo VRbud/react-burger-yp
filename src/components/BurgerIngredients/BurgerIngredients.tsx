@@ -6,40 +6,36 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import Spinner from "../../ui/Spinner";
-
 import { InView } from "react-intersection-observer";
+import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 
 function BurgerIngredients() {
   const { ingredients, ingredientsRequest } = useSelector(
+    //disabe types for redux store
+    // @ts-ignore
     (state) => state.ingredients
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(getIngredients());
   }, [dispatch]);
 
   const [current, setCurrent] = useState("buns");
-  const bunsRef = useRef("buns");
-  const saucesRef = useRef("sauces");
-  const fillingsRef = useRef("fillings");
+  const bunsRef = useRef<HTMLDivElement>(null);
+  const saucesRef = useRef<HTMLDivElement>(null);
+  const fillingsRef = useRef<HTMLDivElement>(null);
 
-  const {
-    bunsArray = [],
-    saucesArray = [],
-    FillArray = [],
-  } = useMemo(() => {
-    if (ingredients === null) return {};
-    return getIngredientType(ingredients);
-  }, [ingredients]);
-
-  function getIngredientType(array) {
-    let bunsArray = [];
-    let saucesArray = [];
-    let FillArray = [];
-    if (array !== null) {
+  const { bunsArray, saucesArray, FillArray } = useMemo(() => {
+    // if (ingredients === null) return [];
+    // return getIngredientType(ingredients);
+    let bunsArray: IIngredient[] = [];
+    let saucesArray: IIngredient[] = [];
+    let FillArray: IIngredient[] = [];
+    if (ingredients !== null) {
       // eslint-disable-next-line
-      array.map((ingredient) => {
+      ingredients.map((ingredient: IIngredient) => {
         // сортирует массив по категориям
         if (ingredient.type === "bun") {
           bunsArray.push(ingredient);
@@ -51,21 +47,22 @@ function BurgerIngredients() {
       });
       return { bunsArray, saucesArray, FillArray };
     }
-  }
+    return { bunsArray, saucesArray, FillArray };
+  }, [ingredients]);
 
-  const clickHadler = (elem) => {
+  const clickHadler = (elem: string) => {
     if (elem === "buns") {
-      bunsRef.current.scrollIntoView({
+      bunsRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
     } else if (elem === "sauces") {
-      saucesRef.current.scrollIntoView({
+      saucesRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
     } else if (elem === "fillings") {
-      fillingsRef.current.scrollIntoView({
+      fillingsRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
@@ -100,7 +97,7 @@ function BurgerIngredients() {
           onChange={(inView) => inView && setCurrent("buns")}
         >
           <IngredientCat thisRef={bunsRef} title="Булки">
-            {bunsArray.map((bun) => (
+            {bunsArray.map((bun: IIngredient) => (
               <Ingredient key={bun._id} ingredientData={bun} />
             ))}
           </IngredientCat>
@@ -110,7 +107,7 @@ function BurgerIngredients() {
           onChange={(inView) => inView && setCurrent("sauces")}
         >
           <IngredientCat thisRef={saucesRef} title="Соусы">
-            {saucesArray.map((sauce) => (
+            {saucesArray.map((sauce: IIngredient) => (
               <Ingredient key={sauce._id} ingredientData={sauce} />
             ))}
           </IngredientCat>
@@ -120,7 +117,7 @@ function BurgerIngredients() {
           onChange={(inView) => inView && setCurrent("fillings")}
         >
           <IngredientCat thisRef={fillingsRef} title="Начинки">
-            {FillArray.map((filling) => (
+            {FillArray.map((filling: IIngredient) => (
               <Ingredient key={filling._id} ingredientData={filling} />
             ))}
           </IngredientCat>
