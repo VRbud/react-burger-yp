@@ -5,20 +5,18 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ForgotForm.module.css";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { requestUser } from "../../services/actions/auth";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 
 function ForgotForm() {
-  // @ts-ignore
-  const { userData } = useSelector((state) => state.auth);
+  const { userData } = useAppSelector((state) => state.auth);
   const [emailTosend, setEmailToSend] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     const msg = { email: emailTosend };
-    //@ts-ignore
     dispatch(requestUser(msg));
   };
 

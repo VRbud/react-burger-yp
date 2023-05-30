@@ -1,15 +1,14 @@
 import { useParams } from "react-router-dom";
 import styles from "./IngredientDetails.module.css";
-import { useSelector } from "react-redux";
 import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
+import { useAppSelector } from "../../../services/hooks";
 
-function IngredientDetails() {
+const IngredientDetails = () => {
   const { id } = useParams();
-  // disable types for redux store
-  //@ts-ignore
-  const { ingredients } = useSelector((state) => state.ingredients);
-  //@ts-ignore
-  const { currentIngredient } = useSelector((state) => state.modal);
+
+  const { ingredients } = useAppSelector((state) => state.ingredients);
+
+  const { currentIngredient } = useAppSelector((state) => state.modal);
 
   const ingFromState =
     ingredients && ingredients.find((ing: IIngredient) => ing._id === id);
@@ -121,6 +120,7 @@ function IngredientDetails() {
         </>
       )
     );
-}
+  return <></>;
+};
 
 export default IngredientDetails;

@@ -5,8 +5,8 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import { useNavigate, useParams } from "react-router-dom";
 import { IModal } from "../../Types/ModalTypes/types";
-import { useDispatch } from "react-redux";
 import { DEL_MODAL_ING } from "../../services/actions/modal";
+import { useAppDispatch } from "../../services/hooks";
 
 interface KeyboardEvent {
   keyCode: number;
@@ -17,7 +17,7 @@ const ESCAPE_KEY_CODE = 27;
 const Modal: FC<IModal> = ({ onClose, children, extraClass }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const wrapOnClose = () => {
     onClose?.();

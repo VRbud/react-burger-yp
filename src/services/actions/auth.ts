@@ -161,7 +161,7 @@ export type TAuthActions =
 const token = { token: getCookie("token") };
 const refreshToken = { token: getCookie("refreshToken") };
 // Проверка существет ли юзер при попытке восстановить пароль по емейл
-export const requestUser: AppThunk = (data: any) => {
+export const requestUser = (data: any): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_USER,
@@ -195,7 +195,10 @@ export const requestUser: AppThunk = (data: any) => {
 };
 
 // отправка формы с новым паролем и токеном
-export const resetPassword: AppThunk = (data) => {
+export const resetPassword = (data: {
+  password: string;
+  token: string;
+}): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_PASSWORD,
@@ -230,7 +233,11 @@ export const resetPassword: AppThunk = (data) => {
 };
 
 // отправка формы регистрации
-export const createUser: AppThunk = (data) => {
+export const createUser = (data: {
+  email: string;
+  name: string;
+  password: string;
+}): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_CREATE_USER,
@@ -268,7 +275,10 @@ export const createUser: AppThunk = (data) => {
 };
 
 // отправка логин формы если нет токенов в куки
-export const requestLogin: AppThunk = (data) => {
+export const requestLogin = (data: {
+  email: string;
+  password: string;
+}): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_LOGIN,
@@ -308,7 +318,7 @@ export const requestLogin: AppThunk = (data) => {
 };
 
 // проверка если есть токены. если есть автоматический логин
-export const checkLogin: AppThunk = () => {
+export const checkLogin = (): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: CHECK_LOGIN,
@@ -450,7 +460,7 @@ export const checkLogin: AppThunk = () => {
 };
 
 // отправка формы с выходом, куки становятся недействительными. чтобы войти нужно снова ввести логин-пароль
-export const logout: AppThunk = () => {
+export const logout = (): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: LOGOUT,
@@ -491,7 +501,11 @@ export const logout: AppThunk = () => {
 };
 
 // отправка новых данных пользоваетля
-export const changeUser: AppThunk = (data) => {
+export const changeUser = (data: {
+  email: string | null;
+  name: string | null;
+  password: string | null;
+}): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: CHANGE_USER,

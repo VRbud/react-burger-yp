@@ -1,3 +1,4 @@
+import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 import { requestToServ } from "../api/api";
 import { AppDispatch, AppThunk } from "../types";
 
@@ -31,7 +32,9 @@ export type TOrderActions =
   | ISetOrderDataFailed
   | IDeleteOrderData;
 
-export const sendOrderData: AppThunk = (data) => {
+export const sendOrderData = (data: {
+  ingredients: Array<IIngredient["_id"]>;
+}): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: SET_ORDER_DATA,

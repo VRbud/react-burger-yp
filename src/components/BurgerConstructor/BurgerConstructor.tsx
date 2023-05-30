@@ -104,12 +104,14 @@ function BurgerConstructor() {
 
   function submitHandler(event: React.SyntheticEvent) {
     event.preventDefault();
-    const totalCart = {
-      ingredients: [bun, ...cart, bun].map((ing) => ing && ing._id),
-    };
+    if (cart && bun) {
+      const totalCart = {
+        ingredients: [bun, ...cart, bun].map((ing) => ing && ing._id),
+      };
 
-    dispatch(sendOrderData(totalCart));
-    setModal(true);
+      dispatch(sendOrderData(totalCart));
+      setModal(true);
+    }
   }
 
   return (

@@ -4,11 +4,11 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { SET_MODAL_ING } from "../../../services/actions/modal";
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
 import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
+import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 
 type IIngredientData = {
   ingredientData: IIngredient;
@@ -17,9 +17,9 @@ type IIngredientData = {
 const Ingredient: FC<IIngredientData> = ({ ingredientData }) => {
   let location = useLocation();
   // disable types for redux store
-  //@ts-ignore
-  const { cart, bun } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+
+  const { cart, bun } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const id = ingredientData._id;
 
