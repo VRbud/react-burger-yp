@@ -20,7 +20,7 @@ const initialState: TConstructoreState = {
 export const constructorReducer = (
   state = initialState,
   action: TConstructorActions
-) => {
+): TConstructoreState => {
   switch (action.type) {
     case ADD_TO_CART: {
       return {

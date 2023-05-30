@@ -27,7 +27,7 @@ import { TUser } from "../api/api";
 type TAuthState = {
   userRequest: boolean;
   userFailed: boolean;
-  userData: string | null;
+  userData: TUser | null;
 
   passwordRequest: boolean;
   passwordFailed: boolean;
@@ -72,7 +72,10 @@ const initialState: TAuthState = {
   checkLoginFailed: false,
 };
 
-export const authReducer = (state = initialState, action: TAuthActions) => {
+export const authReducer = (
+  state = initialState,
+  action: TAuthActions
+): TAuthState => {
   switch (action.type) {
     case REQUEST_USER: {
       return {
@@ -161,28 +164,28 @@ export const authReducer = (state = initialState, action: TAuthActions) => {
     case CHECK_LOGIN: {
       return {
         ...state,
-        CheckLoginRequest: true,
+        checkLoginRequest: true,
       };
     }
     case CHECK_LOGIN_SUCCESS: {
       return {
         ...state,
-        CheckLoginRequest: false,
-        CheckLoginFailed: false,
+        checkLoginRequest: false,
+        checkLoginFailed: false,
         loginData: action.user,
       };
     }
     case CHECK_LOGIN_FAILED: {
       return {
         ...state,
-        CheckLoginRequest: false,
-        CheckLoginFailed: true,
+        checkLoginRequest: false,
+        checkLoginFailed: true,
       };
     }
     case CHANGE_USER: {
       return {
         ...state,
-        CheckLoginRequest: true,
+        checkLoginRequest: true,
       };
     }
     case CHANGE_USER_SUCCESS: {
@@ -204,22 +207,22 @@ export const authReducer = (state = initialState, action: TAuthActions) => {
     case LOGOUT: {
       return {
         ...state,
-        CheckLoginRequest: true,
+        checkLoginRequest: true,
       };
     }
     case LOGOUT_SUCCESS: {
       return {
         ...state,
-        CheckLoginRequest: false,
-        CheckLoginFailed: false,
+        checkLoginRequest: false,
+        checkLoginFailed: false,
         loginData: action.user,
       };
     }
     case LOGOUT_FAILED: {
       return {
         ...state,
-        CheckLoginRequest: false,
-        CheckLoginFailed: true,
+        checkLoginRequest: false,
+        checkLoginFailed: true,
       };
     }
     default: {

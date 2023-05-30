@@ -21,7 +21,7 @@ const initialState: TIngredientsState = {
 export const ingredientsReducer = (
   state = initialState,
   action: TIngredientsActions
-) => {
+): TIngredientsState => {
   switch (action.type) {
     case REQUEST_INGREDIENTS: {
       return {

@@ -17,8 +17,7 @@ import {
 } from "../../services/actions/constructor";
 
 import { DELETE_ORDER_DATA, sendOrderData } from "../../services/actions/order";
-
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { useDrop } from "react-dnd";
 import SortedConstructorElement from "./SortedConstructorElement/SortedConstructorElement";
 import Placeholder from "./PlaceHolder/Placeholder";
@@ -30,15 +29,13 @@ export interface Item {
 }
 
 function BurgerConstructor() {
-  // disable types for redux store
-  //@ts-ignore
-  const { ingredients } = useSelector((state) => state.ingredients);
-  //@ts-ignore
-  const { cart, bun } = useSelector((state) => state.cart);
-  //@ts-ignore
-  const { loginData } = useSelector((state) => state.auth);
+  const { ingredients } = useAppSelector((state) => state.ingredients);
+
+  const { cart, bun } = useAppSelector((state) => state.cart);
+
+  const { loginData } = useAppSelector((state) => state.auth);
   const [modal, setModal] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // без определеиния isHover не работает хук
   // @ts-ignore
   // eslint-disable-next-line
@@ -108,10 +105,9 @@ function BurgerConstructor() {
   function submitHandler(event: React.SyntheticEvent) {
     event.preventDefault();
     const totalCart = {
-      ingredients: [bun, ...cart, bun].map((ing) => ing._id),
+      ingredients: [bun, ...cart, bun].map((ing) => ing && ing._id),
     };
-    // disable types for redux dispatch
-    //@ts-ignore
+
     dispatch(sendOrderData(totalCart));
     setModal(true);
   }
