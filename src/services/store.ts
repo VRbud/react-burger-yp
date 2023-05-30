@@ -1,9 +1,17 @@
-import { combineReducers, createStore } from "@reduxjs/toolkit";
+import thunkMiddleware from "redux-thunk";
+import {
+  applyMiddleware,
+  combineReducers,
+  createStore,
+} from "@reduxjs/toolkit";
 import { ingredientsReducer } from "./reducers/ingredients";
 import { constructorReducer } from "./reducers/constructor";
 import { modalReducer } from "./reducers/modal";
 import { orderReducer } from "./reducers/order";
 import { authReducer } from "./reducers/auth";
+import { composeWithDevTools } from "@redux-devtools/extension";
+
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
 
 const RootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -13,7 +21,6 @@ const RootReducer = combineReducers({
   auth: authReducer,
 });
 
-export const store = createStore(RootReducer);
+export const store = createStore(RootReducer, composedEnhancer);
 
-export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

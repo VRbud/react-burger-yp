@@ -1,16 +1,27 @@
+import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 import {
   REQUEST_INGREDIENTS,
   REQUEST_INGREDIENTS_FAILED,
   REQUEST_INGREDIENTS_SUCCESS,
+  TIngredientsActions,
 } from "../actions/ingredients";
 
-const initialState = {
+type TIngredientsState = {
+  ingredients: null | IIngredient[];
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+};
+
+const initialState: TIngredientsState = {
   ingredients: null,
   ingredientsRequest: false,
   ingredientsFailed: false,
 };
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (
+  state = initialState,
+  action: TIngredientsActions
+) => {
   switch (action.type) {
     case REQUEST_INGREDIENTS: {
       return {

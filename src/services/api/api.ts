@@ -34,11 +34,13 @@ export interface CustomResponse<T> extends Body {
   readonly statusText: string;
   readonly type: ResponseType;
   readonly url: string;
-  readonly data: ReadonlyArray<IIngredient>;
+  readonly data: Array<IIngredient>;
   readonly success: boolean;
   readonly accessToken?: string;
   readonly refreshToken?: string;
   readonly user?: TUser;
+  readonly email: string;
+  readonly name: string;
   readonly userData?: string;
   clone(): Response;
   json(): Promise<T>;

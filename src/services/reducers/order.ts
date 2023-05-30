@@ -3,6 +3,7 @@ import {
   SET_ORDER_DATA_SUCCESS,
   SET_ORDER_DATA_FAILED,
   DELETE_ORDER_DATA,
+  TOrderActions,
 } from "../actions/order";
 
 const initialState = {
@@ -11,7 +12,7 @@ const initialState = {
   orderData: null,
 };
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TOrderActions) => {
   switch (action.type) {
     case SET_ORDER_DATA: {
       return {

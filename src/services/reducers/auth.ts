@@ -20,9 +20,35 @@ import {
   CHANGE_USER,
   CHANGE_USER_SUCCESS,
   CHANGE_USER_FAILED,
+  TAuthActions,
 } from "../actions/auth";
+import { TUser } from "../api/api";
 
-const initialState = {
+type TAuthState = {
+  userRequest: boolean;
+  userFailed: boolean;
+  userData: string | null;
+
+  passwordRequest: boolean;
+  passwordFailed: boolean;
+  passwordData: string | null;
+
+  createUserRequest: boolean;
+  createUserFailed: boolean;
+  createUserData: TUser | null;
+
+  loginRequest: boolean;
+  loginFailed: boolean;
+  loginData: TUser | null;
+
+  changeUserRequest: boolean;
+  changeUserFailed: boolean;
+
+  checkLoginRequest: boolean;
+  checkLoginFailed: boolean;
+};
+
+const initialState: TAuthState = {
   userRequest: false,
   userFailed: false,
   userData: null,
@@ -46,7 +72,7 @@ const initialState = {
   checkLoginFailed: false,
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action: TAuthActions) => {
   switch (action.type) {
     case REQUEST_USER: {
       return {
