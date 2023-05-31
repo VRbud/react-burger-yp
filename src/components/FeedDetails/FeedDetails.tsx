@@ -23,6 +23,7 @@ const FeedDetails = () => {
               <FeedElement
                 key={index}
                 order={order}
+                id={order._id}
                 ingredients={ingredients}
               />
             ))
