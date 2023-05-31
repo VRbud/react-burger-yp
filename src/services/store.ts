@@ -9,9 +9,15 @@ import { constructorReducer } from "./reducers/constructor";
 import { modalReducer } from "./reducers/modal";
 import { orderReducer } from "./reducers/order";
 import { authReducer } from "./reducers/auth";
+import { wsReducer } from "./reducers/ws";
+import { socketMiddleware } from "./middleware/wsMiddleware";
 import { composeWithDevTools } from "@redux-devtools/extension";
 
-const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
+const wsUrl: string = "wss://norma.nomoreparties.space/orders/all";
+
+const composedEnhancer = composeWithDevTools(
+  applyMiddleware(thunkMiddleware, socketMiddleware(wsUrl))
+);
 
 const RootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -19,6 +25,7 @@ const RootReducer = combineReducers({
   modal: modalReducer,
   order: orderReducer,
   auth: authReducer,
+  ws: wsReducer,
 });
 
 export const store = createStore(RootReducer, composedEnhancer);

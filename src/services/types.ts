@@ -5,6 +5,7 @@ import { TAuthActions } from "./actions/auth";
 import { TIngredientsActions } from "./actions/ingredients";
 import { TModalActions } from "./actions/modal";
 import { TOrderActions } from "./actions/order";
+import { TWSActions } from "./actions/ws";
 
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -20,6 +21,7 @@ export type TApplicationActions =
   | TAuthActions
   | TIngredientsActions
   | TModalActions
-  | TOrderActions;
+  | TOrderActions
+  | TWSActions;
 
 export type AppDispatch = ThunkDispatch<RootState, never, TApplicationActions>;
