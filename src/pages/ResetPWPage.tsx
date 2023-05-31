@@ -1,12 +1,10 @@
-import { useSelector } from "react-redux";
 import ResetForm from "../components/ResetForm/ResetForm";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useAppSelector } from "../services/hooks";
 
 export default function ResetPWPage() {
-  //disable types for redux store
-  // @ts-ignore
-  const { loginData, userData } = useSelector((state) => state.auth);
+  const { loginData, userData } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   // проверка если человек зашел по прямой ссылке без посещения forgot-password отправляет его на эту страницу
   useEffect(() => {

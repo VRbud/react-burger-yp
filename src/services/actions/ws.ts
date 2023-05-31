@@ -1,3 +1,5 @@
+import { TWSState } from "../reducers/ws";
+
 export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";
 export const WS_CONNECTION_SUCCESS: "WS_CONNECTION_SUCCESS" =
   "WS_CONNECTION_SUCCESS";
@@ -26,7 +28,7 @@ export interface IWSConnectionClosedAction {
 
 export interface IWSGetMessageAction {
   readonly type: typeof WS_GET_MESSAGE;
-  readonly payload: any;
+  readonly payload: TWSState;
 }
 
 export interface IWSSendMessageAction {

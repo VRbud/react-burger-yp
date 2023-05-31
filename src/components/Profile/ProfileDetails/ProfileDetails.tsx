@@ -10,8 +10,6 @@ import { changeUser } from "../../../services/actions/auth";
 import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 
 function ProfileDetails() {
-  //disable types for redux store
-  //@ts-ignore
   const { loginData } = useAppSelector((state) => state.auth);
   const disptach = useAppDispatch();
 

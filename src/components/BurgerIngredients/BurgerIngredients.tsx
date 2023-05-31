@@ -16,7 +16,6 @@ function BurgerIngredients() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getIngredients());
   }, [dispatch]);
 

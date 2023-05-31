@@ -6,6 +6,7 @@ import IngredientPage from "../../pages/IngredientPage";
 import LoginPage from "../../pages/LoginPage";
 import RegisterPage from "../../pages/RegisterPage";
 import ResetPWPage from "../../pages/ResetPWPage";
+import FeedPage from "../../pages/FeedPage";
 import AppHeader from "../AppHeader/AppHeader";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ErrorPage from "../../pages/ErrorPage";
@@ -47,6 +48,7 @@ function App() {
           path="/profile"
           element={<ProtectedRoute element={<ProfilePage />} />}
         />
+        <Route path="/feed" element={<FeedPage />} />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

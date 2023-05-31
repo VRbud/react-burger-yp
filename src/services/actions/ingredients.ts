@@ -84,7 +84,7 @@ export type TIngredientsActions =
   | ISetOrderSuccess
   | ISetOrderFailed;
 
-export const getIngredients: AppThunk = () => {
+export const getIngredients = (): AppThunk => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_INGREDIENTS,
