@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 import styles from "./FeedElement.module.css";
 import {
@@ -6,18 +6,24 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../../services/hooks";
+import { WS_SET_ORDER } from "../../../services/actions/ws";
 
 const FeedElement = ({ ...props }) => {
+  const dispatch = useAppDispatch();
+  const order = props.order;
+  const orderIngredientsId = props.order.ingredients;
+  const ingredients = props.ingredients;
+
   const ingredientsArray = useMemo(() => {
     let tempArray: IIngredient[] = [];
-    const orderIngredientsId = props.order.ingredients;
-    const ingredients = props.ingredients;
+
     // eslint-disable-next-line
     ingredients.map((ing: IIngredient) => {
       if (orderIngredientsId.includes(ing._id)) return tempArray.push(ing);
     });
     return tempArray;
-  }, [props.order, props.ingredients]);
+  }, [ingredients, orderIngredientsId]);
 
   let sum = useMemo(
     () =>
@@ -30,9 +36,16 @@ const FeedElement = ({ ...props }) => {
     [ingredientsArray]
   );
 
+  const handleClick = () => {
+    dispatch({
+      type: WS_SET_ORDER,
+      payload: { order: order, ingredients: ingredientsArray },
+    });
+  };
+
   return (
     <Link to={`/feed/${props.id}`}>
-      <div className={`p-6 ${styles.card}`}>
+      <div className={`p-6 ${styles.card}`} onClick={handleClick}>
         <p className={`text text_type_digits-default pb-6 ${styles.heading}`}>
           <span>{`#${props.order.number}`}</span>
           <FormattedDate

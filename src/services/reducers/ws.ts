@@ -1,10 +1,11 @@
 // rootReducer.ts
-
+import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
+  WS_SET_ORDER,
 } from "../actions/ws";
 import { TWSActions } from "../actions/ws";
 
@@ -18,20 +19,27 @@ export type Torder = {
   _id: string;
 };
 
+type currentOrder = {
+  order: Torder;
+  ingredients: IIngredient[];
+};
+
 export type TWSState = {
   wsConnected: boolean;
-  orders: [Torder[]];
+  orders: Torder[];
   total: number;
   totalToday: number;
+  currentOrder: currentOrder | null;
 
   error?: Event;
 };
 
 const initialState: TWSState = {
   wsConnected: false,
-  orders: [[]],
+  orders: [],
   total: 0,
   totalToday: 0,
+  currentOrder: null,
 };
 
 // Создадим редьюсер для WebSocket
@@ -75,9 +83,15 @@ export const wsReducer = (
         ...state,
         error: undefined,
         //@ts-ignore
-        orders: [...state.orders, action.payload.orders],
+        orders: action.payload.orders,
         total: action.payload.total,
         totalToday: action.payload.totalToday,
+      };
+    case WS_SET_ORDER:
+      return {
+        ...state,
+        error: undefined,
+        currentOrder: action.payload,
       };
     default:
       return state;

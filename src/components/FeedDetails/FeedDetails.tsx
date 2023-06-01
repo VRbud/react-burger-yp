@@ -18,16 +18,14 @@ const FeedDetails = () => {
     <div className={`${styles.content} pr-2 custom-scroll`}>
       <ul className={styles.list}>
         {orders &&
-          orders.map((order) =>
-            order.map((order, index) => (
-              <FeedElement
-                key={index}
-                order={order}
-                id={order._id}
-                ingredients={ingredients}
-              />
-            ))
-          )}
+          orders.map((order, index) => (
+            <FeedElement
+              key={index}
+              order={order}
+              id={order._id}
+              ingredients={ingredients}
+            />
+          ))}
       </ul>
     </div>
   );

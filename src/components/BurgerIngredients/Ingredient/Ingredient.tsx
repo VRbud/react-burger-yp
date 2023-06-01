@@ -16,7 +16,6 @@ type IIngredientData = {
 
 const Ingredient: FC<IIngredientData> = ({ ingredientData }) => {
   let location = useLocation();
-  // disable types for redux store
 
   const { cart, bun } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();

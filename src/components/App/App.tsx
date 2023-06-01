@@ -13,6 +13,7 @@ import ErrorPage from "../../pages/ErrorPage";
 import Modal from "../Modal/Modal";
 import OnlyUnAuthRoute from "../OnlyUnAuthRoute/OnlyUnAuthRoute";
 import IngredientDetails from "../BurgerIngredients/IngredientDetails/IngredientDetails";
+import FeedOrder from "../FeedDetails/FeedOrder/FeedOrder";
 
 function App() {
   let location = useLocation();
@@ -49,6 +50,7 @@ function App() {
           element={<ProtectedRoute element={<ProfilePage />} />}
         />
         <Route path="/feed" element={<FeedPage />} />
+        <Route path="/feed/:id" element={<FeedOrder />} />
         <Route path="/ingredients/:id" element={<IngredientPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

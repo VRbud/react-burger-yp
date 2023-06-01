@@ -28,18 +28,18 @@ const FeedHistory = () => {
           </ul>
         </div>
       </div>
-      <p className="mb-15">
+      <div className="mb-15">
         <h3 className="text text_type_main-medium">Выполнено за все время:</h3>
         <span className={`text text_type_digits-large ${styles.digit}`}>
           28 752
         </span>
-      </p>
-      <p>
+      </div>
+      <div>
         <h3 className="text text_type_main-medium">Выполнено за сегодня:</h3>
         <span className={`text text_type_digits-large ${styles.digit}`}>
           138
         </span>
-      </p>
+      </div>
     </div>
   );
 };

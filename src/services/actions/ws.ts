@@ -8,6 +8,7 @@ export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" =
   "WS_CONNECTION_CLOSED";
 export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
 export const WS_SEND_MESSAGE: "WS_SEND_MESSAGE" = "WS_SEND_MESSAGE";
+export const WS_SET_ORDER: "WS_SET_ORDER" = "WS_SET_ORDER";
 
 export interface IWSConnectionStart {
   readonly type: typeof WS_CONNECTION_START;
@@ -36,10 +37,16 @@ export interface IWSSendMessageAction {
   readonly payload: { message: string };
 }
 
+export interface IWSSetOrder {
+  readonly type: typeof WS_SET_ORDER;
+  readonly payload: any;
+}
+
 export type TWSActions =
   | IWSConnectionStart
   | IWSConnectionSuccessAction
   | IWSConnectionErrorAction
   | IWSConnectionClosedAction
   | IWSGetMessageAction
-  | IWSSendMessageAction;
+  | IWSSendMessageAction
+  | IWSSetOrder;
