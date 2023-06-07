@@ -16,6 +16,7 @@ const FeedDetails = () => {
 
   useEffect(() => {
     dispatch({ type: "WS_CONNECTION_START", payload: wsUrlAll });
+
     return () => {
       dispatch({ type: "WS_CLOSE" });
     };

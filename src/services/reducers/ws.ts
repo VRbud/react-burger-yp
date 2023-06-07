@@ -5,6 +5,7 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
+  WS_CLOSE,
 } from "../actions/ws";
 import { TWSActions } from "../actions/ws";
 
@@ -83,6 +84,11 @@ export const wsReducer = (
         orders: action.payload.orders,
         total: action.payload.total,
         totalToday: action.payload.totalToday,
+      };
+    case WS_CLOSE:
+      return {
+        ...state,
+        orders: [],
       };
     default:
       return state;

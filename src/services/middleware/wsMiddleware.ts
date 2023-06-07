@@ -19,14 +19,15 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
       const token = getCookie("token")?.replace("Bearer ", "");
 
       if (type === wsInit) {
-        // объект класса WebSocket
-        socket = new WebSocket(action.payload);
-      }
-      if (type === wsInit && loginData) {
-        socket = new WebSocket(`${action.payload}?token=${token}`);
+        socket = new WebSocket(
+          `${action.payload}${loginData ? `?token=${token}` : ""}`
+        );
       }
 
       if (socket) {
+        if (type === "WS_CLOSE") {
+          socket?.close();
+        }
         // функция, которая вызывается при открытии сокета
         socket.onopen = (event) => {
           dispatch({ type: onOpen, payload: event });
