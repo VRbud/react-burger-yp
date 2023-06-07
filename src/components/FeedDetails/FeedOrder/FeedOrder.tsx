@@ -9,19 +9,20 @@ import {
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { getIngredients } from "../../../services/actions/ingredients";
+import { wsUrlAll } from "../../../services/constants";
 
 const FeedOrder = () => {
-  const { currentOrder, orders } = useAppSelector((state) => state.ws);
+  const { orders } = useAppSelector((state) => state.ws);
   const { ingredients } = useAppSelector((state) => state.ingredients);
 
   const { id } = useParams();
 
-  const disptach = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    disptach({ type: "WS_CONNECTION_START_PUBLIC" });
-    disptach(getIngredients());
-  }, [disptach]);
+    dispatch({ type: "WS_CONNECTION_START", payload: wsUrlAll });
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   const orderToShow = useMemo(() => {
     return orders.find(({ _id }) => _id === id);

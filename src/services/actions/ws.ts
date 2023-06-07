@@ -2,6 +2,7 @@ import { TWSState } from "../reducers/ws";
 
 export const WS_CONNECTION_START_PRIVATE: "WS_CONNECTION_START_PRIVATE" =
   "WS_CONNECTION_START_PRIVATE";
+export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";
 export const WS_CONNECTION_START_PUBLIC: "WS_CONNECTION_START_PUBLIC" =
   "WS_CONNECTION_START_PUBLIC";
 export const WS_CONNECTION_SUCCESS: "WS_CONNECTION_SUCCESS" =
@@ -11,7 +12,6 @@ export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" =
   "WS_CONNECTION_CLOSED";
 export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
 export const WS_SEND_MESSAGE: "WS_SEND_MESSAGE" = "WS_SEND_MESSAGE";
-export const WS_SET_ORDER: "WS_SET_ORDER" = "WS_SET_ORDER";
 export const WS_CLOSE: "WS_CLOSE" = "WS_CLOSE";
 
 export interface IWSConnectionStartPivate {
@@ -20,6 +20,11 @@ export interface IWSConnectionStartPivate {
 
 export interface IWSConnectionStartPublic {
   readonly type: typeof WS_CONNECTION_START_PUBLIC;
+}
+
+export interface IWSConnectionStart {
+  readonly type: typeof WS_CONNECTION_START;
+  readonly payload: string;
 }
 
 export interface IWSConnectionClose {
@@ -48,19 +53,22 @@ export interface IWSSendMessageAction {
   readonly type: typeof WS_SEND_MESSAGE;
   readonly payload: { message: string };
 }
-
-export interface IWSSetOrder {
-  readonly type: typeof WS_SET_ORDER;
-  readonly payload: any;
-}
-
 export type TWSActions =
   | IWSConnectionStartPivate
   | IWSConnectionStartPublic
+  | IWSConnectionStart
   | IWSConnectionSuccessAction
   | IWSConnectionErrorAction
   | IWSConnectionClosedAction
   | IWSGetMessageAction
   | IWSSendMessageAction
-  | IWSSetOrder
   | IWSConnectionClose;
+
+export type TWSStoreActions = {
+  wsInit: typeof WS_CONNECTION_START;
+  wsSendMessage: typeof WS_SEND_MESSAGE;
+  onOpen: typeof WS_CONNECTION_SUCCESS;
+  onClose: typeof WS_CONNECTION_CLOSED;
+  onError: typeof WS_CONNECTION_ERROR;
+  onMessage: typeof WS_GET_MESSAGE;
+};

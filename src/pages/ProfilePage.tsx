@@ -5,6 +5,7 @@ import { useAppSelector } from "../services/hooks";
 const ProfilePage = () => {
   const { loginData } = useAppSelector((state) => state.auth);
   let location = useLocation();
+  // eslint-disable-next-line
   let state = location.state as { backgroundLocation?: Location };
 
   return (

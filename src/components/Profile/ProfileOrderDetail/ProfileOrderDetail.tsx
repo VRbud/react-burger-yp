@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 import { useEffect } from "react";
 import { getIngredients } from "../../../services/actions/ingredients";
 import FeedElement from "../../FeedDetails/FeedElement/FeedElement";
+import { wsUrlPrivate } from "../../../services/constants";
 
 function ProfileOrderDetail() {
   const dispatch = useAppDispatch();
@@ -11,7 +12,7 @@ function ProfileOrderDetail() {
   const { ingredients } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
-    dispatch({ type: "WS_CONNECTION_START_PRIVATE" });
+    dispatch({ type: "WS_CONNECTION_START", payload: wsUrlPrivate });
     dispatch(getIngredients());
 
     return () => {
