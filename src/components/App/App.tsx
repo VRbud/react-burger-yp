@@ -16,6 +16,21 @@ import IngredientDetails from "../BurgerIngredients/IngredientDetails/Ingredient
 import FeedOrder from "../FeedDetails/FeedOrder/FeedOrder";
 import ProfileHistoryPage from "../../pages/ProfileHistoryPage";
 
+enum AppRoutes {
+  main = "/",
+  login = "/login",
+  register = "/register",
+  forgotpw = "/forgot-password",
+  resetpw = "/reset-password",
+  profile = "/profile",
+  profileOrders = "/profile/orders",
+  profileOrdersId = "/profile/orders/:id",
+  feed = "/feed",
+  feedId = "/feed/:id",
+  ingredientsId = "/ingredients/:id",
+  default = "*",
+}
+
 function App() {
   let location = useLocation();
   let state = location.state as { backgroundLocation?: Location };
@@ -23,45 +38,45 @@ function App() {
     <>
       <AppHeader />
       <Routes location={state?.backgroundLocation || location}>
-        <Route path="/" element={<CreateBurgerPage />} />
+        <Route path={AppRoutes.main} element={<CreateBurgerPage />} />
         <Route
-          path="/login"
+          path={AppRoutes.login}
           element={<OnlyUnAuthRoute path="/profile" element={<LoginPage />} />}
         />
         <Route
-          path="/register"
+          path={AppRoutes.register}
           element={<OnlyUnAuthRoute path="/" element={<RegisterPage />} />}
         />
         <Route
-          path="/forgot-password"
+          path={AppRoutes.forgotpw}
           element={
             <OnlyUnAuthRoute path="/profile" element={<FortgotPWPage />} />
           }
         />
         <Route
-          path="/reset-password"
+          path={AppRoutes.resetpw}
           element={
             <OnlyUnAuthRoute path="/profile" element={<ResetPWPage />} />
           }
         />
         <Route
-          path="/profile"
+          path={AppRoutes.profile}
           element={<ProtectedRoute element={<ProfilePage />} />}
         />
         <Route
-          path="/profile/orders"
+          path={AppRoutes.profileOrders}
           element={<ProtectedRoute element={<ProfileHistoryPage />} />}
         />
-        <Route path="/feed" element={<FeedPage />} />
-        <Route path="/feed/:id" element={<FeedOrder />} />
-        <Route path="/ingredients/:id" element={<IngredientPage />} />
-        <Route path="*" element={<ErrorPage />} />
+        <Route path={AppRoutes.feed} element={<FeedPage />} />
+        <Route path={AppRoutes.feedId} element={<FeedOrder />} />
+        <Route path={AppRoutes.ingredientsId} element={<IngredientPage />} />
+        <Route path={AppRoutes.default} element={<ErrorPage />} />
       </Routes>
 
       {state?.backgroundLocation && (
         <Routes>
           <Route
-            path="/ingredients/:id"
+            path={AppRoutes.ingredientsId}
             element={
               <Modal>
                 <IngredientDetails />
@@ -69,7 +84,7 @@ function App() {
             }
           />
           <Route
-            path="/profile/orders/:id"
+            path={AppRoutes.profileOrdersId}
             element={
               <Modal>
                 <FeedOrder />
@@ -77,7 +92,7 @@ function App() {
             }
           />
           <Route
-            path="/feed/:id"
+            path={AppRoutes.feedId}
             element={
               <Modal>
                 <FeedOrder />
