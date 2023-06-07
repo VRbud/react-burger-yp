@@ -12,6 +12,7 @@ export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" =
 export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
 export const WS_SEND_MESSAGE: "WS_SEND_MESSAGE" = "WS_SEND_MESSAGE";
 export const WS_SET_ORDER: "WS_SET_ORDER" = "WS_SET_ORDER";
+export const WS_CLOSE: "WS_CLOSE" = "WS_CLOSE";
 
 export interface IWSConnectionStartPivate {
   readonly type: typeof WS_CONNECTION_START_PRIVATE;
@@ -19,6 +20,10 @@ export interface IWSConnectionStartPivate {
 
 export interface IWSConnectionStartPublic {
   readonly type: typeof WS_CONNECTION_START_PUBLIC;
+}
+
+export interface IWSConnectionClose {
+  readonly type: typeof WS_CLOSE;
 }
 
 export interface IWSConnectionSuccessAction {
@@ -57,4 +62,5 @@ export type TWSActions =
   | IWSConnectionClosedAction
   | IWSGetMessageAction
   | IWSSendMessageAction
-  | IWSSetOrder;
+  | IWSSetOrder
+  | IWSConnectionClose;

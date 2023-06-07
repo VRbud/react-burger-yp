@@ -18,13 +18,11 @@ import ProfileHistoryPage from "../../pages/ProfileHistoryPage";
 
 function App() {
   let location = useLocation();
-  let state = location.state || {};
-  state.backgroundLocation = location.state;
-  let backgroundLocation = state.backgroundLocation;
+  let state = location.state as { backgroundLocation?: Location };
   return (
     <>
       <AppHeader />
-      <Routes location={backgroundLocation || location}>
+      <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<CreateBurgerPage />} />
         <Route
           path="/login"
@@ -60,13 +58,29 @@ function App() {
         <Route path="*" element={<ErrorPage />} />
       </Routes>
 
-      {backgroundLocation && (
+      {state?.backgroundLocation && (
         <Routes>
           <Route
             path="/ingredients/:id"
             element={
               <Modal>
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <Modal>
+                <FeedOrder />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:id"
+            element={
+              <Modal>
+                <FeedOrder />
               </Modal>
             }
           />

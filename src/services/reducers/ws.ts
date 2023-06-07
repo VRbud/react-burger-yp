@@ -6,6 +6,7 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
   WS_SET_ORDER,
+  WS_CLOSE,
 } from "../actions/ws";
 import { TWSActions } from "../actions/ws";
 
@@ -81,7 +82,6 @@ export const wsReducer = (
       return {
         ...state,
         error: undefined,
-        //@ts-ignore
         orders: action.payload.orders,
         total: action.payload.total,
         totalToday: action.payload.totalToday,

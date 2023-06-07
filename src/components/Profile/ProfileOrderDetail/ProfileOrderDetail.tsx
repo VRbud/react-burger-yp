@@ -13,6 +13,10 @@ function ProfileOrderDetail() {
   useEffect(() => {
     dispatch({ type: "WS_CONNECTION_START_PRIVATE" });
     dispatch(getIngredients());
+
+    return () => {
+      dispatch({ type: "WS_CLOSE" });
+    };
   }, [dispatch]);
   return (
     <div className={styles.container}>

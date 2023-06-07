@@ -24,6 +24,10 @@ export const socketMiddleware = (): Middleware => {
         // объект класса WebSocket
         socket = new WebSocket(`${wsUrlPrivate}?token=${token}`);
       }
+      if (type === "WS_CLOSE") {
+        // объект класса WebSocket
+        socket?.close(1000);
+      }
       if (socket) {
         // функция, которая вызывается при открытии сокета
         socket.onopen = (event) => {
@@ -41,6 +45,7 @@ export const socketMiddleware = (): Middleware => {
           dispatch({ type: "WS_GET_MESSAGE", payload: JSON.parse(data) });
         };
         // функция, которая вызывается при закрытии соединения
+
         socket.onclose = (event) => {
           dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
         };

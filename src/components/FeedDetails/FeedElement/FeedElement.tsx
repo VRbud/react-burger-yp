@@ -1,20 +1,21 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
 import styles from "./FeedElement.module.css";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../../services/hooks";
+import { Link, useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 import { WS_SET_ORDER } from "../../../services/actions/ws";
+import { getIngredients } from "../../../services/actions/ingredients";
 
 const FeedElement = ({ ...props }) => {
+  let location = useLocation();
   const dispatch = useAppDispatch();
   const order = props.order;
   const orderIngredientsId: string[] = props.order.ingredients;
   const ingredients = props.ingredients;
-
   const ingredientsArray = useMemo(() => {
     let tempArray: IIngredient[] = [];
     // eslint-disable-next-line
@@ -23,8 +24,6 @@ const FeedElement = ({ ...props }) => {
     });
     return tempArray;
   }, [ingredients, orderIngredientsId]);
-
-  console.log(ingredientsArray);
 
   let sum = useMemo(
     () =>
@@ -51,6 +50,7 @@ const FeedElement = ({ ...props }) => {
           ? `/feed/${props.id}`
           : `/profile/orders/${props.id}`
       }`}
+      state={{ backgroundLocation: location }}
     >
       <div className={`p-6 ${styles.card}`} onClick={handleClick}>
         <p className={`text text_type_digits-default pb-6 ${styles.heading}`}>
