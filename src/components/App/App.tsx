@@ -14,6 +14,7 @@ import Modal from "../Modal/Modal";
 import OnlyUnAuthRoute from "../OnlyUnAuthRoute/OnlyUnAuthRoute";
 import IngredientDetails from "../BurgerIngredients/IngredientDetails/IngredientDetails";
 import FeedOrder from "../FeedDetails/FeedOrder/FeedOrder";
+import ProfileHistoryPage from "../../pages/ProfileHistoryPage";
 
 function App() {
   let location = useLocation();
@@ -48,6 +49,10 @@ function App() {
         <Route
           path="/profile"
           element={<ProtectedRoute element={<ProfilePage />} />}
+        />
+        <Route
+          path="/profile/orders"
+          element={<ProtectedRoute element={<ProfileHistoryPage />} />}
         />
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/feed/:id" element={<FeedOrder />} />

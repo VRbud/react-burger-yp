@@ -12,18 +12,19 @@ import { WS_SET_ORDER } from "../../../services/actions/ws";
 const FeedElement = ({ ...props }) => {
   const dispatch = useAppDispatch();
   const order = props.order;
-  const orderIngredientsId = props.order.ingredients;
+  const orderIngredientsId: string[] = props.order.ingredients;
   const ingredients = props.ingredients;
 
   const ingredientsArray = useMemo(() => {
     let tempArray: IIngredient[] = [];
-
     // eslint-disable-next-line
     ingredients.map((ing: IIngredient) => {
       if (orderIngredientsId.includes(ing._id)) return tempArray.push(ing);
     });
     return tempArray;
   }, [ingredients, orderIngredientsId]);
+
+  console.log(ingredientsArray);
 
   let sum = useMemo(
     () =>
@@ -44,7 +45,13 @@ const FeedElement = ({ ...props }) => {
   };
 
   return (
-    <Link to={`/feed/${props.id}`}>
+    <Link
+      to={`${
+        props.type === "public"
+          ? `/feed/${props.id}`
+          : `/profile/orders/${props.id}`
+      }`}
+    >
       <div className={`p-6 ${styles.card}`} onClick={handleClick}>
         <p className={`text text_type_digits-default pb-6 ${styles.heading}`}>
           <span>{`#${props.order.number}`}</span>
@@ -57,7 +64,11 @@ const FeedElement = ({ ...props }) => {
         <div className={styles.content}>
           <ul className={`list_reset ${styles.list}`}>
             {ingredientsArray.map((ing, index: number) => (
-              <li className={styles.list_item} key={index}>
+              <li
+                className={styles.list_item}
+                key={index}
+                style={{ zIndex: ingredientsArray.length - index }}
+              >
                 <img className={styles.img} src={ing.image} alt={ing.name} />
               </li>
             ))}

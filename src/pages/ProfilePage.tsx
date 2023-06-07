@@ -1,7 +1,7 @@
 import Profile from "../components/Profile/Profile";
 import { useAppSelector } from "../services/hooks";
 
-export default function ProfilePage() {
+const ProfilePage = () => {
   const { loginData } = useAppSelector((state) => state.auth);
 
   return (
@@ -9,4 +9,6 @@ export default function ProfilePage() {
       <main>{loginData && <Profile />}</main>
     </>
   );
-}
+};
+
+export default ProfilePage;

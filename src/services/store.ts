@@ -13,10 +13,8 @@ import { wsReducer } from "./reducers/ws";
 import { socketMiddleware } from "./middleware/wsMiddleware";
 import { composeWithDevTools } from "@redux-devtools/extension";
 
-const wsUrl: string = "wss://norma.nomoreparties.space/orders/all";
-
 const composedEnhancer = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, socketMiddleware(wsUrl))
+  applyMiddleware(thunkMiddleware, socketMiddleware())
 );
 
 const RootReducer = combineReducers({

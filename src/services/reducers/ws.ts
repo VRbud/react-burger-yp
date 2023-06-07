@@ -30,7 +30,6 @@ export type TWSState = {
   total: number;
   totalToday: number;
   currentOrder: currentOrder | null;
-
   error?: Event;
 };
 

@@ -1,6 +1,9 @@
 import { TWSState } from "../reducers/ws";
 
-export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";
+export const WS_CONNECTION_START_PRIVATE: "WS_CONNECTION_START_PRIVATE" =
+  "WS_CONNECTION_START_PRIVATE";
+export const WS_CONNECTION_START_PUBLIC: "WS_CONNECTION_START_PUBLIC" =
+  "WS_CONNECTION_START_PUBLIC";
 export const WS_CONNECTION_SUCCESS: "WS_CONNECTION_SUCCESS" =
   "WS_CONNECTION_SUCCESS";
 export const WS_CONNECTION_ERROR: "WS_CONNECTION_ERROR" = "WS_CONNECTION_ERROR";
@@ -10,8 +13,12 @@ export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
 export const WS_SEND_MESSAGE: "WS_SEND_MESSAGE" = "WS_SEND_MESSAGE";
 export const WS_SET_ORDER: "WS_SET_ORDER" = "WS_SET_ORDER";
 
-export interface IWSConnectionStart {
-  readonly type: typeof WS_CONNECTION_START;
+export interface IWSConnectionStartPivate {
+  readonly type: typeof WS_CONNECTION_START_PRIVATE;
+}
+
+export interface IWSConnectionStartPublic {
+  readonly type: typeof WS_CONNECTION_START_PUBLIC;
 }
 
 export interface IWSConnectionSuccessAction {
@@ -43,7 +50,8 @@ export interface IWSSetOrder {
 }
 
 export type TWSActions =
-  | IWSConnectionStart
+  | IWSConnectionStartPivate
+  | IWSConnectionStartPublic
   | IWSConnectionSuccessAction
   | IWSConnectionErrorAction
   | IWSConnectionClosedAction

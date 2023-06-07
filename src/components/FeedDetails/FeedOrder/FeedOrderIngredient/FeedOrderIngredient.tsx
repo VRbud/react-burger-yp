@@ -14,8 +14,8 @@ const FeedOrderIngredient = ({ ingredient }: { ingredient: IIngredient }) => {
   let count = useMemo((): number => {
     let counter = 0;
     // eslint-disable-next-line
-    order?.ingredients.map((id) => {
-      if (id === ingredient._id) counter++;
+    order?.ingredients.map((ingId) => {
+      if (ingId === ingredient._id) counter++;
     });
     return counter;
   }, [order, ingredient._id]);

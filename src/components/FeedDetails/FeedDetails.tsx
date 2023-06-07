@@ -10,9 +10,11 @@ const FeedDetails = () => {
   const { ingredients } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
-    dispatch({ type: "WS_CONNECTION_START" });
-    dispatch(getIngredients());
-  }, [dispatch]);
+    if (orders.length === 0) {
+      dispatch({ type: "WS_CONNECTION_START_PUBLIC" });
+      dispatch(getIngredients());
+    }
+  }, [dispatch, orders]);
 
   return (
     <div className={`${styles.content} pr-2 custom-scroll`}>
@@ -20,6 +22,7 @@ const FeedDetails = () => {
         {orders &&
           orders.map((order, index) => (
             <FeedElement
+              type="public"
               key={index}
               order={order}
               id={order._id}

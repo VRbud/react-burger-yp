@@ -1,8 +1,12 @@
 // socketMiddleware.ts
 import type { Middleware, MiddlewareAPI } from "redux";
 import type { TApplicationActions, AppDispatch, RootState } from "../types";
+import { getCookie } from "../api/api";
 
-export const socketMiddleware = (wsUrl: string): Middleware => {
+const wsUrlAll: string = "wss://norma.nomoreparties.space/orders/all";
+const wsUrlPrivate: string = "wss://norma.nomoreparties.space/orders";
+
+export const socketMiddleware = (): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
@@ -10,9 +14,15 @@ export const socketMiddleware = (wsUrl: string): Middleware => {
       const { dispatch } = store;
       const { type } = action;
 
-      if (type === "WS_CONNECTION_START") {
+      const token = getCookie("token")?.replace("Bearer ", "");
+
+      if (type === "WS_CONNECTION_START_PUBLIC") {
         // объект класса WebSocket
-        socket = new WebSocket(wsUrl);
+        socket = new WebSocket(wsUrlAll);
+      }
+      if (type === "WS_CONNECTION_START_PRIVATE") {
+        // объект класса WebSocket
+        socket = new WebSocket(`${wsUrlPrivate}?token=${token}`);
       }
       if (socket) {
         // функция, которая вызывается при открытии сокета
