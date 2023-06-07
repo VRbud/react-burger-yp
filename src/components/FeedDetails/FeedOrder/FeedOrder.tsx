@@ -1,51 +1,79 @@
 import { IIngredient } from "../../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
-import { useAppSelector } from "../../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 import FeedOrderIngredient from "./FeedOrderIngredient/FeedOrderIngredient";
 import styles from "./FeedOrder.module.css";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { getIngredients } from "../../../services/actions/ingredients";
 
 const FeedOrder = () => {
-  const { currentOrder } = useAppSelector((state) => state.ws);
+  const { currentOrder, orders } = useAppSelector((state) => state.ws);
+  const { ingredients } = useAppSelector((state) => state.ingredients);
+
+  const { id } = useParams();
+
+  const disptach = useAppDispatch();
+
+  useEffect(() => {
+    disptach({ type: "WS_CONNECTION_START_PUBLIC" });
+    disptach(getIngredients());
+  }, [disptach]);
+
+  const orderToShow = useMemo(() => {
+    return orders.find(({ _id }) => _id === id);
+  }, [orders, id]);
+
+  const ingredientsArray = useMemo(() => {
+    let tempArray: IIngredient[] = [];
+    // eslint-disable-next-line
+    ingredients?.map((ing: IIngredient) => {
+      if (orderToShow?.ingredients.includes(ing._id))
+        return tempArray.push(ing);
+    });
+    return tempArray;
+  }, [ingredients, orderToShow]);
 
   const time = useMemo(() => {
-    if (currentOrder !== null && currentOrder.order.createdAt !== null)
-      return new Date(currentOrder.order.createdAt);
-  }, [currentOrder]);
+    if (
+      orderToShow !== null &&
+      orderToShow?.createdAt !== null &&
+      orderToShow !== undefined
+    )
+      return new Date(orderToShow.createdAt);
+  }, [orderToShow]);
 
   let sum = useMemo(
     () =>
-      currentOrder !== null &&
-      currentOrder.ingredients.reduce(
+      ingredientsArray !== null &&
+      ingredientsArray.reduce(
         (accumulator: number, currentValue: IIngredient) =>
           accumulator + currentValue.price,
         0
       ),
-    [currentOrder]
+    [ingredientsArray]
   );
 
-  return (
+  return orderToShow ? (
     <div className={styles.modal_container}>
       <div className={styles.modal_content}>
         <h4
           className={`text text_type_digits-default mb-10 ${styles.number}`}
-        >{`#${currentOrder?.order?.number}`}</h4>
-        <h3 className="text text_type_main-medium mb-3">
-          {currentOrder?.order?.name}
-        </h3>
+        >{`#${orderToShow.number}`}</h4>
+        <h3 className="text text_type_main-medium mb-3">{orderToShow.name}</h3>
         <span
           className={`text text_type_main-small mb-15 ${
-            currentOrder?.order.status === "done" ? "ready" : ""
+            orderToShow.status === "done" ? "ready" : ""
           }`}
         >
-          {currentOrder?.order.status === "done" ? "Выполнен" : "В работе"}
+          {orderToShow.status === "done" ? "Выполнен" : "В работе"}
         </span>
         <h4 className="text text_type_main-medium mb-6">Состав:</h4>
         <ul className={`list_reset mb-10 ${styles.list}`}>
-          {currentOrder?.ingredients.map((ing: IIngredient, index) => (
+          {ingredientsArray.map((ing: IIngredient, index) => (
             <FeedOrderIngredient key={index} ingredient={ing} />
           ))}
         </ul>
@@ -64,6 +92,8 @@ const FeedOrder = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <></>
   );
 };
 

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import FeedElement from "./FeedElement/FeedElement";
-import { getIngredients } from "../../services/actions/ingredients";
 import styles from "./FeedDetails.module.css";
 import { useLocation } from "react-router-dom";
 
@@ -13,15 +12,10 @@ const FeedDetails = () => {
   let state = location.state as { backgroundLocation?: Location };
 
   useEffect(() => {
-    if (orders.length === 0) {
-      dispatch({ type: "WS_CONNECTION_START_PUBLIC" });
-      dispatch(getIngredients());
-    }
-
     return () => {
       dispatch({ type: "WS_CLOSE" });
     };
-  }, [dispatch, orders]);
+  }, [dispatch]);
 
   return (
     <div className={`${styles.content} pr-2 custom-scroll`}>

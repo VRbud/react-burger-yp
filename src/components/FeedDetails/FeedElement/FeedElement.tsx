@@ -5,7 +5,7 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 import { WS_SET_ORDER } from "../../../services/actions/ws";
 import { getIngredients } from "../../../services/actions/ingredients";
@@ -13,9 +13,12 @@ import { getIngredients } from "../../../services/actions/ingredients";
 const FeedElement = ({ ...props }) => {
   let location = useLocation();
   const dispatch = useAppDispatch();
+  const { orders } = useAppSelector((state) => state.ws);
+
   const order = props.order;
   const orderIngredientsId: string[] = props.order.ingredients;
   const ingredients = props.ingredients;
+
   const ingredientsArray = useMemo(() => {
     let tempArray: IIngredient[] = [];
     // eslint-disable-next-line
