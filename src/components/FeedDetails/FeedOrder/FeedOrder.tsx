@@ -15,7 +15,6 @@ import { getCookie } from "../../../services/api/api";
 const FeedOrder = () => {
   const { orders } = useAppSelector((state) => state.ws);
   const { ingredients } = useAppSelector((state) => state.ingredients);
-  const { loginData } = useAppSelector((state) => state.auth);
 
   const { id } = useParams();
 
