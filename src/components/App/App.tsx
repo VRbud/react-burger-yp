@@ -67,10 +67,7 @@ function App() {
           path={AppRoutes.profileOrders}
           element={<ProtectedRoute element={<ProfileHistoryPage />} />}
         />
-        <Route
-          path={AppRoutes.profileOrdersId}
-          element={<ProtectedRoute element={<FeedOrder />} />}
-        />
+        <Route path={AppRoutes.profileOrdersId} element={<FeedOrder />} />
         <Route path={AppRoutes.feed} element={<FeedPage />} />
         <Route path={AppRoutes.feedId} element={<FeedOrder />} />
         <Route path={AppRoutes.ingredientsId} element={<IngredientPage />} />

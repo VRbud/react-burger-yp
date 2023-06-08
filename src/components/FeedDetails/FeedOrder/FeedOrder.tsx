@@ -21,21 +21,20 @@ const FeedOrder = () => {
 
   const dispatch = useAppDispatch();
 
+  const token = getCookie("token");
+
   useEffect(() => {
-    if (loginData) {
+    if (token) {
       setTimeout(
         () =>
           dispatch({
             type: "WS_CONNECTION_START",
-            payload: `${wsUrlPrivate}?token=${getCookie("token")?.replace(
-              "Bearer ",
-              ""
-            )}`,
+            payload: `${wsUrlPrivate}?token=${token?.replace("Bearer ", "")}`,
           }),
         5000
       );
     }
-    if (!loginData) {
+    if (!token) {
       setTimeout(
         () =>
           dispatch({
@@ -46,7 +45,7 @@ const FeedOrder = () => {
       );
     }
     dispatch(getIngredients());
-  }, [dispatch, loginData]);
+  }, [dispatch, token]);
 
   const orderToShow = useMemo(() => {
     return orders && orders.find(({ _id }) => _id === id);
