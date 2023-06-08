@@ -23,19 +23,27 @@ const FeedOrder = () => {
 
   useEffect(() => {
     if (loginData) {
-      dispatch({
-        type: "WS_CONNECTION_START",
-        payload: `${wsUrlPrivate}?token=${getCookie("token")?.replace(
-          "Bearer ",
-          ""
-        )}`,
-      });
+      setTimeout(
+        () =>
+          dispatch({
+            type: "WS_CONNECTION_START",
+            payload: `${wsUrlPrivate}?token=${getCookie("token")?.replace(
+              "Bearer ",
+              ""
+            )}`,
+          }),
+        15000
+      );
     }
     if (!loginData) {
-      dispatch({
-        type: "WS_CONNECTION_START",
-        payload: `${wsUrlAll}`,
-      });
+      setTimeout(
+        () =>
+          dispatch({
+            type: "WS_CONNECTION_START",
+            payload: `${wsUrlAll}`,
+          }),
+        15000
+      );
     }
     dispatch(getIngredients());
   }, [dispatch, loginData]);

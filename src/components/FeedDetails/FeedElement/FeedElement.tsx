@@ -52,15 +52,33 @@ const FeedElement = ({ ...props }) => {
         <p className="text text_type_main-default pb-6">{`${props.order.name}`}</p>
         <div className={styles.content}>
           <ul className={`list_reset ${styles.list}`}>
-            {ingredientsArray.splice(0, 3).map((ing, index: number) => (
-              <li
-                className={styles.list_item}
-                key={index}
-                style={{ zIndex: ingredientsArray.length - index }}
-              >
-                <img className={styles.img} src={ing.image} alt={ing.name} />
-              </li>
-            ))}
+            {ingredientsArray.length > 4
+              ? ingredientsArray.splice(0, 3).map((ing, index: number) => (
+                  <li
+                    className={styles.list_item}
+                    key={index}
+                    style={{ zIndex: ingredientsArray.length - index }}
+                  >
+                    <img
+                      className={styles.img}
+                      src={ing.image}
+                      alt={ing.name}
+                    />
+                  </li>
+                ))
+              : ingredientsArray.map((ing, index: number) => (
+                  <li
+                    className={styles.list_item}
+                    key={index}
+                    style={{ zIndex: ingredientsArray.length - index }}
+                  >
+                    <img
+                      className={styles.img}
+                      src={ing.image}
+                      alt={ing.name}
+                    />
+                  </li>
+                ))}
           </ul>
           <p className={styles.price}>
             <span className="text text_type_digits-default text_type_main-small">
