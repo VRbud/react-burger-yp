@@ -1,5 +1,5 @@
 import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
-import { requestToServ } from "../api/api";
+import { getCookie, requestToServ } from "../api/api";
 import { AppDispatch, AppThunk } from "../types";
 
 export const SET_ORDER_DATA: "SET_ORDER_DATA" = "SET_ORDER_DATA";
@@ -45,7 +45,8 @@ export const sendOrderData = (data: {
         body: JSON.stringify(data),
         headers: {
           "Content-type": "application/json",
-        },
+          Authorization: getCookie("token"),
+        } as HeadersInit,
       }).then((res) => {
         if (res) {
           dispatch({

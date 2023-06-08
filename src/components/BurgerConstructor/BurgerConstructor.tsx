@@ -47,6 +47,7 @@ function BurgerConstructor() {
     drop(item) {
       if (
         // toDo add types to Ingredient
+        ingredients &&
         // @ts-ignore
         ingredients.find((ing) => ing._id === item.id && ing.type === "bun")
       ) {
