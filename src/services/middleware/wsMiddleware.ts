@@ -2,6 +2,7 @@
 import type { Middleware, MiddlewareAPI } from "redux";
 import type { TApplicationActions, AppDispatch, RootState } from "../types";
 import { TWSStoreActions } from "../actions/ws";
+import { getCookie, requestToServ, setCookie } from "../api/api";
 
 export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
@@ -34,6 +35,28 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
         // функция, которая вызывается при получения события от сервера
         socket.onmessage = (event) => {
           const { data } = event;
+
+          if (data.message === "Invalid or missing token") {
+            requestToServ("auth/token", {
+              method: "POST",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "same-origin",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(getCookie("refreshToken")),
+              redirect: "follow",
+              referrerPolicy: "no-referrer",
+            }).then((res) => {
+              let authToken = res.accessToken;
+              let refreshToken = res.refreshToken;
+              if (authToken && refreshToken) {
+                setCookie("token", authToken, { path: "/" });
+                setCookie("refreshToken", refreshToken, { path: "/" });
+              }
+            });
+          }
           dispatch({ type: onMessage, payload: JSON.parse(data) });
         };
         // функция, которая вызывается при закрытии соединения
