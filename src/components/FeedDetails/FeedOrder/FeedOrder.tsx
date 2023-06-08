@@ -32,7 +32,7 @@ const FeedOrder = () => {
               ""
             )}`,
           }),
-        15000
+        5000
       );
     }
     if (!loginData) {
@@ -42,7 +42,7 @@ const FeedOrder = () => {
             type: "WS_CONNECTION_START",
             payload: `${wsUrlAll}`,
           }),
-        15000
+        5000
       );
     }
     dispatch(getIngredients());
