@@ -9,20 +9,37 @@ import {
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { getIngredients } from "../../../services/actions/ingredients";
-import { wsUrlAll } from "../../../services/constants";
+import { wsUrlAll, wsUrlPrivate } from "../../../services/constants";
+import { getCookie } from "../../../services/api/api";
 
 const FeedOrder = () => {
   const { orders } = useAppSelector((state) => state.ws);
   const { ingredients } = useAppSelector((state) => state.ingredients);
+  const { loginData } = useAppSelector((state) => state.auth);
 
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
 
+  const token = useMemo(() => {
+    getCookie("token")?.replace("Bearer ", "");
+  }, [loginData]);
+
   useEffect(() => {
-    dispatch({ type: "WS_CONNECTION_START", payload: wsUrlAll });
+    if (loginData) {
+      dispatch({
+        type: "WS_CONNECTION_START",
+        payload: `${wsUrlPrivate}?token=${token}`,
+      });
+    }
+    if (!loginData) {
+      dispatch({
+        type: "WS_CONNECTION_START",
+        payload: `${wsUrlAll}`,
+      });
+    }
     dispatch(getIngredients());
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const orderToShow = useMemo(() => {
     return orders.find(({ _id }) => _id === id);

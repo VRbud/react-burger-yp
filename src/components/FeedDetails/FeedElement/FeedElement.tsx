@@ -52,7 +52,8 @@ const FeedElement = ({ ...props }) => {
         <p className="text text_type_main-default pb-6">{`${props.order.name}`}</p>
         <div className={styles.content}>
           <ul className={`list_reset ${styles.list}`}>
-            {ingredientsArray.map((ing, index: number) => (
+            {/* @ts-ignore */}
+            {ingredientsArray.splice(0, 3).map((ing, index: number) => (
               <li
                 className={styles.list_item}
                 key={index}

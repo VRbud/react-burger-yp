@@ -1,10 +1,11 @@
 import styles from "./ProfileOrderDetail.module.css";
 import ProfileNavigation from "../ProfileNavigation/ProfileNavigation";
 import { useAppDispatch, useAppSelector } from "../../../services/hooks";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { getIngredients } from "../../../services/actions/ingredients";
 import FeedElement from "../../FeedDetails/FeedElement/FeedElement";
 import { wsUrlPrivate } from "../../../services/constants";
+import { getCookie } from "../../../services/api/api";
 
 function ProfileOrderDetail() {
   const dispatch = useAppDispatch();
@@ -12,7 +13,14 @@ function ProfileOrderDetail() {
   const { ingredients } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
-    dispatch({ type: "WS_CONNECTION_START", payload: wsUrlPrivate });
+    dispatch({
+      type: "WS_CONNECTION_START",
+      payload: `${wsUrlPrivate}?token=${getCookie("token")?.replace(
+        "Bearer ",
+        ""
+      )}`,
+    });
+
     dispatch(getIngredients());
 
     return () => {

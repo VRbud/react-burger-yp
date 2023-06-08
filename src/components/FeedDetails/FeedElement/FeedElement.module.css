@@ -10,6 +10,7 @@
 }
 
 .list_item {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,6 +20,17 @@
   border-radius: 100px;
   margin-left: -10px;
   background-color: #131316;
+}
+
+.img_last {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 
 .heading {

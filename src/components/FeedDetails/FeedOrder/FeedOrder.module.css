@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 32px;
 }
 
 .number {
@@ -19,6 +18,8 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  max-height: 250px;
+  overflow-y: scroll;
 }
 
 .content_bottom {

@@ -1,7 +1,6 @@
 // socketMiddleware.ts
 import type { Middleware, MiddlewareAPI } from "redux";
 import type { TApplicationActions, AppDispatch, RootState } from "../types";
-import { getCookie } from "../api/api";
 import { TWSStoreActions } from "../actions/ws";
 
 export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
@@ -9,19 +8,13 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
     let socket: WebSocket | null = null;
 
     return (next) => (action: TApplicationActions) => {
-      const { dispatch, getState } = store;
+      const { dispatch } = store;
       const { type } = action;
       const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } =
         wsActions;
 
-      const loginData = getState().auth.loginData;
-
-      const token = getCookie("token")?.replace("Bearer ", "");
-
       if (type === wsInit) {
-        socket = new WebSocket(
-          `${action.payload}${loginData ? `?token=${token}` : ""}`
-        );
+        socket = new WebSocket(action.payload);
       }
 
       if (socket) {
@@ -35,7 +28,6 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
 
         // функция, которая вызывается при ошибке соединения
         socket.onerror = (event) => {
-          console.log(event);
           dispatch({ type: onError, payload: event });
         };
 
