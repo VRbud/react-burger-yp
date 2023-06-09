@@ -1,12 +1,10 @@
 import styles from "./OrderDetails.module.css";
 import img from "../../../images/order_accpeted/accepted.png";
 import Spinner from "../../../ui/Spinner";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../services/hooks";
 
 function OrderDetails() {
-  // disable lint for redux store
-  //@ts-ignore
-  const { orderData } = useSelector((state) => state.order);
+  const { orderData } = useAppSelector((state) => state.order);
   return orderData !== null && orderData.success ? (
     <div className={`${styles.order_container} pt-15 pb-15`}>
       <h2 className={`${styles.order_number} mb-8 text text_type_digits-large`}>

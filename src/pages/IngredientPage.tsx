@@ -1,13 +1,11 @@
-import { useDispatch } from "react-redux";
 import IngredientDetails from "../components/BurgerIngredients/IngredientDetails/IngredientDetails";
 import { useEffect } from "react";
 import { getIngredients } from "../services/actions/ingredients";
+import { useAppDispatch } from "../services/hooks";
 
 function IngredientPage() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    // disable types for redux dispatch
-    //@ts-ignore
     dispatch(getIngredients());
   }, [dispatch]);
 

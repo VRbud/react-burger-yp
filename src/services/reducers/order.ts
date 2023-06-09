@@ -3,15 +3,25 @@ import {
   SET_ORDER_DATA_SUCCESS,
   SET_ORDER_DATA_FAILED,
   DELETE_ORDER_DATA,
+  TOrderActions,
 } from "../actions/order";
 
-const initialState = {
+type TOrderState = {
+  orderRequest: boolean;
+  orderFailed: boolean;
+  orderData: any;
+};
+
+const initialState: TOrderState = {
   orderRequest: false,
   orderFailed: false,
   orderData: null,
 };
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (
+  state = initialState,
+  action: TOrderActions
+): TOrderState => {
   switch (action.type) {
     case SET_ORDER_DATA: {
       return {

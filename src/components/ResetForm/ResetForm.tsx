@@ -5,16 +5,16 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ResetForm.module.css";
-import { useDispatch } from "react-redux";
 import { resetPassword } from "../../services/actions/auth";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { useAppDispatch } from "../../services/hooks";
 
 function ResetForm() {
   const [msg, setMsg] = useState({
     password: "",
     token: "",
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -25,8 +25,6 @@ function ResetForm() {
   };
 
   const handleSubmit = (e: SyntheticEvent) => {
-    //disable types for redux dispatch
-    // @ts-ignore
     dispatch(resetPassword(msg));
     e.preventDefault();
   };

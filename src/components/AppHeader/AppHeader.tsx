@@ -31,7 +31,7 @@ function AppHeader() {
               <ListIcon type="primary" />
 
               <NavLink
-                to="/profile/orders"
+                to="/feed"
                 className={({ isActive }) =>
                   isActive
                     ? "active pl-2 text text_type_main-default"

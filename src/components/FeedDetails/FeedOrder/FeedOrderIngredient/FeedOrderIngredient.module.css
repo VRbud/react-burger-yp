@@ -1,0 +1,33 @@
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.price {
+  display: flex;
+  gap: 8px;
+}
+
+.img_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border: 2px solid color-mix(in srgb, #801ab2, #4c4cff);
+  border-radius: 100px;
+  background-color: #131316;
+}
+
+.img {
+  max-width: 100%;
+  height: auto;
+  transform: scale(1.4);
+}
+
+.text {
+  flex-grow: 1;
+}

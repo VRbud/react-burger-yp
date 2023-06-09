@@ -6,19 +6,18 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ProfileDetails.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { changeUser } from "../../../services/actions/auth";
+import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 
 function ProfileDetails() {
-  //disable types for redux store
-  //@ts-ignore
-  const { loginData } = useSelector((state) => state.auth);
+  const { loginData } = useAppSelector((state) => state.auth);
+  const disptach = useAppDispatch();
+
   const [msg, setMsg] = useState({
-    name: loginData.name,
-    email: loginData.email,
+    name: loginData && loginData.name,
+    email: loginData && loginData.email,
     password: "",
   });
-  const disptach = useDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -31,20 +30,20 @@ function ProfileDetails() {
 
   const handleReset = () => {
     setMsg({
-      name: loginData.name,
-      email: loginData.email,
+      name: loginData && loginData.name,
+      email: loginData && loginData.email,
       password: "",
     });
   };
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    //@ts-ignore
     disptach(changeUser(msg));
   };
 
   const disableControl = () => {
     return (
+      loginData &&
       msg.name === loginData.name &&
       msg.email === loginData.email &&
       msg.password === ""
@@ -60,7 +59,7 @@ function ProfileDetails() {
               placeholder="Имя"
               extraClass="pb-6"
               name="name"
-              value={msg.name}
+              value={msg.name as string}
               onChange={handleChange}
             />
           </li>
@@ -68,7 +67,7 @@ function ProfileDetails() {
             <EmailInput
               extraClass="pb-6"
               name="email"
-              value={msg.email}
+              value={msg.email as string}
               onChange={handleChange}
             />
           </li>
@@ -76,7 +75,7 @@ function ProfileDetails() {
             <PasswordInput
               extraClass="pb-6"
               name="password"
-              value={msg.password}
+              value={msg.password as string}
               onChange={handleChange}
             />
           </li>
@@ -86,11 +85,11 @@ function ProfileDetails() {
           <Button
             htmlType="button"
             onClick={handleReset}
-            disabled={disableControl()}
+            disabled={disableControl() as boolean}
           >
             Отмена
           </Button>
-          <Button htmlType="submit" disabled={disableControl()}>
+          <Button htmlType="submit" disabled={disableControl() as boolean}>
             Сохранить
           </Button>
         </div>

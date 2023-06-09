@@ -6,15 +6,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./LoginForm.module.css";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
-import { useDispatch } from "react-redux";
 import { requestLogin } from "../../services/actions/auth";
+import { useAppDispatch } from "../../services/hooks";
 
 function LoginFrom() {
   const [msg, setMsg] = useState({
     email: "",
     password: "",
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -26,8 +26,6 @@ function LoginFrom() {
   };
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    // disable types for redux dispatch
-    //@ts-ignore
     dispatch(requestLogin(msg));
   };
 

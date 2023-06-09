@@ -2,9 +2,11 @@ import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/Ingre
 
 const { REACT_APP_PUBLIC_URL } = process.env;
 
-type TUser = {
+export type TUser = {
   email: string;
   name: string;
+  accessToken?: string;
+  refreshToken?: string;
 };
 
 type TResponse = {
@@ -22,7 +24,6 @@ export type TResponseBody<TDataType> = {
   accessToken?: string;
   refreshToken?: string;
   message?: string;
-  headers?: Headers;
 };
 
 export interface CustomResponse<T> extends Body {
@@ -31,9 +32,16 @@ export interface CustomResponse<T> extends Body {
   readonly redirected: boolean;
   readonly status: number;
   readonly statusText: string;
-  readonly trailer: Promise<Headers>;
   readonly type: ResponseType;
   readonly url: string;
+  readonly data: Array<IIngredient>;
+  readonly success: boolean;
+  readonly accessToken?: string;
+  readonly refreshToken?: string;
+  readonly user?: TUser;
+  readonly email: string;
+  readonly name: string;
+  readonly userData?: string;
   clone(): Response;
   json(): Promise<T>;
 }
@@ -69,26 +77,6 @@ export const requestToServ = (
     .then(checkSuccess);
 };
 
-export const refreshCookie = (token: string) => {
-  try {
-    return requestToServ("auth/token", {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(token),
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-    });
-  } catch (err) {
-    if (err instanceof Error)
-      return Promise.reject(`Ответ не обновление кук:  ${err.message}`);
-  }
-};
-
 type TCookieProp<T> = {
   [name: string]: T;
 };
@@ -96,7 +84,7 @@ type TCookieProp<T> = {
 export const setCookie = (
   name: string,
   value: string,
-  props: TCookieProp<string | Date | boolean>
+  props?: TCookieProp<string | Date | boolean>
 ) => {
   props = props || {};
   let exp = props.expires;
@@ -124,6 +112,8 @@ export const getCookie = (name: string) => {
   const matches = document.cookie.match(
     new RegExp(
       "(?:^|; )" +
+        // disable regexp exlint error
+        // eslint-disable-next-line
         name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
         "=([^;]*)"
     )

@@ -1,44 +1,168 @@
 import {
   DeleteCookie,
+  TUser,
   getCookie,
-  refreshCookie,
   requestToServ,
   setCookie,
 } from "../api/api";
 
-export const REQUEST_USER = "REQUEST_USER";
-export const REQUEST_USER_SUCCESS = "REQUEST_USER_SUCCESS";
-export const REQUEST_USER_FAILED = "REQUEST_USER_FAILED";
+import { AppDispatch, AppThunk } from "../types";
 
-export const REQUEST_PASSWORD = "REQUEST_PASSWORD";
-export const REQUEST_PASSWORD_SUCCESS = "REQUEST_PASSWORD_SUCCESS";
-export const REQUEST_PASSWORD_FAILED = "REQUEST_PASSWORD_FAILED";
+export const REQUEST_USER: "REQUEST_USER" = "REQUEST_USER";
+export const REQUEST_USER_SUCCESS: "REQUEST_USER_SUCCESS" =
+  "REQUEST_USER_SUCCESS";
+export const REQUEST_USER_FAILED: "REQUEST_USER_FAILED" = "REQUEST_USER_FAILED";
 
-export const REQUEST_CREATE_USER = "REQUEST_CREATE_USER";
-export const REQUEST_CREATE_USER_SUCCESS = "REQUEST_CREATE_USER_SUCCESS";
-export const REQUEST_CREATE_USER_FAILED = "REQUEST_CREATE_USER_FAILED";
+export const REQUEST_PASSWORD: "REQUEST_PASSWORD" = "REQUEST_PASSWORD";
+export const REQUEST_PASSWORD_SUCCESS: "REQUEST_PASSWORD_SUCCESS" =
+  "REQUEST_PASSWORD_SUCCESS";
+export const REQUEST_PASSWORD_FAILED: "REQUEST_PASSWORD_FAILED" =
+  "REQUEST_PASSWORD_FAILED";
 
-export const REQUEST_LOGIN = "REQUEST_LOGIN";
-export const REQUEST_LOGIN_SUCCESS = "REQUEST_LOGIN_SUCCESS";
-export const REQUEST_LOGIN_FAILED = "REQUEST_LOGIN_FAILED";
+export const REQUEST_CREATE_USER: "REQUEST_CREATE_USER" = "REQUEST_CREATE_USER";
+export const REQUEST_CREATE_USER_SUCCESS: "REQUEST_CREATE_USER_SUCCESS" =
+  "REQUEST_CREATE_USER_SUCCESS";
+export const REQUEST_CREATE_USER_FAILED: "REQUEST_CREATE_USER_FAILED" =
+  "REQUEST_CREATE_USER_FAILED";
 
-export const CHANGE_USER = "CHANGE_USER";
-export const CHANGE_USER_SUCCESS = "CHANGE_USER_SUCCESS";
-export const CHANGE_USER_FAILED = "CHANGE_USER_FAILED";
+export const REQUEST_LOGIN: "REQUEST_LOGIN" = "REQUEST_LOGIN";
+export const REQUEST_LOGIN_SUCCESS: "REQUEST_LOGIN_SUCCESS" =
+  "REQUEST_LOGIN_SUCCESS";
+export const REQUEST_LOGIN_FAILED: "REQUEST_LOGIN_FAILED" =
+  "REQUEST_LOGIN_FAILED";
 
-export const CHECK_LOGIN = "CHECK_LOGIN";
-export const CHECK_LOGIN_SUCCESS = "CHECK_LOGIN_SUCCESS";
-export const CHECK_LOGIN_FAILED = "CHECK_LOGIN_FAILED";
+export const CHANGE_USER: "CHANGE_USER" = "CHANGE_USER";
+export const CHANGE_USER_SUCCESS: "CHANGE_USER_SUCCESS" = "CHANGE_USER_SUCCESS";
+export const CHANGE_USER_FAILED: "CHANGE_USER_FAILED" = "CHANGE_USER_FAILED";
 
-export const LOGOUT = "LOGOUT";
-export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
-export const LOGOUT_FAILED = "LOGOUT_FAILED";
+export const CHECK_LOGIN: "CHECK_LOGIN" = "CHECK_LOGIN";
+export const CHECK_LOGIN_SUCCESS: "CHECK_LOGIN_SUCCESS" = "CHECK_LOGIN_SUCCESS";
+export const CHECK_LOGIN_FAILED: "CHECK_LOGIN_FAILED" = "CHECK_LOGIN_FAILED";
+
+export const LOGOUT: "LOGOUT" = "LOGOUT";
+export const LOGOUT_SUCCESS: "LOGOUT_SUCCESS" = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILED: "LOGOUT_FAILED" = "LOGOUT_FAILED";
+
+export interface IRequestUser {
+  readonly type: typeof REQUEST_USER;
+}
+
+export interface IRequestUserSuccess {
+  readonly type: typeof REQUEST_USER_SUCCESS;
+  readonly userData: TUser;
+}
+
+export interface IRequestUserFailed {
+  readonly type: typeof REQUEST_USER_FAILED;
+}
+
+export interface IRequestPassword {
+  readonly type: typeof REQUEST_PASSWORD;
+}
+
+export interface IRequestPasswordSuccess {
+  readonly type: typeof REQUEST_PASSWORD_SUCCESS;
+  readonly passwordMsg: string | any;
+}
+
+export interface IRequestPasswordFailed {
+  readonly type: typeof REQUEST_PASSWORD_FAILED;
+}
+
+export interface IRequestCreateUser {
+  readonly type: typeof REQUEST_CREATE_USER;
+}
+
+export interface IRequestCreateUserSuccess {
+  readonly type: typeof REQUEST_CREATE_USER_SUCCESS;
+  readonly user: TUser;
+}
+
+export interface IRequestCreateUserFailed {
+  readonly type: typeof REQUEST_CREATE_USER_FAILED;
+}
+
+export interface IRequestLogin {
+  readonly type: typeof REQUEST_LOGIN;
+}
+
+export interface IRequestLoginSuccess {
+  readonly type: typeof REQUEST_LOGIN_SUCCESS;
+  readonly user: TUser;
+}
+
+export interface IRequestLoginFailed {
+  readonly type: typeof REQUEST_LOGIN_FAILED;
+}
+
+export interface IRequestChangeUser {
+  readonly type: typeof CHANGE_USER;
+}
+
+export interface IRequestChangeUserSuccess {
+  readonly type: typeof CHANGE_USER_SUCCESS;
+  readonly user: TUser;
+}
+
+export interface IRequestChangeUserFailed {
+  readonly type: typeof CHANGE_USER_FAILED;
+}
+
+export interface IRequestCheckLogin {
+  readonly type: typeof CHECK_LOGIN;
+}
+
+export interface IRequestCheckLoginSuccess {
+  readonly type: typeof CHECK_LOGIN_SUCCESS;
+  readonly user: TUser;
+}
+
+export interface IRequestCheckLoginFailed {
+  readonly type: typeof CHECK_LOGIN_FAILED;
+}
+
+export interface IRequestLogout {
+  readonly type: typeof LOGOUT;
+}
+
+export interface IRequestLogoutSuccess {
+  readonly type: typeof LOGOUT_SUCCESS;
+  readonly user: null;
+}
+
+export interface IRequestLogoutFailed {
+  readonly type: typeof LOGOUT_FAILED;
+}
+
+export type TAuthActions =
+  | IRequestUser
+  | IRequestUserSuccess
+  | IRequestUserFailed
+  | IRequestPassword
+  | IRequestPasswordSuccess
+  | IRequestPasswordFailed
+  | IRequestCreateUser
+  | IRequestCreateUserSuccess
+  | IRequestCreateUserFailed
+  | IRequestLogin
+  | IRequestLoginSuccess
+  | IRequestLoginFailed
+  | IRequestLoginFailed
+  | IRequestChangeUser
+  | IRequestChangeUserSuccess
+  | IRequestChangeUserFailed
+  | IRequestCheckLogin
+  | IRequestCheckLoginSuccess
+  | IRequestCheckLoginFailed
+  | IRequestLogout
+  | IRequestLogoutSuccess
+  | IRequestLogoutFailed;
 
 const token = { token: getCookie("token") };
 const refreshToken = { token: getCookie("refreshToken") };
 // Проверка существет ли юзер при попытке восстановить пароль по емейл
-export const requestUser = (data) => {
-  return function (dispatch) {
+export const requestUser = (data: any): AppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_USER,
     });
@@ -62,16 +186,20 @@ export const requestUser = (data) => {
         }
       });
     } catch (err) {
-      throw new Error(
-        `Ошибка в получении сведений о пользователе ${err.message}`
-      );
+      if (err instanceof Error)
+        throw new Error(
+          `Ошибка в получении сведений о пользователе ${err.message}`
+        );
     }
   };
 };
 
 // отправка формы с новым паролем и токеном
-export const resetPassword = (data) => {
-  return function (dispatch) {
+export const resetPassword = (data: {
+  password: string;
+  token: string;
+}): AppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_PASSWORD,
     });
@@ -98,14 +226,19 @@ export const resetPassword = (data) => {
         }
       });
     } catch (err) {
-      throw new Error(`Ошибка в смене пароля ${err.message}`);
+      if (err instanceof Error)
+        throw new Error(`Ошибка в смене пароля ${err.message}`);
     }
   };
 };
 
 // отправка формы регистрации
-export const createUser = (data) => {
-  return function (dispatch) {
+export const createUser = (data: {
+  email: string;
+  name: string;
+  password: string;
+}): AppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_CREATE_USER,
     });
@@ -135,14 +268,18 @@ export const createUser = (data) => {
         }
       });
     } catch (err) {
-      throw new Error(`Ошибка в создании пользователя ${err.message}`);
+      if (err instanceof Error)
+        throw new Error(`Ошибка в создании пользователя ${err.message}`);
     }
   };
 };
 
 // отправка логин формы если нет токенов в куки
-export const requestLogin = (data) => {
-  return function (dispatch) {
+export const requestLogin = (data: {
+  email: string;
+  password: string;
+}): AppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_LOGIN,
     });
@@ -156,7 +293,7 @@ export const requestLogin = (data) => {
         redirect: "follow",
         referrerPolicy: "no-referrer",
       }).then((res) => {
-        if (res.success) {
+        if (res.success && res.user) {
           dispatch({
             type: REQUEST_LOGIN_SUCCESS,
             user: res.user,
@@ -174,14 +311,15 @@ export const requestLogin = (data) => {
         }
       });
     } catch (err) {
-      throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
+      if (err instanceof Error)
+        throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
     }
   };
 };
 
 // проверка если есть токены. если есть автоматический логин
-export const checkLogin = () => {
-  return function (dispatch) {
+export const checkLogin = (): AppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: CHECK_LOGIN,
     });
@@ -196,11 +334,11 @@ export const checkLogin = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: getCookie("token"),
-          },
+          } as HeadersInit,
           redirect: "follow",
           referrerPolicy: "no-referrer",
         }).then((res) => {
-          if (res !== undefined && res.success) {
+          if (res !== undefined && res.success && res.user) {
             // проверка успешного ответа на токен, если да юзер логинится
             dispatch({
               type: CHECK_LOGIN_SUCCESS,
@@ -208,7 +346,18 @@ export const checkLogin = () => {
             });
           } else {
             // обычный токен не подошел, отправляю рефрешТокен
-            refreshCookie(refreshToken).then((res) => {
+            requestToServ("auth/token", {
+              method: "POST",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "same-origin",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(getCookie("refreshToken")),
+              redirect: "follow",
+              referrerPolicy: "no-referrer",
+            }).then((res) => {
               if (res) {
                 // Обновляю токены после отправки рефрешТокена
                 let authToken = res.accessToken;
@@ -226,12 +375,12 @@ export const checkLogin = () => {
                   headers: {
                     "Content-Type": "application/json",
                     Authorization: authToken,
-                  },
+                  } as HeadersInit,
                   redirect: "follow",
                   referrerPolicy: "no-referrer",
                 }).then((res) => {
                   // Успешный логин
-                  if (res.success) {
+                  if (res.success && res.user) {
                     dispatch({
                       type: CHECK_LOGIN_SUCCESS,
                       user: res.user,
@@ -248,7 +397,18 @@ export const checkLogin = () => {
         });
       } else if (token.token === undefined && refreshToken.token) {
         // если рефреш токен есть, а обычного почему-то нет, то отправляю рефреш
-        refreshCookie(refreshToken)
+        requestToServ("auth/token", {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(getCookie("refreshToken")),
+          redirect: "follow",
+          referrerPolicy: "no-referrer",
+        })
           .then((res) => {
             if (res.success) {
               // получаю ответ с токенами и записываю их
@@ -275,11 +435,11 @@ export const checkLogin = () => {
               headers: {
                 "Content-Type": "application/json",
                 Authorization: data.accessToken,
-              },
+              } as HeadersInit,
               redirect: "follow",
               referrerPolicy: "no-referrer",
             }).then((res) => {
-              if (res) {
+              if (res && res.user) {
                 dispatch({
                   type: CHECK_LOGIN_SUCCESS,
                   user: res.user,
@@ -293,14 +453,15 @@ export const checkLogin = () => {
           });
       }
     } catch (err) {
-      throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
+      if (err instanceof Error)
+        throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
     }
   };
 };
 
 // отправка формы с выходом, куки становятся недействительными. чтобы войти нужно снова ввести логин-пароль
-export const logout = () => {
-  return function (dispatch) {
+export const logout = (): AppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: LOGOUT,
     });
@@ -333,14 +494,19 @@ export const logout = () => {
         }
       });
     } catch (err) {
-      throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
+      if (err instanceof Error)
+        throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
     }
   };
 };
 
 // отправка новых данных пользоваетля
-export const changeUser = (data) => {
-  return function (dispatch) {
+export const changeUser = (data: {
+  email: string | null;
+  name: string | null;
+  password: string | null;
+}): AppThunk => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: CHANGE_USER,
     });
@@ -353,12 +519,12 @@ export const changeUser = (data) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: getCookie("token"),
-        },
+        } as HeadersInit,
         body: JSON.stringify(data),
         redirect: "follow",
         referrerPolicy: "no-referrer",
       }).then((res) => {
-        if (res) {
+        if (res && res.user) {
           // все прошло успешно обновляю данные
           dispatch({
             type: CHANGE_USER_SUCCESS,
@@ -366,7 +532,18 @@ export const changeUser = (data) => {
           });
         } else if (res === undefined) {
           // обычный токен протух, отправляю рефреш
-          refreshCookie({ token: getCookie("refreshToken") })
+          requestToServ("auth/token", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token: getCookie("refreshToken") }),
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+          })
             .then((res) => {
               // получил рефреш, теперь отправляю с новым токеном и обновляю токены
               let authToken = res.accessToken;
@@ -375,7 +552,7 @@ export const changeUser = (data) => {
                 setCookie("token", authToken, { path: "/" });
                 setCookie("refreshToken", refreshToken, { path: "/" });
               }
-              requestToServ("auth/user", {
+              return requestToServ("auth/user", {
                 method: "PATCH",
                 mode: "cors",
                 cache: "no-cache",
@@ -383,7 +560,7 @@ export const changeUser = (data) => {
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: authToken,
-                },
+                } as HeadersInit,
                 body: JSON.stringify(data),
                 redirect: "follow",
                 referrerPolicy: "no-referrer",
@@ -391,7 +568,7 @@ export const changeUser = (data) => {
             })
             .then((res) => {
               // все хорошо, получены новые токены и новые данные юхера отправлены
-              if (res) {
+              if (res && res.user) {
                 dispatch({
                   type: CHANGE_USER_SUCCESS,
                   user: res.user,
@@ -406,7 +583,8 @@ export const changeUser = (data) => {
         }
       });
     } catch (err) {
-      throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
+      if (err instanceof Error)
+        throw new Error(`Ошибка при во входе в учетную запись ${err.message}`);
     }
   };
 };

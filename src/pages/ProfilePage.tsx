@@ -1,14 +1,18 @@
-import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import Profile from "../components/Profile/Profile";
+import { useAppSelector } from "../services/hooks";
 
-export default function ProfilePage() {
-  // disable types for redux store
-  //@ts-ignore
-  const { loginData } = useSelector((state) => state.auth);
+const ProfilePage = () => {
+  const { loginData } = useAppSelector((state) => state.auth);
+  let location = useLocation();
+  // eslint-disable-next-line
+  let state = location.state as { backgroundLocation?: Location };
 
   return (
     <>
       <main>{loginData && <Profile />}</main>
     </>
   );
-}
+};
+
+export default ProfilePage;

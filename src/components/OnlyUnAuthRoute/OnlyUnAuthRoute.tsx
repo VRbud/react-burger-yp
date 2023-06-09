@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../services/hooks";
 
 interface IOnlyUnAuthRoute {
   path: string;
@@ -8,8 +8,7 @@ interface IOnlyUnAuthRoute {
 }
 
 const OnlyUnAuthRoute: FC<IOnlyUnAuthRoute> = ({ element, path }) => {
-  // @ts-ignore
-  const { loginData } = useSelector((state) => state.auth);
+  const { loginData } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   useEffect(() => {
     if (loginData) {

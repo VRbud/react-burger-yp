@@ -7,8 +7,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./RegisterForm.module.css";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
-import { useDispatch } from "react-redux";
 import { createUser } from "../../services/actions/auth";
+import { useAppDispatch } from "../../services/hooks";
 
 function RegisterForm() {
   const [msg, setMsg] = useState({
@@ -16,7 +16,7 @@ function RegisterForm() {
     email: "",
     password: "",
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -28,7 +28,6 @@ function RegisterForm() {
   };
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    //@ts-ignore
     dispatch(createUser(msg));
   };
 

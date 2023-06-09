@@ -1,14 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./ProfileNavigation.module.css";
-import { useDispatch } from "react-redux";
 import { logout } from "../../../services/actions/auth";
+import { useAppDispatch } from "../../../services/hooks";
 
 function ProfileNavigation() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const clickHandler = () => {
-    // disable types for redux dispatch
-    //@ts-ignore
     dispatch(logout());
   };
   return (

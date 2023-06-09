@@ -20,9 +20,35 @@ import {
   CHANGE_USER,
   CHANGE_USER_SUCCESS,
   CHANGE_USER_FAILED,
+  TAuthActions,
 } from "../actions/auth";
+import { TUser } from "../api/api";
 
-const initialState = {
+type TAuthState = {
+  userRequest: boolean;
+  userFailed: boolean;
+  userData: TUser | null;
+
+  passwordRequest: boolean;
+  passwordFailed: boolean;
+  passwordData: string | null;
+
+  createUserRequest: boolean;
+  createUserFailed: boolean;
+  createUserData: TUser | null;
+
+  loginRequest: boolean;
+  loginFailed: boolean;
+  loginData: TUser | null;
+
+  changeUserRequest: boolean;
+  changeUserFailed: boolean;
+
+  checkLoginRequest: boolean;
+  checkLoginFailed: boolean;
+};
+
+const initialState: TAuthState = {
   userRequest: false,
   userFailed: false,
   userData: null,
@@ -46,7 +72,10 @@ const initialState = {
   checkLoginFailed: false,
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (
+  state = initialState,
+  action: TAuthActions
+): TAuthState => {
   switch (action.type) {
     case REQUEST_USER: {
       return {
@@ -135,28 +164,28 @@ export const authReducer = (state = initialState, action) => {
     case CHECK_LOGIN: {
       return {
         ...state,
-        CheckLoginRequest: true,
+        checkLoginRequest: true,
       };
     }
     case CHECK_LOGIN_SUCCESS: {
       return {
         ...state,
-        CheckLoginRequest: false,
-        CheckLoginFailed: false,
+        checkLoginRequest: false,
+        checkLoginFailed: false,
         loginData: action.user,
       };
     }
     case CHECK_LOGIN_FAILED: {
       return {
         ...state,
-        CheckLoginRequest: false,
-        CheckLoginFailed: true,
+        checkLoginRequest: false,
+        checkLoginFailed: true,
       };
     }
     case CHANGE_USER: {
       return {
         ...state,
-        CheckLoginRequest: true,
+        checkLoginRequest: true,
       };
     }
     case CHANGE_USER_SUCCESS: {
@@ -178,22 +207,22 @@ export const authReducer = (state = initialState, action) => {
     case LOGOUT: {
       return {
         ...state,
-        CheckLoginRequest: true,
+        checkLoginRequest: true,
       };
     }
     case LOGOUT_SUCCESS: {
       return {
         ...state,
-        CheckLoginRequest: false,
-        CheckLoginFailed: false,
+        checkLoginRequest: false,
+        checkLoginFailed: false,
         loginData: action.user,
       };
     }
     case LOGOUT_FAILED: {
       return {
         ...state,
-        CheckLoginRequest: false,
-        CheckLoginFailed: true,
+        checkLoginRequest: false,
+        checkLoginFailed: true,
       };
     }
     default: {

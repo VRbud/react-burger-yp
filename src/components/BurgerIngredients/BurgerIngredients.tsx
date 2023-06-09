@@ -3,22 +3,19 @@ import Ingredient from "./Ingredient/Ingredient";
 import IngredientCat from "./IngredientCat/IngredientCat";
 import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import Spinner from "../../ui/Spinner";
 import { InView } from "react-intersection-observer";
 import { IIngredient } from "../../Types/BurgerConstructorTypes/StoreTypes/IngredientTypes";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 
 function BurgerIngredients() {
-  const { ingredients, ingredientsRequest } = useSelector(
-    //disabe types for redux store
-    // @ts-ignore
+  const { ingredients, ingredientsRequest } = useAppSelector(
     (state) => state.ingredients
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getIngredients());
   }, [dispatch]);
 
@@ -28,8 +25,6 @@ function BurgerIngredients() {
   const fillingsRef = useRef<HTMLDivElement>(null);
 
   const { bunsArray, saucesArray, FillArray } = useMemo(() => {
-    // if (ingredients === null) return [];
-    // return getIngredientType(ingredients);
     let bunsArray: IIngredient[] = [];
     let saucesArray: IIngredient[] = [];
     let FillArray: IIngredient[] = [];
