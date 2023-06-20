@@ -45,7 +45,7 @@ function BurgerIngredients() {
     return { bunsArray, saucesArray, FillArray };
   }, [ingredients]);
 
-  const clickHadler = (elem: string) => {
+  const clickHandler = (elem: string) => {
     if (elem === "buns") {
       bunsRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -71,16 +71,16 @@ function BurgerIngredients() {
     <div className={`pt-10 mb-5 ${styles.ingredients}`}>
       <h2 className="text text_type_main-large mb-5">Соберите Бургер</h2>
       <div className={`${styles.tabs} mb-10`}>
-        <Tab value="buns" active={current === "buns"} onClick={clickHadler}>
+        <Tab value="buns" active={current === "buns"} onClick={clickHandler}>
           Булки
         </Tab>
-        <Tab value="sauces" active={current === "sauces"} onClick={clickHadler}>
+        <Tab value="sauces" active={current === "sauces"} onClick={clickHandler}>
           Соусы
         </Tab>
         <Tab
           value="fillings"
           active={current === "fillings"}
-          onClick={clickHadler}
+          onClick={clickHandler}
         >
           Начинки
         </Tab>

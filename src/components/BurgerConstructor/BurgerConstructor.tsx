@@ -117,7 +117,11 @@ function BurgerConstructor() {
 
   return (
     <>
-      <div ref={dropTarget} className={`${styles.burger_constructor} pt-25`}>
+      <div
+        ref={dropTarget}
+        id="drop_target"
+        className={`${styles.burger_constructor} pt-25`}
+      >
         <div className={styles.burger_constructor_top}>
           <div className={`${bun !== null ? styles.end : ""} pl-8 pr-4`}>
             {bun !== null ? (
