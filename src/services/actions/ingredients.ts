@@ -111,7 +111,7 @@ export const getIngredients = (): AppThunk => {
   };
 };
 
-export const sendOrderData = (data: { ingredients: string[] }): AppThunk => {
+export const sendOrderData: AppThunk = (data) => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: SET_ORDER_DATA,
