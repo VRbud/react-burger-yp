@@ -30,3 +30,15 @@ test("should add ingredients", () => {
     ingredientsFailed: false,
   });
 });
+
+test("should set error", () => {
+  expect(
+    ingredientsReducer(undefined, {
+      type: "REQUEST_INGREDIENTS_FAILED",
+    })
+  ).toEqual({
+    ingredients: null,
+    ingredientsRequest: false,
+    ingredientsFailed: true,
+  });
+});
