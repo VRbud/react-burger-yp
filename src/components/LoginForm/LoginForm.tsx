@@ -34,21 +34,18 @@ function LoginFrom() {
       <h1 className="text text_type_main-medium">Войти</h1>
       <form className={`${styles.form} pb-20 pt-6`} onSubmit={handleSubmit}>
         <EmailInput
-          id="email"
           name="email"
           value={msg.email}
           onChange={handleChange}
           extraClass="pb-6"
         />
         <PasswordInput
-          id="password"
           name="password"
           value={msg.password}
           onChange={handleChange}
           extraClass="pb-6"
         />
         <Button
-          id="submit"
           htmlType="submit"
           type="primary"
           size="medium"
