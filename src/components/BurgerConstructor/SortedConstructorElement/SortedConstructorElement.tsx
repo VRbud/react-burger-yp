@@ -93,7 +93,7 @@ const SortedConstructorElement: FC<CardProps> = ({
 
   return (
     <>
-      <div className={styles.fillings} ref={ingRef}>
+      <div className={styles.fillings} ref={ingRef} id={`drop${id}`}>
         <DragIcon type="primary" />
         <ConstructorElement
           text={ingredient.name}
