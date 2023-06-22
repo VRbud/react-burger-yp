@@ -48,32 +48,31 @@ const Ingredient: FC<IIngredientData> = ({ ingredientData }) => {
   }
 
   return (
-    <>
+    <li
+      onClick={() => openModal()}
+      className={styles.ingredient}
+      ref={ingRef}
+      style={{ opacity }}
+      id={ingredientData._id}
+    >
       <Link to={`/ingredients/${id}`} state={{ backgroundLocation: location }}>
-        <li
-          onClick={() => openModal()}
-          className={styles.ingredient}
-          ref={ingRef}
-          style={{ opacity }}
-        >
-          <Counter extraClass={styles.counter} count={count} />
-          <img
-            src={ingredientData.image}
-            className={`${styles.image} pr-4 pl-4`}
-            alt={ingredientData.name}
-          />
-          <div className={`${styles.ingredient_bottom} pt-1 pb-1`}>
-            <p className="text text_type_main-medium pr-2">
-              {ingredientData.price}
-            </p>
-            <CurrencyIcon type="primary" />
-          </div>
-          <span className={`${styles.center} text text_type_main-default`}>
-            {ingredientData.name}
-          </span>
-        </li>
+        <Counter extraClass={styles.counter} count={count} />
+        <img
+          src={ingredientData.image}
+          className={`${styles.image} pr-4 pl-4`}
+          alt={ingredientData.name}
+        />
+        <div className={`${styles.ingredient_bottom} pt-1 pb-1`}>
+          <p className="text text_type_main-medium pr-2">
+            {ingredientData.price}
+          </p>
+          <CurrencyIcon type="primary" />
+        </div>
+        <span className={`${styles.center} text text_type_main-default`}>
+          {ingredientData.name}
+        </span>
       </Link>
-    </>
+    </li>
   );
 };
 
