@@ -61,6 +61,9 @@
       "last 1 safari version"
     ]
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.2.4",
     "@types/node": "^20.3.0",
