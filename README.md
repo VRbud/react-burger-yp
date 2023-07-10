@@ -15,6 +15,10 @@ Users can:
 - After logging in user redirects to a profile page, where he can edit his credentials, and view a list of his orders.
 - On the list of orders user can view all his order's statuses (delivered/canceled/in work) and the contents of each order. (in work)
 
+### To launch
+  - copy repo
+  - run 'npm i' to install dependecies
+
 ### Tech stack:
 
 - React
