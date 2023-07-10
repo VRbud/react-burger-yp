@@ -17,7 +17,7 @@ Users can:
 
 ### To launch
   - copy repo
-  - run 'npm i' to install dependecies
+  - run `npm i` to install dependecies
 
 ### Tech stack:
 
