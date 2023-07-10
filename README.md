@@ -1,4 +1,4 @@
-# Burger Stellar (in work)
+# Burger Stellar
 
 Burger Stellar is online burger delivery. You can order and monitor the status of all orders you have created [visit](https://react-burger-yp.vercel.app)
 
